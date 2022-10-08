@@ -2,47 +2,67 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { Button, Select, Input } from "antd";
+
 const { Option } = Select;
+
 const Main = styled.form`
-  width: 800px;
+  /* Display & Box Model */
   display: grid;
+  justify-content: center;
   grid-template-columns: 1fr 1fr 2.5fr 1fr;
   grid-column-gap: 15px;
+  width: 800px;
+  padding: 15px;
   border-radius: 20px;
   margin: 0 auto;
   margin-bottom: 30px;
-  padding: 15px;
+
+  /* Color */
   background-color: rgb(230, 230, 230);
-  justify-content: center;
+
+  /* Text */
   align-items: center;
 `;
 
 const InputWrapper = styled(Input)`
-  background-color: white;
+  /* Display & Box Model */
+  height: 50px;
+  padding: 0px 20px;
   border: 0px;
   border-radius: 10px;
-  padding: 0px 20px;
-  height: 50px;
-  outline: none; /* 포커스 시 파란테두리 제거 */
+
+  /* Color */
+  background-color: white;
+
+  /* Text */
   font-size: 18px;
+
+  /* Other */
+  outline: none;
 `;
 
 const SelectWrapper = styled(Select)`
-  background-color: white;
-  border-radius: 10px;
+  /* Display & Box Model */
   height: 50px;
   padding: 9px 0px;
+  border-radius: 10px;
+
+  /* Color */
+  background-color: white;
 `;
 
 const ButtonWrapper = styled(Button)`
+  /* Display & Box Model */
+  height: 50px;
+  padding: 0px 20px;
   border: 0px;
   border-radius: 10px;
-  height: 50px;
-  padding: 0px;
-  padding-left: 20px;
-  padding-right: 20px;
-  outline: none; /* 포커스 시 파란테두리 제거 */
+
+  /* Text */
   font-size: 18px;
+
+  /* Other */
+  outline: none;
 `;
 
 function MountainSearch() {
