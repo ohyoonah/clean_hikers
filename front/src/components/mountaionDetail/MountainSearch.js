@@ -4,13 +4,13 @@ import styled from "styled-components";
 import { Button, Select, Input } from "antd";
 const { Option } = Select;
 const Main = styled.form`
-  width: fit-content;
+  width: 800px;
   display: grid;
-  grid-template-columns: 150px 150px 350px 100px;
+  grid-template-columns: 1fr 1fr 2.5fr 1fr;
   grid-column-gap: 15px;
   border-radius: 20px;
   margin: 0 auto;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   padding: 15px;
   background-color: rgb(230, 230, 230);
   justify-content: center;

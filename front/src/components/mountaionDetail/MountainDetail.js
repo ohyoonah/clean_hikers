@@ -15,6 +15,7 @@ const Card = styled.div`
   height: fit-content;
   box-shadow: 2px 3px 8px 0px rgb(150, 150, 150);
 `;
+
 const Detail = styled.div`
   padding-bottom: 30px;
   text-align: left;
