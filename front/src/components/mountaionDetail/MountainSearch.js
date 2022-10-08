@@ -1,7 +1,7 @@
 /*검색창*/
 import { useState } from "react";
 import styled from "styled-components";
-import { Button, Select } from "antd";
+import { Button, Select, Input } from "antd";
 const { Option } = Select;
 const Main = styled.form`
   width: fit-content;
@@ -10,13 +10,14 @@ const Main = styled.form`
   grid-column-gap: 15px;
   border-radius: 20px;
   margin: 0 auto;
+  margin-bottom: 15px;
   padding: 15px;
   background-color: rgb(230, 230, 230);
   justify-content: center;
   align-items: center;
 `;
 
-const Input = styled.input`
+const InputWrapper = styled(Input)`
   background-color: white;
   border: 0px;
   border-radius: 10px;
@@ -30,12 +31,7 @@ const SelectWrapper = styled(Select)`
   background-color: white;
   border-radius: 10px;
   height: 50px;
-  line-height: 50px;
-  padding: 0px;
-  padding-left: 20px;
-  padding-right: 20px;
-  outline: none; /* 포커스 시 파란테두리 제거 */
-  font-size: 16px;
+  padding: 9px 0px;
 `;
 
 const ButtonWrapper = styled(Button)`
@@ -50,13 +46,16 @@ const ButtonWrapper = styled(Button)`
 `;
 
 function MountainSearch() {
-  const [location, setLocation] = useState("위치");
-  const [level, setLevel] = useState("난이도");
+  const [location, setLocation] = useState("");
+  const [level, setLevel] = useState("");
   const [search, setSearch] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault(); // 엔터 press 시 자동 submit 막는 기능
+    setLocation(""); // submit 시 위치 드롭다운 초기화
+    setLevel(""); // submit 시 난이도 드롭다운 초기화
     setSearch(""); // submit 시 검색 창 글자 초기화
+    console.log(location, level);
     // 추후 백엔드로 post하는 코드 삽입구역
   };
 
@@ -94,7 +93,7 @@ function MountainSearch() {
         <Option value="low">하</Option>
       </SelectWrapper>
 
-      <Input
+      <InputWrapper
         type="text"
         onChange={onChange}
         placeholder="산 이름을 입력해주세요..."
