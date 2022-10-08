@@ -1,5 +1,6 @@
 import React, { createContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navigation from "./components/common/navigation/Navigation";
 import CommunityPage from "./pages/CommunityPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
@@ -18,6 +19,7 @@ function App() {
       <UserStateContext.Provider>
         <modeContext.Provider>
           <Router>
+            <Navigation />
             <Routes>
               <Route path="/" exact element={<MainPage />} />
               <Route path="/community" element={<CommunityPage />} />
