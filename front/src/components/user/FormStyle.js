@@ -1,12 +1,19 @@
 import { Button, Form, Input } from "antd";
 import styled from "styled-components";
 
+export const PageBlock = styled.div`
+  width: 100%;
+  height: 100vh;
+  background: url("./backgroundImage.png") no-repeat center;
+  background-size: cover;
+`;
+
 export const FormBlock = styled(Form)`
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
   max-width: 650px;
-  width: 50%;
+  width: 60%;
   text-align: center;
   position: absolute;
   top: 50%;
@@ -22,19 +29,6 @@ export const FormBlock = styled(Form)`
   }
   .toRegister {
     margin-bottom: 5rem;
-  }
-  .informationText {
-    display: inline-block;
-    width: 60%;
-    margin: 0 auto;
-    font-size: 0.8rem;
-    text-align: start;
-    letter-spacing: -1px;
-    margin-bottom: 1rem;
-    font-weight: 600;
-  }
-  .error {
-    color: red;
   }
 `;
 
@@ -55,11 +49,11 @@ export const TitleBlock = styled.div`
 
 export const InputBlock = styled(Input)`
   width: 60%;
-  margin-bottom: 1rem;
   height: 50px;
   border-radius: 10px;
   background: inherit;
   outline: none;
+  margin-top: 1rem;
   input {
     background: transparent;
   }
@@ -81,6 +75,7 @@ export const EmailBlock = styled.div`
   align-items: center;
   width: 60%;
   margin: 0 auto;
+  margin-bottom: 1rem;
   .ant-form-item {
     margin-bottom: 0;
     width: 70%;
@@ -88,11 +83,10 @@ export const EmailBlock = styled.div`
       width: 100%;
     }
   }
-
   button {
     width: 25%;
     height: 50px;
-    margin-bottom: 1rem;
+    margin-top: 1rem;
     border-radius: 10px;
     box-sizing: inherit;
     cursor: pointer;
