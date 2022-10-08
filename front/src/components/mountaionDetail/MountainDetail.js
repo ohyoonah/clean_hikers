@@ -3,7 +3,7 @@
 import styled from "styled-components";
 import React from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import { Button, Row, Col } from "antd";
+import { Button, Row } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 
 const Card = styled.div`
@@ -38,10 +38,10 @@ function MountainDetailPage({ mountainName }) {
             <CloseOutlined />
           </ButtonWrapper>
         </Row>
-        <h1>지리산</h1>
+        <h1 style={{ marginBottom: "0em" }}>지리산</h1>
         경상남도 하동군 화개면 대성리
         <br />
-        난이도 : 하<br />
+        난이도 : 하
       </Detail>
       <Map
         center={{ lat: 35.336944, lng: 127.7305555 }}

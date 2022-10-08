@@ -7,7 +7,6 @@ import MountainDetailPage from "./pages/MountainDetailPage";
 import MountainSearchPage from "./pages/MountainSearchPage";
 import RegisterPage from "./pages/RegisterPage";
 import UserPage from "./pages/UserPage";
-import "antd/dist/antd.css";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
