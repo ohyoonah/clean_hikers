@@ -32,61 +32,24 @@ const List = styled.div`
   }
 `;
 
-function MountainList() {
-  const MOUNTAIN = [
-    {
-      value: "jiri",
-      name: "지리산",
-      location: "경상남도 하동군",
-      level: "상",
-      lat: 35.336944,
-      lng: 127.7305555,
-    },
-    {
-      value: "taebaek",
-      name: "태백산",
-      location: "강원도 영월군",
-      level: "상",
-      lat: 37.0992392,
-      lng: 128.9160404,
-    },
-    {
-      value: "odae",
-      name: "오대산",
-      location: "강원도 강릉시",
-      level: "중",
-      lat: 37.7941467,
-      lng: 128.5426327,
-    },
-    {
-      value: "hanra",
-      name: "한라산",
-      location: "제주도",
-      level: "하",
-      lat: 33.3616666,
-      lng: 126.5291666,
-    },
-  ];
-  const [isModal, setIsModal] = useState(false);
-  const [value, setValue] = useState({});
-
+function MountainList({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
   return (
     <div>
-      {MOUNTAIN.map((value, index) => {
+      {MOUNTAIN.map((v, index) => {
         return (
           <div key={index}>
             <List
               onClick={() => {
                 setIsModal(true);
-                setValue(value);
+                setValue(v);
               }}
             >
               <div>
-                <b>{value.name}</b>
+                <b>{v.name}</b>
               </div>
-              <div style={{ textAlign: "start" }}>{value.location}</div>
+              <div style={{ textAlign: "start" }}>{v.location}</div>
               <div style={{ textAlign: "end" }}>
-                <b>난이도</b> {value.level}
+                <b>난이도</b> {v.level}
               </div>
             </List>
           </div>

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import React from "react";
 import { useEffect } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import { Button, Row } from "antd";
+import { Button, Row, Tabs } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 
 const Card = styled.div`
@@ -29,7 +29,6 @@ const Card = styled.div`
 
 const Detail = styled.div`
   /* Display & Box Model */
-  padding-bottom: 30px;
 
   /* Text */
   text-align: left;
@@ -41,6 +40,7 @@ const ButtonWrapper = styled(Button)`
   height: 50px;
   padding: 0px 20px;
   border: 0;
+  border-radius: 10px;
 
   /* Text */
   font-size: 18px;
@@ -79,13 +79,28 @@ function MountainDetailPage({ mountainName, setIsModal, value }) {
         <br />
         난이도 {value.level}
       </Detail>
-      <Map
-        center={{ lat: value.lat, lng: value.lng }}
-        style={{ width: "100%", height: "250px", margin: "0px auto" }}
-        level={8}
-      >
-        <MapMarker position={{ lat: value.lat, lng: value.lng }} />
-      </Map>
+
+      <Tabs defaultActiveKey="1" centered>
+        <Tabs.TabPane tab="위치" key="1">
+          <Map
+            center={{ lat: value.lat, lng: value.lng }}
+            style={{ width: "100%", height: "250px", margin: "0px auto" }}
+            level={8}
+          >
+            <MapMarker position={{ lat: value.lat, lng: value.lng }} />
+          </Map>
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="등산로" key="2">
+          <Map
+            center={{ lat: value.lat, lng: value.lng }}
+            style={{ width: "100%", height: "250px", margin: "0px auto" }}
+            level={7}
+          >
+            <MapMarker position={{ lat: value.lat, lng: value.lng }} />
+          </Map>
+        </Tabs.TabPane>
+      </Tabs>
+
       <Row justify="center" style={{ paddingTop: "30px" }}>
         <ButtonWrapper type="primary" justify="center">
           함께하기
