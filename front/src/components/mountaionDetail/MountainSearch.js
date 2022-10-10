@@ -1,7 +1,7 @@
 /*검색창*/
 import { useState } from "react";
 import styled from "styled-components";
-import { Button, Select, Input } from "antd";
+import { Select, Input } from "antd";
 import { NonIconBlueBtn } from "../common/button/NonIconBtn";
 
 const { Option } = Select;
@@ -27,7 +27,7 @@ const Main = styled.form`
 
 const InputWrapper = styled(Input)`
   /* Display & Box Model */
-  height: 50px;
+  height: 40px;
   padding: 0px 20px;
   border: 0px;
   border-radius: 10px;
@@ -36,7 +36,7 @@ const InputWrapper = styled(Input)`
   background-color: white;
 
   /* Text */
-  font-size: 18px;
+  font-size: 16px;
 
   /* Other */
   outline: none;
@@ -44,26 +44,12 @@ const InputWrapper = styled(Input)`
 
 const SelectWrapper = styled(Select)`
   /* Display & Box Model */
-  height: 50px;
-  padding: 9px 0px;
+  height: 40px;
+  padding: 4px 0px;
   border-radius: 10px;
 
   /* Color */
   background-color: white;
-`;
-
-const ButtonWrapper = styled(Button)`
-  /* Display & Box Model */
-  height: 50px;
-  padding: 0px 20px;
-  border: 0px;
-  border-radius: 10px;
-
-  /* Text */
-  font-size: 18px;
-
-  /* Other */
-  outline: none;
 `;
 
 function MountainSearch() {

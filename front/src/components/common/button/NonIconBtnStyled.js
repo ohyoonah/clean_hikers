@@ -4,7 +4,7 @@ import { theme } from "../styles/palette";
 
 const NonIconBlueBtnStyled = styled(Button)`
   /* Display & Box Model */
-  height: 50px;
+
   padding: 0px 20px;
   border: 0px;
   border-radius: 8px;
@@ -12,13 +12,17 @@ const NonIconBlueBtnStyled = styled(Button)`
 
 const NonIconGreenBtnStyled = styled(Button)`
   /* Display & Box Model */
-  height: 50px;
+
   padding: 0px 20px;
   border: ${theme.primary} solid;
   border-radius: 8px;
 
   /* Color */
   background-color: ${theme.primary};
+  :hover {
+    background-color: ${theme.primary};
+    border: ${theme.primary} solid;
+  }
 `;
 
 export { NonIconBlueBtnStyled, NonIconGreenBtnStyled };

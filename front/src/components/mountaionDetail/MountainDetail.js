@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { Button, Row, Tabs } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
+import { NonIconGreenBtn } from "../common/button/NonIconBtn";
 
 const Card = styled.div`
   /* Positioning */
@@ -110,9 +111,7 @@ function MountainDetailPage({ mountainName, setIsModal, value }) {
       </Tabs>
 
       <Row justify="center" style={{ paddingTop: "30px" }}>
-        <ButtonWrapper type="primary" justify="center">
-          함께하기
-        </ButtonWrapper>
+        <NonIconGreenBtn text={"함께하기"} />
       </Row>
     </Card>
   );
