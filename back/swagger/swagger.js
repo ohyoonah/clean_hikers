@@ -1,22 +1,19 @@
-const swaggerUi = require('swagger-ui-express');
-const swaggereJsdoc = require('swagger-jsdoc');
+import swaggerUi from "swagger-ui-express";
+import swaggereJsdoc from "swagger-jsdoc";
 
 const options = {
     swaggerDefinition: {
         info: {
-            title: 'Test API',
-            version: '1.0.0',
-            description: 'Test API with express',
+            title: "Test API",
+            version: "1.0.0",
+            description: "Test API with express",
         },
-        host: 'localhost:5000',
-        basePath: '/'
+        host: "localhost:5000",
+        basePath: "/",
     },
-    apis: ['./routes/*.js', './swagger/*']
+    apis: ["./routes/*.js", "./swagger/*"],
 };
 
 const specs = swaggereJsdoc(options);
 
-module.exports = {
-    swaggerUi,
-    specs
-};
+export default { swaggerUi, specs };
