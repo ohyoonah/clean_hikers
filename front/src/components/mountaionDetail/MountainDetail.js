@@ -49,6 +49,14 @@ const ButtonWrapper = styled(Button)`
   outline: none;
 `;
 
+const H1 = styled.h1`
+  /* Display & Box Model */
+  margin-bottom: 10px;
+  /* Text */
+  font-weight: 700;
+  text-align: center;
+`;
+
 function MountainDetailPage({ mountainName, setIsModal, value }) {
   useEffect(() => {
     document.body.style.cssText = `
@@ -74,10 +82,10 @@ function MountainDetailPage({ mountainName, setIsModal, value }) {
             <CloseOutlined />
           </ButtonWrapper>
         </Row>
-        <h1 style={{ marginBottom: "0em" }}>{value.name}</h1>
-        위치 {value.location}
+        <H1>{value.name}</H1>
+        <b>위치</b> {value.location}
         <br />
-        난이도 {value.level}
+        <b>난이도</b> {value.level}
       </Detail>
 
       <Tabs defaultActiveKey="1" centered>
