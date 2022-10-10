@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { ProfileBlock, UploadBlock } from "./ProfileStyle";
 import { ButtonBlock } from "../common/form/FormStyled";
@@ -6,17 +6,17 @@ import { ButtonBlock } from "../common/form/FormStyled";
 import { message, Form, Input } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
-function ProfileEdit({ setIsEdit }) {
+function ProfileEdit({ setIsEdit, user, setUser }) {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
 
-  const getBase64 = (img, callback) => {
+  function getBase64(img, callback) {
     const reader = new FileReader();
     reader.addEventListener("load", () => callback(reader.result));
     reader.readAsDataURL(img);
-  };
+  }
 
-  const beforeUpload = (file) => {
+  function beforeUpload(file) {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
 
     if (!isJpgOrPng) {
@@ -30,9 +30,9 @@ function ProfileEdit({ setIsEdit }) {
     }
 
     return isJpgOrPng && isLt2M;
-  };
+  }
 
-  const handleChange = (info) => {
+  function onChangeImage(info) {
     if (info.file.status === "uploading") {
       setLoading(true);
       return;
@@ -44,7 +44,7 @@ function ProfileEdit({ setIsEdit }) {
         setImageUrl(url);
       });
     }
-  };
+  }
 
   const uploadButton = (
     <div>
@@ -62,16 +62,40 @@ function ProfileEdit({ setIsEdit }) {
         showUploadList={false}
         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
         beforeUpload={beforeUpload}
-        onChange={handleChange}
+        onChange={onChangeImage}
       >
         {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
       </UploadBlock>
-      <Form>
-        <Form.Item className="label" label="닉네임" name="username">
-          <Input />
+      <Form initialValues={user}>
+        <Form.Item
+          className="label"
+          colon={false}
+          label="닉네임"
+          name="username"
+        >
+          <Input
+            value={user.username}
+            onChange={(e) => {
+              setUser((prev) => {
+                return { ...prev, username: e.target.value };
+              });
+            }}
+          />
         </Form.Item>
-        <Form.Item className="label" label="비밀번호" name="password">
-          <Input.Password />
+        <Form.Item
+          className="label"
+          colon={false}
+          label="비밀번호"
+          name="password"
+        >
+          <Input.Password
+            value={user.password}
+            onChange={(e) => {
+              setUser((prev) => {
+                return { ...prev, password: e.target.value };
+              });
+            }}
+          />
         </Form.Item>
       </Form>
       <ButtonBlock className="smallButton" onClick={() => setIsEdit(false)}>

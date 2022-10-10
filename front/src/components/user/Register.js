@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { PageBlock, FormBlock, TitleBlock, EmailBlock } from "./FormStyle";
@@ -28,12 +28,7 @@ function Register() {
 
   async function onFinish(values) {
     try {
-      setFormValue({
-        email: "",
-        username: "",
-        password: "",
-        checkPassword: "",
-      });
+      console.log("회원가입 성공");
       navigate("/login");
     } catch (e) {
       console.log(e);
@@ -58,7 +53,7 @@ function Register() {
             name="email"
             rules={[
               {
-                reqired: true,
+                required: true,
                 message: "이메일을 입력해 주세요!",
               },
               {

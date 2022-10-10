@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import { PageBlock, FormBlock, TitleBlock } from "./FormStyle";
@@ -7,6 +7,11 @@ import { InputBlock, ButtonBlock } from "../common/form/FormStyled";
 import { Form } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
+
+const user = {
+  email: "test@test.com",
+  password: 1234,
+};
 
 function Login() {
   const navigate = useNavigate();
@@ -22,13 +27,24 @@ function Login() {
       ...prev,
       [name]: value,
     }));
-    console.log(e.target.value);
   }
 
-  function onFinish(values) {
-    console.log(form.email, form.password, values);
-    setFormValue({ email: "", password: "" });
-    navigate("/");
+  async function onFinish(values) {
+    try {
+      if (values.email !== user.email)
+        console.log("회원가입된 이메일이 아닙니다");
+      if (values.password.toString() !== user.password.toString())
+        console.log("비밀번호가 맞지 않습니다.");
+      if (
+        values.email === user.email &&
+        values.password.toString() === user.password.toString()
+      ) {
+        console.log("로그인 성공");
+        navigate("/");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
