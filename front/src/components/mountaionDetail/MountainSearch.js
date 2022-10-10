@@ -2,6 +2,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { Button, Select, Input } from "antd";
+import { NonIconBlueBtn } from "../common/button/NonIconBtn";
 
 const { Option } = Select;
 
@@ -120,9 +121,7 @@ function MountainSearch() {
         value={search}
         autoFocus={true}
       />
-      <ButtonWrapper type="primary" onClick={onSubmit}>
-        검색
-      </ButtonWrapper>
+      <NonIconBlueBtn text={"검색"} />
     </Main>
   );
 }

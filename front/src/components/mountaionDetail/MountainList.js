@@ -1,5 +1,4 @@
 /* 국립공원 리스트 */
-import { useState } from "react";
 import styled from "styled-components";
 import MountainDetail from "./MountainDetail.js";
 
