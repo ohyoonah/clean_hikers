@@ -1,9 +1,6 @@
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Form } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
-import "antd/dist/antd.css";
+
 import {
   PageBlock,
   FormBlock,
@@ -11,6 +8,10 @@ import {
   InputBlock,
   TitleBlock,
 } from "./FormStyle";
+
+import { Form } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import "antd/dist/antd.css";
 
 function Login() {
   const navigate = useNavigate();
