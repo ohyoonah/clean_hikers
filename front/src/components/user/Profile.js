@@ -1,5 +1,5 @@
 import { ProfileBlock } from "./ProfileStyle";
-import { ButtonBlock } from "./FormStyle";
+import { ButtonBlock } from "../common/form/FormStyled";
 
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";

@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import {
-  PageBlock,
-  FormBlock,
-  ButtonBlock,
-  InputBlock,
-  TitleBlock,
-} from "./FormStyle";
+import { PageBlock, FormBlock, TitleBlock } from "./FormStyle";
+import { InputBlock, ButtonBlock } from "../common/form/FormStyled";
 
 import { Form } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";

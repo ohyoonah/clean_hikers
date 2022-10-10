@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme } from "../common/styles/palette";
 import { Button, Form, Input } from "antd";
 
 export const PageBlock = styled.div`
@@ -20,7 +21,7 @@ export const FormBlock = styled(Form)`
   flex-direction: column;
   text-align: center;
   border-radius: 40px;
-  background: #ffffffed;
+  background: rgba(255, 255, 255, 0.9);
   box-shadow: 2px 3px 5px 0px;
   padding: 1rem 0 2rem 0;
   .ant-form-item {
@@ -44,32 +45,6 @@ export const TitleBlock = styled.div`
   }
   span {
     font-size: 0.8rem;
-  }
-`;
-
-export const InputBlock = styled(Input)`
-  width: 60%;
-  height: 50px;
-  border-radius: 10px;
-  background: inherit;
-  outline: none;
-  margin-top: 1rem;
-  input {
-    background: transparent;
-  }
-`;
-
-export const ButtonBlock = styled(Button)`
-  width: 60%;
-  height: 50px;
-  display: block;
-  border: 1px solid green;
-  border-radius: 15px;
-  background: transparent;
-  margin: 1rem auto;
-  color: green;
-  &.smallButton {
-    width: 300px;
   }
 `;
 

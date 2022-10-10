@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { ProfileBlock, UploadBlock } from "./ProfileStyle";
-import { ButtonBlock } from "./FormStyle";
+import { ButtonBlock } from "../common/form/FormStyled";
 
 import { message, Form, Input } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
