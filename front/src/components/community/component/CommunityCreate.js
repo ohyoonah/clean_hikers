@@ -1,12 +1,13 @@
 import React from "react";
-import { Button, Col, DatePicker, Input, Row, Select } from "antd";
-import { FormOutlined, EnvironmentOutlined } from "@ant-design/icons";
+import { DatePicker, Input, Select } from "antd";
+import { EnvironmentOutlined } from "@ant-design/icons";
 import {
   TitleAlign,
   AllContentAlign,
   CommunityFormSecond,
 } from "../styledComponents/CommunityCreateStyled";
 import TextArea from "antd/lib/input/TextArea";
+import { RegisterGreenBtn } from "../../common/button/IconBtn";
 const { Option } = Select;
 function CommunityCreate() {
   const onChange = (e) => {
@@ -17,16 +18,8 @@ function CommunityCreate() {
       <AllContentAlign>
         <TitleAlign>
           <h1>글 작성</h1>
-          <Button
-            type="primary"
-            icon={<FormOutlined />}
-            className="community-title-button"
-            size="large"
-          >
-            등록하기
-          </Button>
         </TitleAlign>
-
+        <RegisterGreenBtn />
         <form>
           <Input placeholder="Basic usage" />
           <CommunityFormSecond>
