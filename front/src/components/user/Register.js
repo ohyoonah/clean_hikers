@@ -26,9 +26,10 @@ function Register() {
     }));
   }
 
-  async function onFinish(values) {
+  async function onFinish() {
     try {
-      console.log("회원가입 성공");
+      console.log(formValue);
+      console.log(`${formValue.username}님 환영합니다`);
       navigate("/login");
     } catch (e) {
       console.log(e);
@@ -37,13 +38,7 @@ function Register() {
 
   return (
     <PageBlock>
-      <FormBlock
-        form={form}
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-      >
+      <FormBlock form={form} onFinish={onFinish}>
         <TitleBlock>
           <h2>Sign Up</h2>
           <span>회원가입을 위해 정보를 입력해 주세요.</span>
@@ -54,24 +49,25 @@ function Register() {
             rules={[
               {
                 required: true,
-                message: "이메일을 입력해 주세요!",
+                message: "이메일을 입력해 주세요.",
               },
               {
                 pattern:
                   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                message: "이메일 형식이 올바르지 않습니다!",
+                message: "이메일 형식이 올바르지 않습니다.",
               },
             ]}
           >
             <InputBlock
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="Email"
+              name="email"
               value={formValue.email}
               onChange={onChange}
               className="registerEmail"
             />
           </Form.Item>
-          <button type="button">중복확인</button>
+          <ButtonBlock type="button">중복확인</ButtonBlock>
         </EmailBlock>
         <span className="informationText">
           비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
@@ -81,18 +77,19 @@ function Register() {
           rules={[
             {
               required: true,
-              message: "이름을 입력해 주세요!",
+              message: "이름을 입력해 주세요.",
             },
             {
               min: 2,
-              message: "이름은 두 글자 이상 입력해 주세요!",
+              message: "이름은 두 글자 이상 입력해 주세요.",
             },
-            { whitespace: true, message: "이름은 공백 없이 입력해 주세요!" },
+            { whitespace: true, message: "이름은 공백 없이 입력해 주세요." },
           ]}
         >
           <InputBlock
             prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="Username"
+            name="username"
             value={formValue.username}
             onChange={onChange}
           />
@@ -102,7 +99,13 @@ function Register() {
           rules={[
             {
               required: true,
-              message: "비밀번호를 입력해 주세요!",
+              message: "비밀번호를 입력해 주세요.",
+            },
+            {
+              pattern:
+                /^[A-Za-z0-9`~!@#\$%\^&\*\(\)\{\}\[\]\-_=\+\\|;:'"<>,\./\?]{8,16}$/,
+              message:
+                "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.",
             },
           ]}
         >
@@ -110,6 +113,7 @@ function Register() {
             prefix={<LockOutlined className="site-form-item-icon" />}
             placeholder="Password"
             type="password"
+            name="password"
             value={formValue.password}
             onChange={onChange}
           />
@@ -120,13 +124,13 @@ function Register() {
           rules={[
             {
               required: true,
-              message: "비밀번호를 입력해 주세요!",
+              message: "비밀번호를 입력해 주세요.",
             },
             ({ getFieldValue }) => ({
               validator: (_, value) =>
                 !value || getFieldValue("password") === value
                   ? Promise.resolve()
-                  : Promise.reject(new Error("비밀번호가 일치하지 않습니다!")),
+                  : Promise.reject(new Error("비밀번호가 일치하지 않습니다.")),
             }),
           ]}
         >
@@ -134,6 +138,7 @@ function Register() {
             prefix={<LockOutlined className="site-form-item-icon" />}
             placeholder="Check Password"
             type="password"
+            name="checkPassword"
             value={formValue.checkPassword}
             onChange={onChange}
           />
