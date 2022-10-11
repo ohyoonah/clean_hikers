@@ -50,7 +50,8 @@ function MainSelection() {
     }
 
     /* Color */
-    & input {
+    & input,
+    input::placeholder {
       color: ${theme.deepBlue};
     }
   `;
