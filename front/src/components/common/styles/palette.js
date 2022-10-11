@@ -2,7 +2,7 @@ import { css } from "styled-components";
 
 export const theme = {
   primary: "#9AC355",
-  naturalGreen: "89A550",
+  naturalGreen: "#89A550",
   blue: "#3A6AD4",
   deepBlue: "#304659",
   lightGrey: "#F2F2F2",
