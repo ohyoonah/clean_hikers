@@ -1,6 +1,7 @@
 import React, { createContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navigation from "./components/common/navigation/Navigation";
+import Footer from "./components/common/navigation/Footer";
 import CommunityCreatePage from "./pages/CommunityCreatePage";
 import CommunityPage from "./pages/CommunityPage";
 import LoginPage from "./pages/LoginPage";
@@ -36,6 +37,7 @@ function App() {
               <Route path="/detail" element={<MountainDetailPage />} />
               <Route path="/search" element={<MountainSearchPage />} />
             </Routes>
+            <Footer />
           </Router>
         </modeContext.Provider>
       </UserStateContext.Provider>
