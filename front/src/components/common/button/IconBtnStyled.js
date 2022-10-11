@@ -1,5 +1,6 @@
 // 버튼 styled-component 적용 파일
 import styled from "styled-components";
+
 const RegisterBtnStyled = styled.div`
   .community-title-button {
     background-color: #9ac355;

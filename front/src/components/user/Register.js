@@ -1,16 +1,12 @@
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Form } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { PageBlock, FormBlock, TitleBlock, EmailBlock } from "./FormStyle";
+import { InputBlock, ButtonBlock } from "../common/form/FormStyled";
+
+import { Form } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
-import {
-  PageBlock,
-  FormBlock,
-  ButtonBlock,
-  InputBlock,
-  TitleBlock,
-  EmailBlock,
-} from "./FormStyle";
 
 function Register() {
   const navigate = useNavigate();
@@ -22,14 +18,6 @@ function Register() {
   });
   const [form] = Form.useForm();
 
-  // const onChange = (key) => {
-  //   return (value) => {
-  //     setFormValue((prev) => ({
-  //       ...prev,
-  //       [key]: value,
-  //     }));
-  //   };
-  // };
   function onChange(e) {
     const { name, value } = e.currentTarget;
     setFormValue((prev) => ({
@@ -46,7 +34,6 @@ function Register() {
         password: "",
         checkPassword: "",
       });
-      // setFormValue(values);
       navigate("/login");
     } catch (e) {
       console.log(e);
