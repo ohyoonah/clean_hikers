@@ -1,88 +1,69 @@
 /*검색창*/
 import { useState } from "react";
 import styled from "styled-components";
-import { Button, Dropdown, Menu, Space, Select } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { Select, Input } from "antd";
+import { NonIconBlueBtn } from "../common/button/NonIconBtn";
+
 const { Option } = Select;
+
 const Main = styled.form`
-  width: fit-content;
+  /* Display & Box Model */
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr 1fr;
+  justify-content: center;
+  grid-template-columns: 1fr 1fr 2.5fr 1fr;
   grid-column-gap: 15px;
+  width: 800px;
+  padding: 15px;
   border-radius: 20px;
   margin: 0 auto;
-  padding: 15px;
+  margin-bottom: 30px;
+
+  /* Color */
   background-color: rgb(230, 230, 230);
-  justify-content: center;
+
+  /* Text */
   align-items: center;
 `;
 
-const Input = styled.input`
-  background-color: white;
+const InputWrapper = styled(Input)`
+  /* Display & Box Model */
+  height: 40px;
+  padding: 0px 20px;
   border: 0px;
   border-radius: 10px;
-  padding: 0px 20px;
-  height: 50px;
-  outline: none; /* 포커스 시 파란테두리 제거 */
-  font-size: 18px;
+
+  /* Color */
+  background-color: white;
+
+  /* Text */
+  font-size: 16px;
+
+  /* Other */
+  outline: none;
 `;
 
 const SelectWrapper = styled(Select)`
-  background-color: white;
+  /* Display & Box Model */
+  height: 40px;
+  padding: 4px 0px;
   border-radius: 10px;
-  height: 50px;
-  line-height: 50px;
-  padding: 0px;
-  padding-left: 20px;
-  padding-right: 20px;
-  outline: none; /* 포커스 시 파란테두리 제거 */
-  font-size: 16px;
-`;
 
-const ButtonWrapper = styled(Button)`
-  border: 0px;
-  border-radius: 10px;
-  height: 50px;
-  padding: 0px;
-  padding-left: 20px;
-  padding-right: 20px;
-  outline: none; /* 포커스 시 파란테두리 제거 */
-  font-size: 18px;
+  /* Color */
+  background-color: white;
 `;
 
 function MountainSearch() {
-  const [location, setLocation] = useState("위치");
-  const [level, setLevel] = useState("난이도");
+  const [location, setLocation] = useState("");
+  const [level, setLevel] = useState("");
   const [search, setSearch] = useState("");
-
-  const LOCATION = [
-    { key: "0", label: "서울" },
-    { key: "1", label: "경기" },
-    { key: "2", label: "인천" },
-    { key: "3", label: "강원" },
-    { key: "4", label: "충북" },
-    { key: "5", label: "충남" },
-    { key: "6", label: "경북" },
-    { key: "7", label: "경남" },
-    { key: "8", label: "전북" },
-    { key: "9", label: "전남" },
-    { key: "10", label: "부산" },
-    { key: "11", label: "제주" },
-  ];
-  const LEVEL = [
-    { key: "0", label: "상" },
-    { key: "1", label: "중" },
-    { key: "2", label: "하" },
-  ];
 
   const onSubmit = (e) => {
     e.preventDefault(); // 엔터 press 시 자동 submit 막는 기능
+    setLocation(""); // submit 시 위치 드롭다운 초기화
+    setLevel(""); // submit 시 난이도 드롭다운 초기화
     setSearch(""); // submit 시 검색 창 글자 초기화
+    console.log(location, level);
     // 추후 백엔드로 post하는 코드 삽입구역
-  };
-
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
   };
 
   const onChange = (e) => {
@@ -93,7 +74,11 @@ function MountainSearch() {
   return (
     <Main onSubmit={onSubmit}>
       {/* 위치선택 셀렉트 */}
-      <SelectWrapper defaultValue="지역" onChange={handleChange}>
+      <SelectWrapper
+        bordered={false}
+        defaultValue="지역"
+        onChange={(e) => setLocation(e)}
+      >
         <Option value="0"> 서울</Option>
         <Option value="1"> 경기</Option>
         <Option value="2"> 인천</Option>
@@ -109,20 +94,20 @@ function MountainSearch() {
       </SelectWrapper>
 
       {/* 난이도선택 셀렉트 */}
-      <SelectWrapper defaultValue="난이도" onChange={handleChange}>
+      <SelectWrapper bordered={false} defaultValue="난이도" onChange={(e) => setLevel(e)}>
         <Option value="high">상</Option>
         <Option value="middle">중</Option>
         <Option value="low">하</Option>
       </SelectWrapper>
 
-      <Input
+      <InputWrapper
         type="text"
         onChange={onChange}
         placeholder="산 이름을 입력해주세요..."
         value={search}
         autoFocus={true}
       />
-      <ButtonWrapper type="primary">검색</ButtonWrapper>
+      <NonIconBlueBtn text={"검색"} />
     </Main>
   );
 }
