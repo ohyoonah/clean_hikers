@@ -3,11 +3,14 @@ import { v4 } from "uuid";
 
 class postService {
     static async addPost({
-        id,
+        user_id,
         nickname,
         title,
         description,
         date,
+        person,
+        personnel,
+        station,
         header,
         location,
     }) {
@@ -15,11 +18,14 @@ class postService {
 
         const newPost = {
             post_id,
-            id,
+            user_id,
             nickname,
             title,
             description,
             date,
+            person,
+            personnel,
+            station,
             header,
             location,
         };
@@ -31,8 +37,8 @@ class postService {
         return createdNewPost;
     }
 
-    static async getPosts({ id }) {
-        const posts = await Post.findById({ id });
+    static async getPosts({ user_id }) {
+        const posts = await Post.findByUserId({ user_id });
         return posts;
     }
 
@@ -65,6 +71,18 @@ class postService {
         if (toUpdate.date) {
             const fieldToUpdate = "date";
             const newValue = toUpdate.date;
+            post = await Post.update({ post_id, fieldToUpdate, newValue });
+        }
+
+        if (toUpdate.personnel) {
+            const fieldToUpdate = "personnel";
+            const newValue = toUpdate.personnel;
+            post = await Post.update({ post_id, fieldToUpdate, newValue });
+        }
+
+        if (toUpdate.station) {
+            const fieldToUpdate = "station";
+            const newValue = toUpdate.station;
             post = await Post.update({ post_id, fieldToUpdate, newValue });
         }
 

@@ -4,10 +4,10 @@ function errorMiddleware(error, req, res, next) {
     res.status(400).send(error.message);
 }
 
-const ifErrorMessage = (target) => {
+function ErrorMessage(target) {
     if (target.errorMessage) {
         throw new Error(target.errorMessage);
     }
-};
+}
 
-export { errorMiddleware, ifErrorMessage };
+export { errorMiddleware, ErrorMessage };

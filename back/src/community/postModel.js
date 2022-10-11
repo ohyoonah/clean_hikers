@@ -1,4 +1,4 @@
-import { PostModel } from "../schema/post.js";
+import { PostModel } from "./postSchema.js";
 
 class Post {
     static async create({ newPost }) {
@@ -6,8 +6,8 @@ class Post {
         return createdNewPost;
     }
 
-    static async findById({ id }) {
-        const user = await PostModel.find({ id: id });
+    static async findByUserId({ user_id }) {
+        const user = await PostModel.find({ user_id: user_id });
         return user;
     }
 

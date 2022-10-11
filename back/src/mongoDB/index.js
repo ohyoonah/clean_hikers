@@ -1,6 +1,6 @@
 import { connect } from "mongoose";
 // import { User } from "./model/user.js";
-import { Post } from "./model/post.js";
+import { Post } from "../community/postModel.js";
 import * as dotenv from "dotenv";
 dotenv.config();
 
