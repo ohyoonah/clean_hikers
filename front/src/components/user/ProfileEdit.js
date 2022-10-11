@@ -9,6 +9,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 function ProfileEdit({ setIsEdit, user, setUser }) {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
+  const [form] = Form.useForm();
 
   function getBase64(img, callback) {
     const reader = new FileReader();
@@ -53,6 +54,10 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
     </div>
   );
 
+  function onFinish() {
+    setIsEdit(false);
+  }
+
   return (
     <ProfileBlock>
       <h2>프로필 수정</h2>
@@ -66,12 +71,19 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
       >
         {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
       </UploadBlock>
-      <Form initialValues={user}>
+      <Form form={form} initialValues={user} onFinish={onFinish}>
         <Form.Item
           className="label"
           colon={false}
           label="닉네임"
           name="username"
+          rules={[
+            {
+              min: 2,
+              message: "이름은 두 글자 이상 입력해 주세요.",
+            },
+            { whitespace: true, message: "이름은 공백 없이 입력해 주세요." },
+          ]}
         >
           <Input
             value={user.username}
@@ -87,6 +99,14 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
           colon={false}
           label="비밀번호"
           name="password"
+          rules={[
+            {
+              pattern:
+                /^[A-Za-z0-9`~!@#\$%\^&\*\(\)\{\}\[\]\-_=\+\\|;:'"<>,\./\?]{8,16}$/,
+              message:
+                "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.",
+            },
+          ]}
         >
           <Input.Password
             value={user.password}
@@ -97,10 +117,34 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
             }}
           />
         </Form.Item>
+        <Form.Item
+          className="label"
+          colon={false}
+          label="비밀번호 확인"
+          name="checkPassword"
+          dependencies={["password"]}
+          rules={[
+            ({ getFieldValue }) => ({
+              validator: (_, value) =>
+                !value || getFieldValue("password") === value
+                  ? Promise.resolve()
+                  : Promise.reject(new Error("비밀번호가 일치하지 않습니다.")),
+            }),
+          ]}
+        >
+          <Input.Password
+            value={user.checkPassword}
+            onChange={(e) => {
+              setUser((prev) => {
+                return { ...prev, checkPassword: e.target.value };
+              });
+            }}
+          />
+        </Form.Item>
+        <ButtonBlock className="smallButton" htmlType="submit">
+          저장
+        </ButtonBlock>
       </Form>
-      <ButtonBlock className="smallButton" onClick={() => setIsEdit(false)}>
-        저장
-      </ButtonBlock>
     </ProfileBlock>
   );
 }

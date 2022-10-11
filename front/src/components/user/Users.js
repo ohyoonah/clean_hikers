@@ -9,7 +9,8 @@ import { TabBlock } from "./TabStyle";
 function Users() {
   const [user, setUser] = useState({
     username: "ohyoonah",
-    password: 12345,
+    password: 123456789,
+    checkPassword: 123456789,
   });
 
   const [isEdit, setIsEdit] = useState(false);

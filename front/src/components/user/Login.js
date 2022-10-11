@@ -10,7 +10,7 @@ import "antd/dist/antd.css";
 
 const user = {
   email: "test@test.com",
-  password: 1234,
+  password: 123456789,
 };
 
 const REGISTER = "/register";
@@ -33,15 +33,14 @@ function Login() {
 
   async function onFinish() {
     try {
-      if (formValue.email !== user.email)
-        console.log("회원가입된 이메일이 아닙니다");
+      if (formValue.email !== user.email) alert("가입되지 않은 이메일 입니다.");
       if (formValue.password.toString() !== user.password.toString())
-        console.log("비밀번호가 맞지 않습니다.");
+        alert("비밀번호가 맞지 않습니다.");
       if (
         formValue.email === user.email &&
         formValue.password.toString() === user.password.toString()
       ) {
-        console.log("로그인 성공");
+        alert("로그인 성공");
         navigate("/");
       }
     } catch (e) {

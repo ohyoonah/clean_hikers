@@ -21,13 +21,15 @@ export const ProfileBlock = styled.div`
   .ant-form-item {
     width: 300px;
     margin: 1.5rem auto;
-    &:last-child {
-      margin-bottom: 3rem;
-    }
     label {
-      width: 65px;
+      display: flex;
+      justify-content: end;
+      width: 100px;
       font-weight: 700;
     }
+  }
+  .smallButton {
+    margin-top: 3rem;
   }
 `;
 
