@@ -10,7 +10,7 @@ const Main = styled.form`
   /* Display & Box Model */
   display: grid;
   justify-content: center;
-  grid-template-columns: 1fr 1fr 2.5fr 1fr;
+  grid-template-columns: 1fr 1fr 3fr 1fr;
   grid-column-gap: 15px;
   width: 800px;
   padding: 15px;

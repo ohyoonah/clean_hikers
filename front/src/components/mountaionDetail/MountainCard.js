@@ -30,6 +30,12 @@ const Display = styled.div`
 const Card = styled.div`
   /* Other */
   cursor: pointer;
+  transition: 0.2s;
+
+  :hover {
+    transform: scale(1.1);
+    transition: 0.2s;
+  }
 `;
 
 const H1 = styled.h1`
