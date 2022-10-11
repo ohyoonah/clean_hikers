@@ -9,6 +9,8 @@ import MountainDetailPage from "./pages/MountainDetailPage";
 import MountainSearchPage from "./pages/MountainSearchPage";
 import RegisterPage from "./pages/RegisterPage";
 import UserPage from "./pages/UserPage";
+import "./App.css";
+import "./fonts/font.css";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
