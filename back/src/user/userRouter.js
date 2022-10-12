@@ -30,7 +30,7 @@ userRouter.post('/login', async function (req,res,next){
 }   
 })
 
-userRouter.post('/userPage',loginRequired,async function (req,res,next){
+userRouter.get('/userPage',loginRequired,async function (req,res,next){
     try{
         
         const id = req.loginedUser.id
@@ -43,6 +43,6 @@ userRouter.post('/userPage',loginRequired,async function (req,res,next){
 })
 
 userRouter.put('/fixuser',loginRequired, async function(req,res,next){
-    
+
 })
 export  {userRouter} 
