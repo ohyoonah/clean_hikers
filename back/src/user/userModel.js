@@ -14,6 +14,12 @@ class   User {
         console.log("findUser 결과",findUser)
         return findUser
     }
+
+    static async findByID(dfff){
+        const findUser = await UserModel.findOne({id : dfff})
+        console.log('findById결과 : ',findUser)
+        return findUser
+    }
 }
 
 export  {User}

@@ -8,8 +8,7 @@ class userService{
         const user = await User.findByEmail({email})
         console.log(user)
         if(user) {
-            const errorMessage = "이 이메일은 현재 사용중입니다"
-            return {errorMessage}
+            throw new Error('')
         }
 
         const hashedPassword = await bcrypt.hash(password,10)
@@ -25,20 +24,46 @@ class userService{
 
 
     static async login({email,password}){
-        const userEmail = await User.findByEmail({email})
+        try{const userEmail = await User.findByEmail({email})
+        console.log(userEmail)
+        console.log(!null)
         if(!userEmail){
-            const errorMessage = "해당 유저는 존재하지 않습니다"
-            return errorMessage
+            throw new Error('해당 유저는 존재하지 않습니다')
         }
         const correctPassword = userEmail.password
         const isPasswordRight = bcrypt.compare(password, correctPassword)
         if(!isPasswordRight){
-            const errorMessage = "비밀번호가 일치하지 않습니다"
-            return errorMessage
+            throw new Error('비밀번호가 틀렸습니다')
         }
+        //따로 선언을 안했는데 .env파일이 들어가는 이유
+        
         const secretKey = process.env.JWT_SECRET_KEY 
-        console.log(secretKey)
-        return 'hi'
+        
+        const result = jwt.sign({
+            id : userEmail.id
+        },secretKey,{
+            expiresIn: '30m'
+        })
+
+        return result
+    }
+        catch(error){
+            //error가 발생할 부분은 없는거 같지만 에러는 만약을 위해 하는 거니까 설치
+            //
+            throw error
+        }
+    }
+
+    static async findCurrentUserData(userId){
+        try{
+            const currentUser = await User.findByID(userId)
+            if(!currentUser){
+                throw new Error('해당 유저는 존재하지 않습니다2')
+            }
+            return currentUser
+        }catch(error){
+            throw error
+        }
     }
 
 }
