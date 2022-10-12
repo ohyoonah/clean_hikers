@@ -1,50 +1,77 @@
 import { Menu, Card } from "antd";
 import React, { useState } from "react";
-import { CommunityNavStyled } from "../styledComponents/CommunityListStyled";
+import { useParams } from "react-router-dom";
+import CommunityNavStyled from "../styledComponents/CommunityNav";
+import { CommunityItem } from "./CommunityList";
 
 const tabList = [
   {
-    key: "전체",
+    key: "allPost",
     tab: "전체",
   },
   {
-    key: "클린후기",
+    key: "cleanReview",
     tab: "클린후기",
   },
   {
-    key: "모집중",
+    key: "recruting",
     tab: "모집중",
   },
   {
-    key: "모집완료",
+    key: "recruted",
     tab: "모집완료",
   },
 ];
-const contentList = {
-  전체: <p></p>,
-  클린후기: <p>content2</p>,
-  모집중: <p>content1</p>,
-  모집완료: <p>content2</p>,
-};
 
-function CommunityNav() {
-  const [activeTabKey1, setActiveTabKey1] = useState("tab1");
+function CommunityNav({ posts, handleRemove, setViewPost }) {
+  const [activeTabKey1, setActiveTabKey1] = useState("allPost");
+
+  const contentList = {
+    allPost: (
+      <p>
+        {posts.map((post) => (
+          <CommunityItem
+            key={post.id}
+            posts={posts}
+            post={post}
+            setViewPost={setViewPost}
+          />
+        ))}
+      </p>
+    ),
+    cleanReview: (
+      <p>
+        {posts.map((post) => (
+          <CommunityItem
+            key={post.id}
+            post={post}
+            handleRemove={handleRemove}
+          />
+        ))}
+      </p>
+    ),
+    recruting: <p>content1</p>,
+    recruted: <p>content2</p>,
+  };
+
   const onTab1Change = (key) => {
     setActiveTabKey1(key);
   };
   return (
-    <Card
-      style={{
-        width: "100%",
-      }}
-      tabList={tabList}
-      activeTabKey={activeTabKey1}
-      onTabChange={(key) => {
-        onTab1Change(key);
-      }}
-    >
-      {contentList[activeTabKey1]}
-    </Card>
+    <CommunityNavStyled>
+      <Card
+        style={{
+          width: "100%",
+        }}
+        tabList={tabList}
+        activeTabKey={activeTabKey1}
+        onTabChange={(key) => {
+          onTab1Change(key);
+        }}
+      >
+        {contentList[activeTabKey1]}
+      </Card>
+    </CommunityNavStyled>
   );
 }
 

@@ -1,42 +1,55 @@
-import { Pagination } from "antd";
-import React from "react";
-import { Link } from "react-router-dom";
+import { Button, Card, Pagination } from "antd";
+import React, { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { RecruitBlueBtn } from "../../common/button/IconBtn";
 import {
   RecruitBlueBtnAlign,
   CommunityPagenationStyled,
   CommunityListAlign,
 } from "../styledComponents/CommunityListStyled";
+import CommunityDetail from "./CommunityDetail";
 import CommunityNav from "./CommunityNav";
 
-function CommunityItem({ posts, post, setPosts }) {
+function CommunityItem({ post, handleRemove, findItem }) {
+  const OnRemove = () => {
+    handleRemove(post.id);
+  };
   return (
     <>
-      <h3>{post.title}</h3>
-      <p>{post.location}</p>
+      <Card>
+        <Link to={`/CommunityDetail/${post.no}`}>
+          <h3>
+            <Button>{post.station}</Button>
+            {post.title}
+          </h3>
+          <p>{post.location}</p>
+          <p>{post.discription}</p>
+        </Link>
+      </Card>
     </>
   );
 }
 
-function CommunityList({ posts, setPosts }) {
+function CommunityList({ posts, handleRemove }) {
+  const [viewPost, setViewPost] = useState(false);
   return (
     <div>
       <RecruitBlueBtnAlign>
-        <Link to="communityCreate">
+        <Link to="/communityCreate">
           <RecruitBlueBtn />
         </Link>
       </RecruitBlueBtnAlign>
-      <CommunityNav />
+      {viewPost ? (
+        <CommunityDetail posts={posts} />
+      ) : (
+        <CommunityNav
+          posts={posts}
+          handleRemove={handleRemove}
+          viewPost={viewPost}
+          setViewPost={setViewPost}
+        />
+      )}
       <CommunityListAlign>
-        {posts.map((post) => (
-          <CommunityItem
-            key={post.id}
-            posts={posts}
-            post={post}
-            setPosts={setPosts}
-          />
-        ))}
-
         <CommunityPagenationStyled>
           <Pagination size="small" total={50} />
         </CommunityPagenationStyled>
@@ -45,4 +58,4 @@ function CommunityList({ posts, setPosts }) {
   );
 }
 
-export default CommunityList;
+export { CommunityList, CommunityItem };

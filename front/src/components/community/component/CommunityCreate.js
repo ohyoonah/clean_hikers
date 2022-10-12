@@ -8,7 +8,6 @@ import {
 } from "../styledComponents/CommunityCreateStyled";
 import TextArea from "antd/lib/input/TextArea";
 import { RegisterGreenBtn } from "../../common/button/IconBtn";
-import { Form } from "react-router-dom";
 
 const { Option } = Select;
 

@@ -2,6 +2,7 @@ import React, { createContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navigation from "./components/common/navigation/Navigation";
 import CommunityCreatePage from "./pages/CommunityCreatePage";
+import CommunityDetailPage from "./pages/CommunityDetailPage";
 import CommunityPage from "./pages/CommunityPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
@@ -25,8 +26,12 @@ function App() {
               <Route path="/" exact element={<MainPage />} />
               <Route path="/community" element={<CommunityPage />} />
               <Route
-                path="community/communityCreate"
+                path="/communityCreate"
                 element={<CommunityCreatePage />}
+              />
+              <Route
+                path="/communityDetail/:no"
+                element={<CommunityDetailPage />}
               />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
