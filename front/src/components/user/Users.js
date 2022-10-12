@@ -8,9 +8,11 @@ import { TabBlock } from "./TabStyle";
 
 function Users() {
   const [user, setUser] = useState({
-    username: "ohyoonah",
+    nickname: "ohyoonah",
     password: 123456789,
     checkPassword: 123456789,
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/e/e9/Felis_silvestris_silvestris_small_gradual_decrease_of_quality.png",
   });
 
   const [isEdit, setIsEdit] = useState(false);

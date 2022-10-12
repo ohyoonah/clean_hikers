@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme } from "../common/styles/palette";
 import { Upload } from "antd";
 
 export const ProfileBlock = styled.div`
@@ -7,8 +8,24 @@ export const ProfileBlock = styled.div`
   h2 {
     margin: 2rem 0;
   }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+  }
   .ant-upload {
     border-radius: 50%;
+    overflow: hidden;
+    img {
+      opacity: 0.8;
+    }
+  }
+  .delete {
+    color: ${theme.mainBlue};
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    cursor: pointer;
   }
   .textBlcok {
     font-size: 1rem;
@@ -30,6 +47,7 @@ export const ProfileBlock = styled.div`
   }
   .smallButton {
     margin-top: 3rem;
+    margin-bottom: 5rem;
   }
 `;
 

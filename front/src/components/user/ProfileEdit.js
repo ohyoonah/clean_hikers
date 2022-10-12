@@ -8,7 +8,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 function ProfileEdit({ setIsEdit, user, setUser }) {
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState();
+  const [imageUrl, setImageUrl] = useState(user.image);
   const [form] = Form.useForm();
 
   function getBase64(img, callback) {
@@ -23,13 +23,11 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
     if (!isJpgOrPng) {
       message.error("JPG/PNG 파일만 업로드 가능합니다!");
     }
-
     const isLt2M = file.size / 1024 / 1024 < 2;
 
     if (!isLt2M) {
       message.error("2MB 이하의 파일만 업로드 가능합니다!");
     }
-
     return isJpgOrPng && isLt2M;
   }
 
@@ -43,16 +41,16 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
       getBase64(info.file.originFileObj, (url) => {
         setLoading(false);
         setImageUrl(url);
+        setUser({ ...user, image: url });
+        console.log(user);
       });
     }
   }
 
-  const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div>Upload</div>
-    </div>
-  );
+  function onDelete() {
+    setImageUrl(null);
+    setUser({ ...user, image: null });
+  }
 
   function onFinish() {
     setIsEdit(false);
@@ -61,22 +59,33 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
   return (
     <ProfileBlock>
       <h2>프로필 수정</h2>
-      <UploadBlock
-        name="avatar"
-        listType="picture-card"
-        showUploadList={false}
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        beforeUpload={beforeUpload}
-        onChange={onChangeImage}
-      >
-        {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
-      </UploadBlock>
       <Form form={form} initialValues={user} onFinish={onFinish}>
+        <UploadBlock
+          name="image"
+          listType="picture-card"
+          showUploadList={false}
+          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          beforeUpload={beforeUpload}
+          onChange={onChangeImage}
+        >
+          {imageUrl ? (
+            <>
+              <img src={imageUrl} alt="profile_image" />
+            </>
+          ) : (
+            <>{loading ? <LoadingOutlined /> : <PlusOutlined />}</>
+          )}
+        </UploadBlock>
+        {imageUrl && (
+          <button type="button" className="delete" onClick={onDelete}>
+            기본이미지로 변경
+          </button>
+        )}
         <Form.Item
           className="label"
           colon={false}
           label="닉네임"
-          name="username"
+          name="nickname"
           rules={[
             {
               min: 2,
@@ -86,10 +95,10 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
           ]}
         >
           <Input
-            value={user.username}
+            value={user.nickname}
             onChange={(e) => {
               setUser((prev) => {
-                return { ...prev, username: e.target.value };
+                return { ...prev, nickname: e.target.value };
               });
             }}
           />
