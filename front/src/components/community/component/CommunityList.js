@@ -4,44 +4,21 @@ import { Link } from "react-router-dom";
 import { RecruitBlueBtn } from "../../common/button/IconBtn";
 import {
   RecruitBlueBtnAlign,
-  CommunityNavStyled,
-  CommunutyPaginationStyled,
   CommunityPagenationStyled,
   CommunityListAlign,
 } from "../styledComponents/CommunityListStyled";
-import { Menu } from "antd";
-import { SettingOutlined } from "@ant-design/icons";
+import CommunityNav from "./CommunityNav";
 
-function CommunityNav() {
-  return (
-    <CommunityNavStyled>
-      <Menu mode="horizontal" defaultSelectedKeys={["mail"]}>
-        <Menu.Item key="mail" className="community-navigate">
-          전체
-        </Menu.Item>
-        <Menu.Item key="clean" className="community-navigate">
-          클린후기
-        </Menu.Item>
-        <Menu.Item key="recruit" className="community-navigate">
-          모집중
-        </Menu.Item>
-        <Menu.Item key="finRecruit" className="community-navigate">
-          모집완료
-        </Menu.Item>
-      </Menu>
-    </CommunityNavStyled>
-  );
-}
-
-function CommunityItem() {
+function CommunityItem({ posts, post, setPosts }) {
   return (
     <>
-      <h3>ㅇㅇㅇ</h3>
+      <h3>{post.title}</h3>
+      <p>{post.location}</p>
     </>
   );
 }
 
-function CommunityList() {
+function CommunityList({ posts, setPosts }) {
   return (
     <div>
       <RecruitBlueBtnAlign>
@@ -49,9 +26,17 @@ function CommunityList() {
           <RecruitBlueBtn />
         </Link>
       </RecruitBlueBtnAlign>
+      <CommunityNav />
       <CommunityListAlign>
-        <CommunityNav />
-        <CommunityItem />
+        {posts.map((post) => (
+          <CommunityItem
+            key={post.id}
+            posts={posts}
+            post={post}
+            setPosts={setPosts}
+          />
+        ))}
+
         <CommunityPagenationStyled>
           <Pagination size="small" total={50} />
         </CommunityPagenationStyled>

@@ -11,6 +11,7 @@ import { RegisterGreenBtn } from "../../common/button/IconBtn";
 import { Form } from "react-router-dom";
 
 const { Option } = Select;
+
 function CommunityCreate() {
   const [componentSize, setComponentSize] = useState("default");
 
@@ -28,22 +29,22 @@ function CommunityCreate() {
           <h1>글 작성</h1>
         </TitleAlign>
         <RegisterGreenBtn />
-        <Form>
+        <form>
           <Input placeholder="Basic usage" />
           <CommunityFormSecond>
             <DatePicker />
-            <Form.Item label="Select">
-              <Select>
-                <Select.Option value="demo">Demo</Select.Option>
-              </Select>
-            </Form.Item>
+
+            <Select>
+              <Select.Option value="demo">Demo</Select.Option>
+            </Select>
+
             <Select defaultValue="Option1">
               <Option value="Option1">말머리 선택</Option>
               <Option value="Option2">Option2</Option>
             </Select>
           </CommunityFormSecond>
           <TextArea showCount maxLength={500} onChange={onChange} />
-        </Form>
+        </form>
       </AllContentAlign>
     </>
   );
