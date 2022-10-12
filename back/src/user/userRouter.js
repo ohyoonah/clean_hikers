@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { userService } from './userService.js'
+import { loginRequired } from '../middlewares/loginRequired.js'
 
 const userRouter = Router()
 
@@ -18,8 +19,30 @@ userRouter.post('/register', async function (req,res,next){
 
 
 userRouter.post('/login', async function (req,res,next){
-    const email = req.body.email
+    try{const email = req.body.email
     const password = req.body.password
+
+    const login = await userService.login({email, password})
+
+    res.status(201).json({jwt : login})
+}catch(error){
+    next(error)
+}   
+})
+
+userRouter.get('/userPage',loginRequired,async function (req,res,next){
+    try{
+        
+        const id = req.loginedUser.id
+        const currentUser = await userService.findCurrentUserData(id)
+        res.status(201).json(currentUser)
+    }
+    catch(error){
+        next(error)
+    }
+})
+
+userRouter.put('/fixuser',loginRequired, async function(req,res,next){
 
 })
 export  {userRouter} 
