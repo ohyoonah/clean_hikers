@@ -30,7 +30,7 @@ function App() {
 
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
 
-  const fetchCurrentUser = async () => {
+  async function fetchCurrentUser() {
     try {
       const res = await api.get("user");
       const currentUser = res.data;
@@ -43,7 +43,7 @@ function App() {
       console.log("로그아웃 상태");
     }
     setIsFetchCompleted(true);
-  };
+  }
 
   useEffect(() => {
     fetchCurrentUser();
