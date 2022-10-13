@@ -110,6 +110,16 @@ class userService{
             throw error
         }
     }
+
+
+    // static async createImage(userID, imageString){
+    //     try{
+    //         const create
+    //     }
+    //     catch(error){
+    //         throw error
+    //     }
+    // }
 }
 
 export  {userService}

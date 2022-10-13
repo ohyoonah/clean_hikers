@@ -1,4 +1,4 @@
-import { UserModel } from './userSchema.js';
+import { UserModel } from '../schema/userSchema.js';
 
 class   User {
     //추후 해당하는 기능 추가 예정
