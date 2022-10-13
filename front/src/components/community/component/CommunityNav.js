@@ -31,7 +31,7 @@ function CommunityNav({ posts, handleRemove, setViewPost }) {
       <p>
         {posts.map((post) => (
           <CommunityItem
-            key={post.id}
+            key={post.no}
             posts={posts}
             post={post}
             setViewPost={setViewPost}
@@ -43,7 +43,7 @@ function CommunityNav({ posts, handleRemove, setViewPost }) {
       <p>
         {posts.map((post) => (
           <CommunityItem
-            key={post.id}
+            key={post.no}
             post={post}
             handleRemove={handleRemove}
           />

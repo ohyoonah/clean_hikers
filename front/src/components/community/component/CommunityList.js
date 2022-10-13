@@ -1,6 +1,6 @@
 import { Button, Card, Pagination } from "antd";
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { RecruitBlueBtn } from "../../common/button/IconBtn";
 import {
   RecruitBlueBtnAlign,
@@ -10,19 +10,19 @@ import {
 import CommunityDetail from "./CommunityDetail";
 import CommunityNav from "./CommunityNav";
 
-function CommunityItem({ post, handleRemove, findItem }) {
+function CommunityItem({ post, handleRemove }) {
   const OnRemove = () => {
-    handleRemove(post.id);
+    handleRemove(post.no);
   };
   return (
     <>
       <Card>
-        <Link to={`/CommunityDetail/${post.no}`}>
+        <Link to={`/communityDetail/${post.no}`}>
           <h3>
-            <Button>{post.station}</Button>
+            <Button>{post.state}</Button>
             {post.title}
           </h3>
-          <p>{post.location}</p>
+          <p>지역 : {post.location}</p>
           <p>{post.discription}</p>
         </Link>
       </Card>
@@ -30,12 +30,12 @@ function CommunityItem({ post, handleRemove, findItem }) {
   );
 }
 
-function CommunityList({ posts, handleRemove }) {
+function CommunityList({ posts, handleRemove, tap, setTap }) {
   const [viewPost, setViewPost] = useState(false);
   return (
     <div>
       <RecruitBlueBtnAlign>
-        <Link to="/communityCreate">
+        <Link to="communityCreate">
           <RecruitBlueBtn />
         </Link>
       </RecruitBlueBtnAlign>
@@ -47,6 +47,8 @@ function CommunityList({ posts, handleRemove }) {
           handleRemove={handleRemove}
           viewPost={viewPost}
           setViewPost={setViewPost}
+          tap={tap}
+          setTap={setTap}
         />
       )}
       <CommunityListAlign>
