@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { DispatchContext } from "../../App";
+import * as api from "../../api/api";
+import { ROUTES } from "../../enum/routes";
 
 import { PageBlock, FormBlock, TitleBlock } from "./FormStyle";
 import { InputBlock, ButtonBlock } from "../common/form/FormStyled";
@@ -8,15 +11,9 @@ import { Form } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 
-const user = {
-  email: "test@test.com",
-  password: 123456789,
-};
-
-const REGISTER = "/register";
-
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useContext(DispatchContext);
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -33,18 +30,19 @@ function Login() {
 
   async function onFinish() {
     try {
-      if (formValue.email !== user.email) alert("가입되지 않은 이메일 입니다.");
-      if (formValue.password.toString() !== user.password.toString())
-        alert("비밀번호가 맞지 않습니다.");
-      if (
-        formValue.email === user.email &&
-        formValue.password.toString() === user.password.toString()
-      ) {
-        alert("로그인 성공");
-        navigate("/");
-      }
+      const res = await api.post("user/login", {
+        ...formValue,
+      });
+      const user = res.data;
+      const jwtToken = user.jwt;
+      sessionStorage.setItem("userToken", jwtToken);
+      dispatch({
+        type: "LOGGIN_SUCCESS",
+        payload: user,
+      });
+      navigate(ROUTES.HOME);
     } catch (e) {
-      console.log(e);
+      console.log("로그인 실패", e);
     }
   }
 
@@ -83,6 +81,12 @@ function Login() {
               required: true,
               message: "비밀번호를 입력해 주세요!",
             },
+            {
+              pattern:
+                /^[A-Za-z0-9`~!@#\$%\^&\*\(\)\{\}\[\]\-_=\+\\|;:'"<>,\./\?]{8,16}$/,
+              message:
+                "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.",
+            },
           ]}
         >
           <InputBlock
@@ -100,7 +104,7 @@ function Login() {
           </ButtonBlock>
           <div className="toRegister">
             아직 회원이 아니신가요?
-            <Link to={REGISTER}>회원가입</Link>
+            <Link to={ROUTES.USER.REGISTER}>회원가입</Link>
           </div>
         </Form.Item>
       </FormBlock>

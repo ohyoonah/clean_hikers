@@ -29,11 +29,7 @@ function Users() {
     );
   }
 
-  return (
-    <>
-      <TabBlock items={items} />
-    </>
-  );
+  return <TabBlock items={items} />;
 }
 
 export default Users;

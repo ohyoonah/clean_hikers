@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import * as api from "../../api/api";
+import { ROUTES } from "../../enum/routes";
 
 import { PageBlock, FormBlock, TitleBlock, EmailBlock } from "./FormStyle";
 import { InputBlock, ButtonBlock } from "../common/form/FormStyled";
@@ -12,10 +14,10 @@ function Register() {
   const navigate = useNavigate();
   const [formValue, setFormValue] = useState({
     email: "",
-    username: "",
+    nickname: "",
     password: "",
-    checkPassword: "",
   });
+  const [checkPassword, setCheckPassword] = useState("");
   const [form] = Form.useForm();
 
   function onChange(e) {
@@ -26,11 +28,17 @@ function Register() {
     }));
   }
 
+  function handleChange(e) {
+    setCheckPassword(e.target.value);
+  }
+
   async function onFinish() {
     try {
-      console.log(formValue);
-      console.log(`${formValue.username}님 환영합니다`);
-      navigate("/login");
+      const res = await api.post("user/register", {
+        ...formValue,
+      });
+      alert(`${res.data.nickname}님 환영합니다`);
+      navigate(ROUTES.USER.LOGIN);
     } catch (e) {
       console.log(e);
     }
@@ -73,24 +81,24 @@ function Register() {
           비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
         </span>
         <Form.Item
-          name="username"
+          name="nickname"
           rules={[
             {
               required: true,
-              message: "이름을 입력해 주세요.",
+              message: "닉네임을 입력해 주세요.",
             },
             {
               min: 2,
-              message: "이름은 두 글자 이상 입력해 주세요.",
+              message: "닉네임은 두 글자 이상 입력해 주세요.",
             },
-            { whitespace: true, message: "이름은 공백 없이 입력해 주세요." },
+            { whitespace: true, message: "닉네임은 공백 없이 입력해 주세요." },
           ]}
         >
           <InputBlock
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Username"
-            name="username"
-            value={formValue.username}
+            placeholder="Nickname"
+            name="nickname"
+            value={formValue.nickname}
             onChange={onChange}
           />
         </Form.Item>
@@ -139,8 +147,8 @@ function Register() {
             placeholder="Check Password"
             type="password"
             name="checkPassword"
-            value={formValue.checkPassword}
-            onChange={onChange}
+            value={checkPassword}
+            onChange={handleChange}
           />
         </Form.Item>
         <ButtonBlock htmlType="submit">회원가입</ButtonBlock>
