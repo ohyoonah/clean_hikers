@@ -11,6 +11,7 @@ import MountainDetailPage from "./pages/MountainDetailPage";
 import MountainSearchPage from "./pages/MountainSearchPage";
 import RegisterPage from "./pages/RegisterPage";
 import UserPage from "./pages/UserPage";
+import Loading from "./components/common/loading/Loading";
 import { loginReducer } from "./reducer";
 import { ROUTES } from "./enum/routes";
 
@@ -32,14 +33,15 @@ function App() {
 
   async function fetchCurrentUser() {
     try {
-      const res = await api.get("user");
-      const currentUser = res.data;
-      dispatch({
-        type: "LOGIN_SUCCESS",
-        payload: currentUser,
+      await api.get("user/userPage").then((res) => {
+        const currentUser = res.data;
+        dispatch({
+          type: "LOGIN_SUCCESS",
+          payload: currentUser,
+        });
+        console.log("로그인 상태");
       });
-      console.log("로그인 상태");
-    } catch {
+    } catch (e) {
       console.log("로그아웃 상태");
     }
     setIsFetchCompleted(true);
@@ -50,7 +52,7 @@ function App() {
   }, []);
 
   if (!isFetchCompleted) {
-    return "Loading..";
+    return <Loading />;
   }
 
   return (
