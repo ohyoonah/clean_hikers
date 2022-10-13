@@ -1,26 +1,19 @@
-import React, { useRef } from "react";
+import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import { theme } from "../styles/palette";
 import { ROUTES } from "../../../enum/routes";
-// import { UserStateContext, DispatchContext } from "../App";
 
 function Navigation() {
   const { Header } = Layout;
 
-  //   const userState = useContext(UserStateContext);
-  //   const dispatch = useContext(DispatchContext);
-
-  //   const isLogin = !!userState.user;
-  const homeMenu = useRef(null);
+  const location = useLocation();
 
   const HeaderLight = styled(Header)`
     background-color: white;
     border-bottom: 1px solid #f0f0f0;
   `;
-
-  const isLogin = false;
 
   const NavMenu = styled(Menu)`
     display: flex;
@@ -53,51 +46,39 @@ function Navigation() {
     padding: 4px 10px 8px 0;
   `;
 
-  const NavLink = styled(Link)`
-    box-sizing: border-box;
-    display: inline-block;
-    color: #000;
-    &:hover {
-      color: #9ac355;
-    }
-  `;
-
-  function handleClick() {
-    console.log(homeMenu.current);
-    homeMenu.current.click();
-  }
-
   return (
     <Layout>
       <HeaderLight>
-        <Link to="/">
-          <LogoWrapper onClick={handleClick}>
+        <Link to={ROUTES.HOME}>
+          <LogoWrapper>
             <LogoImage src="/Logo.png" />
           </LogoWrapper>
         </Link>
-        <NavMenu mode="horizontal" defaultSelectedKeys={["1"]}>
-          <Menu.Item key="1">
-            <Link to={ROUTES.HOME} ref={homeMenu}>
+        <NavMenu mode="horizontal" selectedKeys={location.pathname}>
+          <Menu.Item key={ROUTES.HOME}>
+            <Link to={ROUTES.HOME}>
               <span>홈</span>
             </Link>
           </Menu.Item>
-          <Menu.Item key="2">
+          <Menu.Item key={ROUTES.MOUNTAIN.DETAIL}>
             <Link to={ROUTES.MOUNTAIN.DETAIL}>
               <span>산찾기</span>
             </Link>
           </Menu.Item>
-          <Menu.Item key="3">
+          <Menu.Item key={ROUTES.COMMUNITY.ROOT}>
             <Link to={ROUTES.COMMUNITY.ROOT}>
               <span>커뮤니티</span>
             </Link>
           </Menu.Item>
-          <Menu.Item key="4">
-            {isLogin ? (
-              <Link to="/users/:userId">MYPAGE ICON</Link>
-            ) : (
-              <Link to={ROUTES.USER.LOGIN}>로그인</Link>
-            )}
+          {/* {isLogin ? ( */}
+          <Menu.Item key={ROUTES.USER.USER_PAGE}>
+            <Link to={ROUTES.USER.USER_PAGE}>MYPAGE ICON</Link>
           </Menu.Item>
+          {/* ) : ( */}
+          <Menu.Item key={ROUTES.USER.LOGIN}>
+            <Link to={ROUTES.USER.LOGIN}>로그인</Link>
+          </Menu.Item>
+          {/* )} */}
         </NavMenu>
       </HeaderLight>
     </Layout>
