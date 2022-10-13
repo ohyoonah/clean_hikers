@@ -37,7 +37,12 @@ const PostSchema = new Schema(
             type: String,
             required: false,
         },
-        person: [PersonSchema],
+        person: [
+            {
+                type: Object,
+                // ref: "Person",
+            },
+        ],
         personnel: {
             type: Number,
             required: true,
@@ -47,47 +52,12 @@ const PostSchema = new Schema(
             emum: ["모집중", "모집완료"],
             default: "모집중",
         },
-        comments: [CommentSchema],
-    },
-    {
-        timestamps: true,
-    }
-);
-
-const PersonSchema = new Schema(
-    {
-        user_id: {
-            type: String,
-            required: true,
-        },
-        nickname: {
-            type: String,
-            required: true,
-        },
-    },
-    {
-        timestamps: true,
-    }
-);
-
-const CommentSchema = new Schema(
-    {
-        user_id: {
-            type: String,
-            required: true,
-        },
-        nickname: {
-            type: String,
-            required: true,
-        },
-        title: {
-            type: String,
-            required: true,
-        },
-        description: {
-            type: String,
-            required: true,
-        },
+        comment: [
+            {
+                type: Object,
+                // ref: "Comment",
+            },
+        ],
     },
     {
         timestamps: true,
@@ -95,7 +65,5 @@ const CommentSchema = new Schema(
 );
 
 const PostModel = model("Post", PostSchema);
-const PersonModel = model("Person", PersonSchema);
-const CommentModel = model("Comment", CommentSchema);
 
-export { PostModel, PersonModel, CommentModel };
+export { PostModel };

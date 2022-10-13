@@ -1,12 +1,16 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model } from "mongoose";
 
-const UserSchema = new Schema(
+const CommentSchema = new Schema(
     {
-        id: {
+        comment_id: {
             type: String,
             required: true,
         },
-        email: {
+        post_id: {
+            type: String,
+            required: true,
+        },
+        user_id: {
             type: String,
             required: true,
         },
@@ -14,14 +18,13 @@ const UserSchema = new Schema(
             type: String,
             required: true,
         },
-        password: {
+        title: {
             type: String,
             required: true,
         },
         description: {
             type: String,
-            required: false,
-            default: "설명이 아직 없습니다. 추가해 주세요.",
+            required: true,
         },
     },
     {
@@ -29,6 +32,6 @@ const UserSchema = new Schema(
     }
 );
 
-const UserModel = model("User", UserSchema);
+const CommentModel = model("Comment", CommentSchema);
 
-module.exports = UserModel;
+export { CommentModel };

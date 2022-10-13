@@ -1,6 +1,8 @@
 import cors from "cors";
 import express from "express";
-import { postRouter } from "./src/community/postRouter.js";
+import { commentRouter } from "./src/community/commentRouter.js";
+import { postRouter } from "./src/community/communityRouter.js";
+import { personRouter } from "./src/community/personRouter.js";
 import { errorMiddleware } from "./src/middlewares/errorMiddleware.js";
 
 const app = express();
@@ -16,8 +18,11 @@ app.get("/", (req, res) => {
 });
 
 //라우터 추가
-app.use("/user", userRouter);
+// app.use("/user", userRouter);
+app.use("/community", personRouter);
+
 app.use("/community", postRouter);
+app.use("/community", commentRouter);
 
 app.use(errorMiddleware);
 

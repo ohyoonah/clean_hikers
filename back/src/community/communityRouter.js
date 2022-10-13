@@ -1,6 +1,6 @@
 import is from "@sindresorhus/is";
 import { Router } from "express";
-import { postService } from "./postService.js";
+import { postService } from "./communityService.js";
 import { ErrorMessage } from "../middlewares/errorMiddleware.js";
 
 const postRouter = Router();
@@ -27,9 +27,31 @@ postRouter.post("/post", async function (req, res, next) {
 postRouter.get("/posts/:user_id", async function (req, res, next) {
     try {
         const user_id = req.params.user_id;
+        // console.log(req.params);
         const posts = await postService.getPosts({ user_id });
 
         ErrorMessage(posts);
+        res.status(200).send(posts);
+    } catch (error) {
+        next(error);
+    }
+});
+
+//모든 게시글 조회
+postRouter.get("/postlist", async function (req, res, next) {
+    try {
+        const posts = await postService.getAllPosts();
+        // console.log(req);
+        res.status(200).send(posts);
+    } catch (error) {
+        next(error);
+    }
+});
+//해당 게시글 조회
+postRouter.get("/post/:post_id", async function (req, res, next) {
+    try {
+        const post_id = req.params.post_id;
+        const posts = await postService.getAPosts({ post_id });
         res.status(200).send(posts);
     } catch (error) {
         next(error);
@@ -40,7 +62,7 @@ postRouter.get("/posts/:user_id", async function (req, res, next) {
 postRouter.put("/posts/:post_id", async function (req, res, next) {
     try {
         const post_id = req.params.post_id;
-
+        // const commentInPost = await commentService.s
         const toUpdate = req.body;
         const updatedPost = await postService.setPost({
             post_id,
