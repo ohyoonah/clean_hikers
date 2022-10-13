@@ -20,12 +20,22 @@ userRouter.post('/register', async function (req,res,next){
     }
 })
 
-// userRouter.post('/emailCheck', async function(req,res,next){
-//     try{
-//         const checkEmail = req.body.email
-//         const isEmailExist = await userService.
-//     }
-// })
+userRouter.post('/emailCheck', async function(req,res,next){
+    try{
+        const checkEmail = req.body.email
+        const isEmailExist = await userService.findByEmail(checkEmail)
+
+        if(isEmailExist){
+            res.status(201).json({"message" : "사용할 수 있는 이메일입니다"})
+        }
+        else{
+            res.status(201).json({"message" : "중복 된 이메일입니다"})
+        }
+    }
+    catch(error){
+        next(error)
+    }
+})
 
 userRouter.post('/login', async function (req,res,next){
     try{const email = req.body.email

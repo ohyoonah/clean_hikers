@@ -39,7 +39,7 @@ class   User {
         //이게 무슨 의미인지 명확하게 이해가 안됨(document?)
         //https://mongoosejs.com/docs/tutorials/findoneandupdate.html
         const changedUser = await UserModel.findOneAndUpdate(filter, update, {new : true})
-        console.log('password changed : ',findUser.password)
+        console.log('password changed : ',changedUser.password)
         return changedUser
     }
 }

@@ -67,11 +67,22 @@ class userService{
         }
     }
 
-    // static async findByEmail(userMail){
-    //     try{
-    //         const checkUser = 
-    //     }
-    // }
+    static async findByEmail(userMail){
+        try{
+            const checkUser = await User.findByEmail({email:userMail})
+            if(!checkUser){
+                //null일 경우는 여기서 걸러버림
+                //null = 일치하는 유저가 없음
+                return true
+            }
+            else{
+                return false
+            }
+        }
+        catch(error){
+            throw error
+        }
+    }
 
     static async changeUserNickname(userID, changeNickname){
         try{
@@ -88,7 +99,7 @@ class userService{
 
     static async changeUserPassword(userID, changePassword){
         try{
-            const encryptPassword = bcrypt.hash(changePassword, 10)
+            const encryptPassword = await bcrypt.hash(changePassword, 10)
             const currentUser = await User.findByIDandChangePassword(userID, encryptPassword)
             if(!currentUser){
                 throw new Error('해당 유저는 존재하지 않습니다-password')
