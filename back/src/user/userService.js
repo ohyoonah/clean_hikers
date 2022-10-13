@@ -31,7 +31,8 @@ class userService{
             throw new Error('해당 유저는 존재하지 않습니다')
         }
         const correctPassword = userEmail.password
-        const isPasswordRight = bcrypt.compare(password, correctPassword)
+        const isPasswordRight = await bcrypt.compare(password, correctPassword)
+        console.log(isPasswordRight)
         if(!isPasswordRight){
             throw new Error('비밀번호가 틀렸습니다')
         }
@@ -65,6 +66,12 @@ class userService{
             throw error
         }
     }
+
+    // static async findByEmail(userMail){
+    //     try{
+    //         const checkUser = 
+    //     }
+    // }
 
     static async changeUserNickname(userID, changeNickname){
         try{

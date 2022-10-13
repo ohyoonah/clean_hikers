@@ -10,13 +10,22 @@ userRouter.get('/', function (req,res,next){
 })
 
 userRouter.post('/register', async function (req,res,next){
-    console.log(req.body)
+    try{console.log(req.body)
     //email, nickname, password 값의 필요가 필요함
     const newUser = await userService.addUser(req.body)
 
-    res.status(201).json(newUser)
+    res.status(201).json(newUser)}
+    catch(error){
+        next(error)
+    }
 })
 
+// userRouter.post('/emailCheck', async function(req,res,next){
+//     try{
+//         const checkEmail = req.body.email
+//         const isEmailExist = await userService.
+//     }
+// })
 
 userRouter.post('/login', async function (req,res,next){
     try{const email = req.body.email
@@ -57,7 +66,7 @@ userRouter.put('/fixPassword',loginRequired, async function(req,res,next){
     try{
         const id = req.loginedUser.id
         const password = req.body.password
-        const currentUser = await  userService.changeUserNickname(id,password)
+        const currentUser = await  userService.changeUserPassword(id,password)
         res.status(201).json(currentUser)
     }catch(error){
         next(error)
