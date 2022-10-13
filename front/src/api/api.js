@@ -8,7 +8,7 @@ async function get(endpoint, params = "") {
   console.log(`GET ${serverUrl + endpoint + "/" + params}`);
   return axios.get(serverUrl + endpoint + "/" + params, {
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      Authorization: `${sessionStorage.getItem("userToken")}`,
     },
   });
 }
