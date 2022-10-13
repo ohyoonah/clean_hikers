@@ -1,15 +1,17 @@
-const mongoose =require('mongoose')
-const {User} =require('./model/user')
+import { connect } from 'mongoose'
+import {User} from '../user/userModel.js'
 
-require('dotenv').config()
+
+import * as dotenv from "dotenv";
+dotenv.config();
 const {MONGO_URI} = process.env
 
-mongoose.connect(
+connect(
     MONGO_URI
 )
 .then(()=> console.log('MongoDB와 연결에 성공했습니다'))
 .catch(error => console.error(error))
 
-module.exports ={
+export {
     User
 }

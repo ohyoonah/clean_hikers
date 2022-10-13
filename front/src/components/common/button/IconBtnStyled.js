@@ -16,6 +16,7 @@ const RegisterBtnStyled = styled.div`
 
 const RecruitBtnStyled = styled.div`
   .communityList-title-button {
+    background-color: #3a6ad4;
     border-radius: 8px;
   }
 `;

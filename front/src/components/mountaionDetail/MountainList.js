@@ -21,11 +21,11 @@ const List = styled.div`
   /* Other */
   cursor: pointer;
   transition-property: border, box-shadow; // 호버 시 테두리색 변경을 위한 코드
-  transition-duration: 0.3s; // 호버 시 테두리색 변경을 위한 코드
+  transition: 0.3s; // 호버 시 테두리색 변경을 위한 코드
 
   :hover {
     transition-property: border; // 호버 시 테두리색 변경을 위한 코드
-    transition-duration: 0.3s; // 호버 시 테두리색 변경을 위한 코드
+    transition: 0.3s; // 호버 시 테두리색 변경을 위한 코드
     border: 1px solid rgb(0, 130, 30);
     box-shadow: 1px 1px 2px 0px rgba(150, 150, 150, 0.8);
   }
