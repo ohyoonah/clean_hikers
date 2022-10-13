@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { theme } from "../common/styles/palette";
-import { Button, Form, Input } from "antd";
+import { Form } from "antd";
 
 export const PageBlock = styled.div`
   width: 100%;
@@ -28,6 +28,11 @@ export const FormBlock = styled(Form)`
     margin: 0;
     padding: 0;
   }
+  .ant-form-item-explain-error {
+    width: 60%;
+    text-align: start;
+    margin: 0 auto;
+  }
   .toRegister {
     margin-bottom: 5rem;
   }
@@ -52,7 +57,6 @@ export const EmailBlock = styled.div`
   width: 60%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin: 0 auto;
   margin-bottom: 1rem;
   .ant-form-item {
@@ -62,12 +66,17 @@ export const EmailBlock = styled.div`
       width: 100%;
     }
   }
+  .ant-form-item-explain-error {
+    width: 100%;
+  }
   button {
     width: 25%;
     height: 50px;
     box-sizing: inherit;
     border-radius: 10px;
+    border: 1px solid ${theme.deepBlue};
     background: transparent;
+    color: ${theme.deepBlue};
     margin-top: 1rem;
     cursor: pointer;
   }

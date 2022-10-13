@@ -8,12 +8,13 @@ import { Button, Row, Tabs } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { NonIconGreenBtn } from "../common/button/NonIconBtn";
 
-const Card = styled.div`
+const Modal = styled.div`
   /* Positioning */
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 50%;
 
   /* Display & Box Model */
   box-shadow: 2px 3px 8px 0px rgb(150, 150, 150);
@@ -27,6 +28,14 @@ const Card = styled.div`
   /* Color */
   background-color: white;
 `;
+const ModalBackground = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(200, 200, 200, 0.5);
+`;
 
 const Detail = styled.div`
   /* Display & Box Model */
@@ -35,7 +44,7 @@ const Detail = styled.div`
   text-align: left;
 `;
 
-const ButtonWrapper = styled(Button)`
+const ClosedBtn = styled(Button)`
   /* Display & Box Model */
   width: fit-content;
   height: 50px;
@@ -72,48 +81,50 @@ function MountainDetailPage({ mountainName, setIsModal, value }) {
     };
   }, []);
   return (
-    <Card>
-      <Detail>
-        <Row justify="end">
-          <ButtonWrapper
-            onClick={() => {
-              setIsModal(false);
-            }}
-          >
-            <CloseOutlined />
-          </ButtonWrapper>
+    <ModalBackground>
+      <Modal>
+        <Detail>
+          <Row justify="end">
+            <ClosedBtn
+              onClick={() => {
+                setIsModal(false);
+              }}
+            >
+              <CloseOutlined />
+            </ClosedBtn>
+          </Row>
+          <H1>{value.name}</H1>
+          <b>위치</b> {value.location}
+          <br />
+          <b>난이도</b> {value.level}
+        </Detail>
+
+        <Tabs defaultActiveKey="1" centered>
+          <Tabs.TabPane tab="위치" key="1">
+            <Map
+              center={{ lat: value.lat, lng: value.lng }}
+              style={{ width: "100%", height: "250px", margin: "0px auto" }}
+              level={8}
+            >
+              <MapMarker position={{ lat: value.lat, lng: value.lng }} />
+            </Map>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="등산로" key="2">
+            <Map
+              center={{ lat: value.lat, lng: value.lng }}
+              style={{ width: "100%", height: "250px", margin: "0px auto" }}
+              level={7}
+            >
+              <MapMarker position={{ lat: value.lat, lng: value.lng }} />
+            </Map>
+          </Tabs.TabPane>
+        </Tabs>
+
+        <Row justify="center" style={{ paddingTop: "30px" }}>
+          <NonIconGreenBtn text={"함께하기"} />
         </Row>
-        <H1>{value.name}</H1>
-        <b>위치</b> {value.location}
-        <br />
-        <b>난이도</b> {value.level}
-      </Detail>
-
-      <Tabs defaultActiveKey="1" centered>
-        <Tabs.TabPane tab="위치" key="1">
-          <Map
-            center={{ lat: value.lat, lng: value.lng }}
-            style={{ width: "100%", height: "250px", margin: "0px auto" }}
-            level={8}
-          >
-            <MapMarker position={{ lat: value.lat, lng: value.lng }} />
-          </Map>
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="등산로" key="2">
-          <Map
-            center={{ lat: value.lat, lng: value.lng }}
-            style={{ width: "100%", height: "250px", margin: "0px auto" }}
-            level={7}
-          >
-            <MapMarker position={{ lat: value.lat, lng: value.lng }} />
-          </Map>
-        </Tabs.TabPane>
-      </Tabs>
-
-      <Row justify="center" style={{ paddingTop: "30px" }}>
-        <NonIconGreenBtn text={"함께하기"} />
-      </Row>
-    </Card>
+      </Modal>
+    </ModalBackground>
   );
 }
 export default MountainDetailPage;
