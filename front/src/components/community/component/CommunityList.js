@@ -1,57 +1,55 @@
-import { Pagination } from "antd";
-import React from "react";
-import { Link } from "react-router-dom";
+import { Button, Card, Pagination } from "antd";
+import React, { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { RecruitBlueBtn } from "../../common/button/IconBtn";
 import {
   RecruitBlueBtnAlign,
-  CommunityNavStyled,
-  CommunutyPaginationStyled,
   CommunityPagenationStyled,
   CommunityListAlign,
 } from "../styledComponents/CommunityListStyled";
-import { Menu } from "antd";
-import { SettingOutlined } from "@ant-design/icons";
+import CommunityDetail from "./CommunityDetail";
+import CommunityNav from "./CommunityNav";
 
-function CommunityNav() {
-  return (
-    <CommunityNavStyled>
-      <Menu mode="horizontal" defaultSelectedKeys={["mail"]}>
-        <Menu.Item key="mail" className="community-navigate">
-          전체
-        </Menu.Item>
-        <Menu.Item key="clean" className="community-navigate">
-          클린후기
-        </Menu.Item>
-        <Menu.Item key="recruit" className="community-navigate">
-          모집중
-        </Menu.Item>
-        <Menu.Item key="finRecruit" className="community-navigate">
-          모집완료
-        </Menu.Item>
-      </Menu>
-    </CommunityNavStyled>
-  );
-}
-
-function CommunityItem() {
+function CommunityItem({ post, handleRemove, findItem }) {
+  const OnRemove = () => {
+    handleRemove(post.id);
+  };
   return (
     <>
-      <h3>ㅇㅇㅇ</h3>
+      <Card>
+        <Link to={`/CommunityDetail/${post.no}`}>
+          <h3>
+            <Button>{post.station}</Button>
+            {post.title}
+          </h3>
+          <p>{post.location}</p>
+          <p>{post.discription}</p>
+        </Link>
+      </Card>
     </>
   );
 }
 
-function CommunityList() {
+function CommunityList({ posts, handleRemove }) {
+  const [viewPost, setViewPost] = useState(false);
   return (
     <div>
       <RecruitBlueBtnAlign>
-        <Link to="communityCreate">
+        <Link to="/communityCreate">
           <RecruitBlueBtn />
         </Link>
       </RecruitBlueBtnAlign>
+      {viewPost ? (
+        <CommunityDetail posts={posts} />
+      ) : (
+        <CommunityNav
+          posts={posts}
+          handleRemove={handleRemove}
+          viewPost={viewPost}
+          setViewPost={setViewPost}
+        />
+      )}
       <CommunityListAlign>
-        <CommunityNav />
-        <CommunityItem />
         <CommunityPagenationStyled>
           <Pagination size="small" total={50} />
         </CommunityPagenationStyled>
@@ -60,4 +58,4 @@ function CommunityList() {
   );
 }
 
-export default CommunityList;
+export { CommunityList, CommunityItem };
