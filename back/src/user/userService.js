@@ -54,9 +54,9 @@ class userService{
         }
     }
 
-    static async findCurrentUserData(userId){
+    static async findCurrentUserData(userID){
         try{
-            const currentUser = await User.findByID(userId)
+            const currentUser = await User.findByID(userID)
             if(!currentUser){
                 throw new Error('해당 유저는 존재하지 않습니다2')
             }
@@ -66,6 +66,32 @@ class userService{
         }
     }
 
+    static async changeUserNickname(userID, changeNickname){
+        try{
+            const currentUser = await User.findByIDandChangeNickname(userID, changeNickname)
+            if(!currentUser){
+                throw new Error('해당 유저는 존재하지 않습니다-nickname')
+            }
+            return currentUser
+        }
+        catch(error){
+            throw error
+        }
+    }
+
+    static async changeUserPassword(userID, changePassword){
+        try{
+            const encryptPassword = bcrypt.hash(changePassword, 10)
+            const currentUser = await User.findByIDandChangePassword(userID, encryptPassword)
+            if(!currentUser){
+                throw new Error('해당 유저는 존재하지 않습니다-password')
+            }
+            return currentUser
+        }
+        catch(error){
+            throw error
+        }
+    }
 }
 
 export  {userService}

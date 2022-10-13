@@ -42,7 +42,25 @@ userRouter.get('/userPage',loginRequired,async function (req,res,next){
     }
 })
 
-userRouter.put('/fixuser',loginRequired, async function(req,res,next){
+userRouter.put('/fixNickName',loginRequired, async function(req,res,next){
+    try{
+        const id = req.loginedUser.id
+        const nickname = req.body.nickname
+        const currentUser = await  userService.changeUserNickname(id,nickname)
+        res.status(201).json(currentUser)
+    }catch(error){
+        next(error)
+    }
+})
 
+userRouter.put('/fixPassword',loginRequired, async function(req,res,next){
+    try{
+        const id = req.loginedUser.id
+        const password = req.body.password
+        const currentUser = await  userService.changeUserNickname(id,password)
+        res.status(201).json(currentUser)
+    }catch(error){
+        next(error)
+    }
 })
 export  {userRouter} 

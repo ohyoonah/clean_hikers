@@ -15,10 +15,32 @@ class   User {
         return findUser
     }
 
-    static async findByID(dfff){
-        const findUser = await UserModel.findOne({id : dfff})
-        console.log('findById결과 : ',findUser)
-        return findUser
+    static async findByIDandChangeNickname(userID, changingData){
+        const filter = {
+            id : userID
+        }
+        const update = {
+            nickname : changingData
+        }
+        const changedUser = await UserModel.findOneAndUpdate(filter, update, {new : true})
+        console.log('Nickname changed : ',changedUser.nickname)
+        return changedUser
+    }
+
+    static async findByIDandChangePassword(userID, changingData){
+        const filter = {
+            id : userID
+        }
+        const update = {
+            password : changingData
+        }
+
+        //공식문서에선 object를 반환해주는게 아니라 document를 반환해주는 것이기 때문에 뒤에 new option을 넣어야한다고 하는데
+        //이게 무슨 의미인지 명확하게 이해가 안됨(document?)
+        //https://mongoosejs.com/docs/tutorials/findoneandupdate.html
+        const changedUser = await UserModel.findOneAndUpdate(filter, update, {new : true})
+        console.log('password changed : ',findUser.password)
+        return changedUser
     }
 }
 
