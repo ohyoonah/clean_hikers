@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import { theme } from "../styles/palette";
 import { ROUTES } from "../../../enum/routes";
+import { UserStateContext, DispatchContext } from "../../../App";
 
 function Navigation() {
   const { Header } = Layout;
 
+  const userState = useContext(UserStateContext);
   const location = useLocation();
+
+  const isLogin = !!userState.user;
+
+  useEffect(() => {
+    console.log(userState);
+  }, [userState]);
 
   const HeaderLight = styled(Header)`
     background-color: white;
@@ -70,15 +78,15 @@ function Navigation() {
               <span>커뮤니티</span>
             </Link>
           </Menu.Item>
-          {/* {isLogin ? ( */}
-          <Menu.Item key={ROUTES.USER.USER_PAGE}>
-            <Link to={ROUTES.USER.USER_PAGE}>MYPAGE ICON</Link>
-          </Menu.Item>
-          {/* ) : ( */}
-          <Menu.Item key={ROUTES.USER.LOGIN}>
-            <Link to={ROUTES.USER.LOGIN}>로그인</Link>
-          </Menu.Item>
-          {/* )} */}
+          {isLogin ? (
+            <Menu.Item key={ROUTES.USER.USER_PAGE}>
+              <Link to={ROUTES.USER.USER_PAGE}>MYPAGE ICON</Link>
+            </Menu.Item>
+          ) : (
+            <Menu.Item key={ROUTES.USER.LOGIN}>
+              <Link to={ROUTES.USER.LOGIN}>로그인</Link>
+            </Menu.Item>
+          )}
         </NavMenu>
       </HeaderLight>
     </Layout>
