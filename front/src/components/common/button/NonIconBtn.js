@@ -1,5 +1,7 @@
-import { Button } from "antd";
-import { NonIconBlueBtnStyled, NonIconGreenBtnStyled } from "./NonIconBtnStyled";
+import {
+  NonIconBlueBtnStyled,
+  NonIconGreenBtnStyled,
+} from "./NonIconBtnStyled";
 
 function NonIconBlueBtn({ text }) {
   return (

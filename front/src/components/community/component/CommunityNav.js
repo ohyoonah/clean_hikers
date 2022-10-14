@@ -1,7 +1,6 @@
-import { Menu, Card } from "antd";
+import { Card } from "antd";
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import CommunityNavStyled from "../styledComponents/CommunityNav";
+import CommunityNavStyled from "../styledComponents/CommunityNavStyled";
 import { CommunityItem } from "./CommunityList";
 
 const tabList = [
@@ -31,7 +30,7 @@ function CommunityNav({ posts, handleRemove, setViewPost }) {
       <p>
         {posts.map((post) => (
           <CommunityItem
-            key={post.id}
+            key={post.no}
             posts={posts}
             post={post}
             setViewPost={setViewPost}
@@ -43,7 +42,7 @@ function CommunityNav({ posts, handleRemove, setViewPost }) {
       <p>
         {posts.map((post) => (
           <CommunityItem
-            key={post.id}
+            key={post.no}
             post={post}
             handleRemove={handleRemove}
           />

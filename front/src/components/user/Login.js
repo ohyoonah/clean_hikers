@@ -19,8 +19,8 @@ function Login() {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
+    error: "",
   });
-  const [error, setError] = useState("");
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -48,8 +48,8 @@ function Login() {
       setIsLoading(false);
       navigate(ROUTES.HOME);
     } catch (e) {
-      console.log("로그인 실패", e);
-      setError(e);
+      console.log("로그인 실패", e.response.data);
+      setFormValue({ ...formValue, error: e.response.data });
     }
   }
 
@@ -62,7 +62,7 @@ function Login() {
           <h2>Sign In</h2>
           <span>로그인을 위해 이메일과 비밀번호를 입력해 주세요</span>
         </TitleBlock>
-        <span className="error">{error}</span>
+        <span className="error">{formValue.error}</span>
         <Form.Item name="email" rules={[{ validator: validateEmail }]}>
           <InputBlock
             prefix={<UserOutlined className="site-form-item-icon" />}

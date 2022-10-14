@@ -12,7 +12,7 @@ const Main = styled.form`
   justify-content: center;
   grid-template-columns: 1fr 1fr 3fr 1fr;
   grid-column-gap: 15px;
-  width: 800px;
+  width: 80%;
   padding: 15px;
   border-radius: 20px;
   margin: 0 auto;
@@ -94,7 +94,11 @@ function MountainSearch() {
       </SelectWrapper>
 
       {/* 난이도선택 셀렉트 */}
-      <SelectWrapper bordered={false} defaultValue="난이도" onChange={(e) => setLevel(e)}>
+      <SelectWrapper
+        bordered={false}
+        defaultValue="난이도"
+        onChange={(e) => setLevel(e)}
+      >
         <Option value="high">상</Option>
         <Option value="middle">중</Option>
         <Option value="low">하</Option>

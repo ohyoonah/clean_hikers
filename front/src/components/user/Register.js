@@ -22,8 +22,9 @@ function Register() {
     nickname: "",
     password: "",
     checkPassword: "",
+    error: "",
   });
-  const [error, setError] = useState("");
+  const [emailCheck, setEmailCheck] = useState(false);
   const [form] = Form.useForm();
 
   function onChange(e) {
@@ -35,15 +36,36 @@ function Register() {
   }
 
   async function onFinish() {
+    if (emailCheck) {
+      try {
+        const res = await api.post("user/register", {
+          ...formValue,
+        });
+        alert(`${res.data.nickname}님 환영합니다.`);
+        navigate(ROUTES.USER.LOGIN);
+      } catch (e) {
+        console.log(e.response.data);
+        setEmailCheck(false);
+      }
+    } else {
+      setFormValue({ ...formValue, error: "이메일 중복확인을 해주세요." });
+    }
+  }
+
+  async function onEmailCheck() {
     try {
-      const res = await api.post("user/register", {
-        ...formValue,
+      const res = await api.post("user/email-check", {
+        email: formValue.email,
       });
-      alert(`${res.data.nickname}님 환영합니다.`);
-      navigate(ROUTES.USER.LOGIN);
+      if (res.status === 201) {
+        setFormValue({ ...formValue, error: res.data.message });
+        setEmailCheck(true);
+      }
+      if (res.status === 200) {
+        setFormValue({ ...formValue, error: res.data.message });
+      }
     } catch (e) {
       console.log(e.response.data);
-      // setError(e.response.data);
     }
   }
 
@@ -54,7 +76,7 @@ function Register() {
           <h2>Sign Up</h2>
           <span>회원가입을 위해 정보를 입력해 주세요.</span>
         </TitleBlock>
-        <span className="error">{error}</span>
+        <span className="error">{formValue.error}</span>
         <EmailBlock>
           <Form.Item name="email" rules={[{ validator: validateEmail }]}>
             <InputBlock
@@ -66,7 +88,9 @@ function Register() {
               className="registerEmail"
             />
           </Form.Item>
-          <ButtonBlock type="button">중복확인</ButtonBlock>
+          <ButtonBlock type="button" onClick={onEmailCheck}>
+            중복확인
+          </ButtonBlock>
         </EmailBlock>
         <span className="informationText">
           비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.

@@ -1,12 +1,18 @@
 /* 국립공원 리스트 */
 import styled from "styled-components";
 import MountainDetail from "./MountainDetail.js";
-
+import { LowLevel, MiddelLevel, HighLevel } from "../common/level/Level";
+import { Pagination } from "antd";
+const PaginationWrapper = styled(Pagination)`
+  /* Display & Box Model */
+  display: block;
+  text-align: center;
+`;
 const List = styled.div`
   /* Display & Box Model */
   display: grid;
   grid-template-columns: 40% 40% 20%;
-  width: 800px;
+  width: 80%;
   height: 50px;
   padding: 0px 30px;
   border: 1px solid rgb(220, 220, 220);
@@ -32,6 +38,15 @@ const List = styled.div`
 `;
 
 function MountainList({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
+  function PrintLevel({ v }) {
+    if (v.level === "하") {
+      return <LowLevel />;
+    } else if (v.level === "중") {
+      return <MiddelLevel />;
+    } else if (v.level === "상") {
+      return <HighLevel />;
+    }
+  }
   return (
     <div>
       {MOUNTAIN.map((v, index) => {
@@ -48,13 +63,28 @@ function MountainList({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
               </div>
               <div style={{ textAlign: "start" }}>{v.location}</div>
               <div style={{ textAlign: "end" }}>
-                <b>난이도</b> {v.level}
+                <b>난이도 </b>
+                <PrintLevel v={v} />
               </div>
             </List>
           </div>
         );
       })}
-      {isModal ? <MountainDetail setIsModal={setIsModal} value={value} /> : <></>}
+      <PaginationWrapper
+        defaultCurrent={1}
+        total={36}
+        defaultPageSize={5}
+        showSizeChanger={false}
+      />
+      {isModal ? (
+        <MountainDetail
+          isModal={isModal}
+          setIsModal={setIsModal}
+          value={value}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
