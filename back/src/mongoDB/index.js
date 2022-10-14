@@ -1,5 +1,6 @@
 import { connect } from 'mongoose'
 import {User} from '../user/userModel.js'
+import {Mountain} from '../mountain/mountainModel.js'
 
 
 
@@ -14,5 +15,6 @@ connect(
 .catch(error => console.error(error))
 
 export {
-    User
+    User,
+    Mountain
 }

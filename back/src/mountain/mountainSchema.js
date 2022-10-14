@@ -28,6 +28,10 @@ const MountainSchema = new Schema(
     },
     image:{
       type : String,
+    },
+    way : {
+        type : String,
+        enum : ['LineString']
     }
   },
   {
