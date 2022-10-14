@@ -29,10 +29,6 @@ const PostSchema = new Schema(
             required: true,
             default: Date.now,
         },
-        header: {
-            type: String,
-            required: true,
-        },
         location: {
             type: String,
             required: false,
@@ -43,6 +39,7 @@ const PostSchema = new Schema(
                 // ref: "Person",
             },
         ],
+        count: [],
         personnel: {
             type: Number,
             required: true,

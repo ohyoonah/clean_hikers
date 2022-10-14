@@ -1,6 +1,6 @@
-const {UserModel} = require('../schema/user')
+import { UserModel } from './userSchema.js';
 
-class User {
+class   User {
     //추후 해당하는 기능 추가 예정
 
     //1.계정 생성
@@ -8,6 +8,18 @@ class User {
         const createdNewUser = await UserModel.create(newUser);
         return createdNewUser
     }
+
+    static async findByEmail({email}){
+        const findUser = await UserModel.findOne({email : email})
+        console.log("findUser 결과",findUser)
+        return findUser
+    }
+
+    static async findByID(dfff){
+        const findUser = await UserModel.findOne({id : dfff})
+        console.log('findById결과 : ',findUser)
+        return findUser
+    }
 }
 
-module.exports = {User}
+export  {User}

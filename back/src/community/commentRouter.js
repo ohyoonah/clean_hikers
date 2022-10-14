@@ -6,7 +6,7 @@ import { ErrorMessage } from "../middlewares/errorMiddleware.js";
 const commentRouter = Router();
 
 // 댓글 추가
-commentRouter.post("/post/comment", async function (req, res, next) {
+commentRouter.post("/posts/comment", async function (req, res, next) {
     try {
         if (is.emptyObject(req.body)) {
             throw new Error(

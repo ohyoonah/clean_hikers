@@ -1,5 +1,6 @@
-import { Button, Form, Input } from "antd";
 import styled from "styled-components";
+import { theme } from "../common/styles/palette";
+import { Form } from "antd";
 
 export const PageBlock = styled.div`
   width: 100%;
@@ -9,33 +10,41 @@ export const PageBlock = styled.div`
 `;
 
 export const FormBlock = styled(Form)`
-  display: flex;
-  box-sizing: border-box;
-  flex-direction: column;
-  max-width: 650px;
   width: 60%;
-  text-align: center;
+  max-width: 650px;
+  box-sizing: border-box;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
   border-radius: 40px;
-  background: #ffffffed;
+  background: rgba(255, 255, 255, 0.9);
   box-shadow: 2px 3px 5px 0px;
   padding: 1rem 0 2rem 0;
   .ant-form-item {
     margin: 0;
     padding: 0;
   }
+  .ant-form-item-explain-error {
+    width: 60%;
+    text-align: start;
+    margin: 0 auto;
+  }
   .toRegister {
     margin-bottom: 5rem;
+  }
+  .error {
+    color: red;
   }
 `;
 
 export const TitleBlock = styled.div`
+  width: 60%;
   display: flex;
   flex-direction: column;
-  width: 60%;
   margin: 2rem auto;
   margin-bottom: 3rem;
   h2 {
@@ -47,33 +56,10 @@ export const TitleBlock = styled.div`
   }
 `;
 
-export const InputBlock = styled(Input)`
-  width: 60%;
-  height: 50px;
-  border-radius: 10px;
-  background: inherit;
-  outline: none;
-  margin-top: 1rem;
-  input {
-    background: transparent;
-  }
-`;
-
-export const ButtonBlock = styled(Button)`
-  width: 60%;
-  display: block;
-  margin: 1rem auto;
-  border: 1px solid green;
-  border-radius: 15px;
-  height: 50px;
-  background: transparent;
-`;
-
 export const EmailBlock = styled.div`
+  width: 60%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 60%;
   margin: 0 auto;
   margin-bottom: 1rem;
   .ant-form-item {
@@ -83,13 +69,18 @@ export const EmailBlock = styled.div`
       width: 100%;
     }
   }
+  .ant-form-item-explain-error {
+    width: 100%;
+  }
   button {
     width: 25%;
     height: 50px;
-    margin-top: 1rem;
-    border-radius: 10px;
     box-sizing: inherit;
-    cursor: pointer;
+    border-radius: 10px;
+    border: 1px solid ${theme.deepBlue};
     background: transparent;
+    color: ${theme.deepBlue};
+    margin-top: 1rem;
+    cursor: pointer;
   }
 `;

@@ -1,49 +1,6 @@
-import { Post, Person, Comment } from "../mongoDB/index.js";
+import { Post, Comment, User } from "../mongoDB/index.js";
 import { v4 } from "uuid";
-
-class personService {
-    static async addPerson({ user_id, nickname }) {
-        const newPerson = { user_id, nickname };
-
-        const createdNewPerson = await Person.create({ newPerson });
-        createdNewPerson.errorMessage = null;
-
-        return createdNewPerson;
-    }
-
-    static async getPersons({ user_id }) {
-        const persons = await Person.findByUserId({ user_id });
-        return persons;
-    }
-
-    static async setPerson({ user_id, toUpdate }) {
-        let person = await Person.findByUserId({ user_id });
-
-        if (!person) {
-            const errorMessage = "내역이 없습니다. 다시 한 번 확인해 주세요.";
-            return { errorMessage };
-        }
-
-        if (toUpdate.nickname) {
-            const fieldToUpdate = "nickname";
-            const newValue = toUpdate.nickname;
-            person = await Person.update({ id, fieldToUpdate, newValue });
-        }
-
-        return person;
-    }
-
-    static async deletPerson({ user_id }) {
-        let persons = await Person.findByUserId({ user_id });
-        if (!persons) {
-            const errorMessage = "내역이 없습니다. 다시 한 번 확이해 주세요.";
-            return { errorMessage };
-        }
-
-        persons = await Person.deleteByUserId({ user_id });
-        return persons;
-    }
-}
+// import { ObjectID } from "bson";
 
 class postService {
     static async addPost({
@@ -56,7 +13,7 @@ class postService {
         personnel,
         station,
         comment,
-        header,
+        count,
         location,
     }) {
         const post_id = v4();
@@ -72,7 +29,7 @@ class postService {
             personnel,
             station,
             comment,
-            header,
+            count,
             location,
         };
 
@@ -224,31 +181,6 @@ class commentService {
         return comments;
     }
 
-    static async deleteComment({ comment_id }) {
-        let comments = await Comment.findByCommentId({ comment_id });
-        // console.log("삭제할 댓글", comments);
-        const post_id = comments.post_id;
-
-        if (!comments) {
-            const errorMessage = "내역이 없습니다. 다시 한 번 확인해 주세요.";
-            return { errorMessage };
-        }
-        comments = await Comment.deleteByCommentId({ comment_id });
-        // console.log("삭제된 댓글", comment_id);
-        const newComments = await Comment.findByPostId({ post_id });
-        // console.log("댓글 리스트", newComments);
-        const twoUpdate = await postService.getAPosts({ post_id });
-
-        twoUpdate.comment = newComments;
-        // console.log("새로 출력되야 할", twoUpdate);
-        const createPostComment = await postService.setPost({
-            post_id,
-            toUpdate: twoUpdate,
-        });
-        // console.log("출력된", createPostComment);
-        return newComments;
-    }
-
     static async setComment({ comment_id, toUpdate }) {
         let comment = await Comment.findByCommentId({ comment_id });
 
@@ -302,13 +234,127 @@ class commentService {
         newComment.splice(idx, 1, comment);
 
         twoUpdate.comment = newComment;
+    }
 
+    static async deleteComment({ comment_id }) {
+        let comments = await Comment.findByCommentId({ comment_id });
+        console.log("삭제할 댓글", comments);
+        const post_id = comments.post_id;
+
+        if (!comments) {
+            const errorMessage = "내역이 없습니다. 다시 한 번 확인해 주세요.";
+            return { errorMessage };
+        }
+        comments = await Comment.deleteByCommentId({ comment_id });
+        // console.log("삭제된 댓글", comment_id);
+        const newComments = await Comment.findByPostId({ post_id });
+        // console.log("댓글 리스트", newComments);
+        const twoUpdate = await postService.getAPosts({ post_id });
+
+        twoUpdate.comment = newComments;
+        // console.log("새로 출력되야 할", twoUpdate);
         const createPostComment = await postService.setPost({
             post_id,
             toUpdate: twoUpdate,
         });
+        // console.log("출력된", createPostComment);
+        return newComments;
+    }
+}
 
-        return comment;
+class personService {
+    static async addPerson({ post_id, email }) {
+        const post = await postService.getAPosts({ post_id });
+
+        const people = post.person;
+
+        let beingPerson = people.find((item) => {
+            return item.email == email;
+        });
+
+        if (beingPerson !== undefined) {
+            const idx = people.indexOf(beingPerson);
+
+            people.splice(idx, 1);
+
+            post.person = people;
+
+            const toUpdate = post;
+
+            const deletedBeingPerson = await postService.setPost({
+                post_id,
+                toUpdate,
+            });
+
+            return deletedBeingPerson;
+        } else {
+            const newPerson = await User.findByEmail({ email });
+
+            const toUpdate = await postService.getAPosts({ post_id });
+
+            if (newPerson !== null) {
+                toUpdate.person.push(newPerson);
+
+                const createPostPerson = await postService.setPost({
+                    post_id,
+                    toUpdate,
+                });
+
+                createPostPerson.errorMessage = null;
+
+                return createPostPerson;
+            }
+        }
+    }
+
+    static async getPersons({ post_id }) {
+        const post = await postService.getAPosts({ post_id });
+
+        console.log(post);
+
+        const people = post.person;
+
+        return people;
+    }
+
+    static async deletePerson({ email, post_id }) {
+        let person = await User.findByEmail({ email });
+
+        if (!person) {
+            const errorMessage =
+                "참가 이력이 없습니다. 다시 한 번 확인해 주세요.";
+            return { errorMessage };
+        }
+
+        const post = await postService.getAPosts({ post_id });
+
+        const newPostPeople = post.person;
+
+        // console.log(newPostPeople);
+        console.log(email);
+        let toDeletePerson = newPostPeople.find((item) => {
+            return item == person;
+        });
+        // console.log(newPostPeople);
+
+        const idx = newPostPeople.indexOf(toDeletePerson);
+
+        console.log(idx);
+
+        newPostPeople.splice(idx, 1);
+
+        if (person !== null) {
+            post.person.push(newPostPeople);
+
+            const deletedPostPerson = await postService.setPost({
+                post_id,
+                toUpdate: post,
+            });
+        }
+
+        person.errorMessage = null;
+
+        return person;
     }
 }
 

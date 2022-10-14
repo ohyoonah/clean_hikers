@@ -1,6 +1,6 @@
 import { PostModel } from "./postSchema.js";
 import { CommentModel } from "./commentSchema.js";
-import { PersonModel } from "./personSchema.js";
+// import { UserModel } from "../user/userModel.js";
 
 class Post {
     static async create({ newPost }) {
@@ -47,35 +47,22 @@ class Post {
     }
 }
 
-class Person {
-    static async create({ newPerson }) {
-        const createdNewPerson = await PersonModel.create(newPerson);
-        return createdNewPerson;
-    }
+// class Person {
+//     static async create({ newPerson }) {
+//         const createdNewPerson = await UserModel.create(newPerson);
+//         return createdNewPerson;
+//     }
 
-    static async findByUserId({ user_id }) {
-        const user = await PersonModel.find({ user_id: user_id });
-        return user;
-    }
+//     static async findByUserId({ user_id }) {
+//         const user = await UserModel.find({ user_id: user_id });
+//         return user;
+//     }
 
-    static async update({ user_id, fieldToUpdate, newValue }) {
-        const filter = { user_id: user_id };
-        const update = { [fieldToUpdate]: newValue };
-        const option = { returnOriginal: false };
-
-        const updatedPerson = await PersonModel.findOneAndUpdate(
-            filter,
-            update,
-            option
-        );
-        return updatedPerson;
-    }
-
-    static async deleteByUserId({ user_id }) {
-        const person = await PersonModel.deleteOne({ user_id: user_id });
-        return person;
-    }
-}
+//     static async deleteByEmail({ email }) {
+//         const person = await UserModel.deleteOne({ user_id: user_id });
+//         return person;
+//     }
+// }
 
 class Comment {
     static async create({ newComment }) {
@@ -119,4 +106,4 @@ class Comment {
     }
 }
 
-export { Post, Person, Comment };
+export { Post, Comment };
