@@ -33,16 +33,14 @@ const List = styled.div`
 `;
 
 function MountainList({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
-  function PrintLevel() {
-    let result;
-    if (value.level == "하") {
-      result = <LowLevel />;
-    } else if (value.level == "중") {
-      result = <MiddelLevel />;
-    } else if (value.level == "상") {
-      result = <HighLevel />;
+  function PrintLevel({ v }) {
+    if (v.level === "하") {
+      return <LowLevel />;
+    } else if (v.level === "중") {
+      return <MiddelLevel />;
+    } else if (v.level === "상") {
+      return <HighLevel />;
     }
-    return result;
   }
   return (
     <div>
@@ -60,7 +58,8 @@ function MountainList({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
               </div>
               <div style={{ textAlign: "start" }}>{v.location}</div>
               <div style={{ textAlign: "end" }}>
-                <b>난이도 </b> <PrintLevel />
+                <b>난이도 </b>
+                <PrintLevel v={v} />
               </div>
             </List>
           </div>

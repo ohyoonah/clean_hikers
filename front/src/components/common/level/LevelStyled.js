@@ -27,7 +27,7 @@ const MiddelLevelStyled = styled.div`
   font-weight: 700;
 
   /* Color */
-  background-color: yellow;
+  background-color: #fcb565;
   color: white;
 `;
 
@@ -42,7 +42,7 @@ const HighLevelStyled = styled.div`
   font-weight: 700;
 
   /* Color */
-  background-color: ${theme.blue};
+  background-color: red;
   color: white;
 `;
 

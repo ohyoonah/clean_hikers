@@ -81,11 +81,11 @@ function MountainDetailPage({ mountainName, setIsModal, value }) {
 
   function PrintLevel() {
     let result;
-    if (value.level == "하") {
+    if (value.level === "하") {
       result = <LowLevel />;
-    } else if (value.level == "중") {
+    } else if (value.level === "중") {
       result = <MiddelLevel />;
-    } else if (value.level == "상") {
+    } else if (value.level === "상") {
       result = <HighLevel />;
     }
     return result;

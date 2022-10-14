@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import MountainSearch from "../components/mountaionDetail/MountainSearch.js";
-import MountainList from "../components/mountaionDetail/MountainList.js";
-import MountainCard from "../components/mountaionDetail/MountainCard.js";
+import MountainSearch from "../components/mountainDetail/MountainSearch.js";
+import MountainList from "../components/mountainDetail/MountainList.js";
+import MountainCard from "../components/mountainDetail/MountainCard.js";
 
 function MountainDetailPage() {
   const [isModal, setIsModal] = useState(false);
