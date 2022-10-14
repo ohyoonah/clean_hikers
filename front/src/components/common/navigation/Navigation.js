@@ -1,120 +1,82 @@
-import React, { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Layout, Menu, Divider } from "antd";
-import { theme } from "../styles/palette";
+import React, { useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Layout, Menu } from "antd";
 import { ROUTES } from "../../../enum/routes";
 import { UserStateContext, DispatchContext } from "../../../App";
+import {
+  HeaderLight,
+  LogoWrapper,
+  LogoImage,
+  NavMenu,
+  ProfileIcon,
+} from "./NavigationStyled";
 
 function Navigation() {
-  const { Header } = Layout;
-
-  const userState = useContext(UserStateContext);
   const navigate = useNavigate();
   const location = useLocation();
 
+  const userState = useContext(UserStateContext);
+  const dispatch = useContext(DispatchContext);
+
   const isLogin = !!userState.user;
 
-  useEffect(() => {
-    console.log(userState);
-  }, [userState]);
+  const items = [
+    {
+      label: "홈",
+      key: ROUTES.HOME,
+    },
+    {
+      label: "산찾기",
+      key: ROUTES.MOUNTAIN.DETAIL,
+    },
+    {
+      label: "커뮤니티",
+      key: ROUTES.COMMUNITY.ROOT,
+    },
+    !isLogin && {
+      label: "로그인",
+      key: ROUTES.USER.LOGIN,
+    },
+    isLogin && {
+      label: <ProfileIcon src="/profilecircle.svg" width="45px" />,
+      key: "sub menu",
+      children: [
+        {
+          label: "마이페이지",
+          key: ROUTES.USER.USER_PAGE,
+        },
+        { type: "divider" },
+        {
+          label: "로그아웃",
+          key: "logout",
+        },
+      ],
+    },
+  ];
 
-  const HeaderLight = styled(Header)`
-    background-color: white;
-    border-bottom: 1px solid #f0f0f0;
-  `;
-
-  const IconMenu = styled(Menu.SubMenu)`
-    & .ant-menu-item-icon {
-      margin-bottom: 4px;
+  async function onClick(e) {
+    if (e.key == "logout") {
+      sessionStorage.removeItem("userToken");
+      await dispatch({ type: "LOGOUT" });
+      navigate(ROUTES.HOME);
+    } else if (e.key != "sub menu") {
+      navigate(e.key);
     }
-  `;
-
-  const NavMenu = styled(Menu)`
-    display: flex;
-    justify-content: end;
-    font-size: 16px;
-    align-items: center;
-
-    & > .ant-menu-item-selected a,
-    & > .ant-menu-item a:hover {
-      color: ${theme.naturalGreen};
-      font-weight: 700;
-    }
-
-    & .ant-menu-item::after,
-    .ant-menu-submenu::after {
-      border: none !important;
-    }
-  `;
-
-  const NavSubMenuItem = styled(Menu.Item)`
-    & .ant-menu-title-content,
-    & .ant-menu-title-content a {
-      color: rgba(0, 0, 0, 0.85);
-      background-color: transparent;
-    }
-  `;
-
-  const LogoWrapper = styled.div`
-    float: left;
-    width: 180px;
-    height: 44px;
-    cursor: pointer;
-  `;
-
-  const LogoImage = styled.img`
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
-    padding: 4px 10px 8px 0;
-  `;
-
-  function logout() {}
+  }
 
   return (
     <Layout>
       <HeaderLight>
-        <Link to={ROUTES.HOME}>
-          <LogoWrapper>
-            <LogoImage src="/Logo.png" />
-          </LogoWrapper>
-        </Link>
-        <NavMenu mode="horizontal" selectedKeys={location.pathname}>
-          <Menu.Item key={ROUTES.HOME}>
-            <Link to={ROUTES.HOME}>
-              <span>홈</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key={ROUTES.MOUNTAIN.DETAIL}>
-            <Link to={ROUTES.MOUNTAIN.DETAIL}>
-              <span>산찾기</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key={ROUTES.COMMUNITY.ROOT}>
-            <Link to={ROUTES.COMMUNITY.ROOT}>
-              <span>커뮤니티</span>
-            </Link>
-          </Menu.Item>
-          {isLogin ? (
-            <IconMenu
-              key="SubMenu"
-              icon={<img src="/profilecircle.svg" width="45px" />}
-            >
-              <NavSubMenuItem key="mypage">
-                <Link to={ROUTES.USER.USER_PAGE}>마이페이지</Link>
-              </NavSubMenuItem>
-              <Menu.Divider />
-              <NavSubMenuItem>
-                <span onClick={logout}>로그아웃</span>
-              </NavSubMenuItem>
-            </IconMenu>
-          ) : (
-            <Menu.Item key="login">
-              <Link to={ROUTES.USER.LOGIN}>로그인</Link>
-            </Menu.Item>
-          )}
-        </NavMenu>
+        <LogoWrapper onClick={() => navigate(ROUTES.HOME)}>
+          <LogoImage src="/Logo.png" />
+        </LogoWrapper>
+        <NavMenu
+          mode="horizontal"
+          selectedKeys={location.pathname}
+          items={items}
+          onClick={onClick}
+          triggerSubMenuAction="click"
+        ></NavMenu>
       </HeaderLight>
     </Layout>
   );
