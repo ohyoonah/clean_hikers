@@ -12,7 +12,7 @@ const List = styled.div`
   /* Display & Box Model */
   display: grid;
   grid-template-columns: 40% 40% 20%;
-  width: 800px;
+  width: 80%;
   height: 50px;
   padding: 0px 30px;
   border: 1px solid rgb(220, 220, 220);

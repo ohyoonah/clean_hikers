@@ -12,7 +12,7 @@ const Main = styled.form`
   justify-content: center;
   grid-template-columns: 1fr 1fr 3fr 1fr;
   grid-column-gap: 15px;
-  width: 800px;
+  width: 80%;
   padding: 15px;
   border-radius: 20px;
   margin: 0 auto;
