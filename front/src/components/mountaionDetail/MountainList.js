@@ -1,6 +1,7 @@
 /* 국립공원 리스트 */
 import styled from "styled-components";
 import MountainDetail from "./MountainDetail.js";
+import { LowLevel, MiddelLevel, HighLevel } from "../common/level/Level";
 
 const List = styled.div`
   /* Display & Box Model */
@@ -32,6 +33,17 @@ const List = styled.div`
 `;
 
 function MountainList({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
+  function PrintLevel() {
+    let result;
+    if (value.level == "하") {
+      result = <LowLevel />;
+    } else if (value.level == "중") {
+      result = <MiddelLevel />;
+    } else if (value.level == "상") {
+      result = <HighLevel />;
+    }
+    return result;
+  }
   return (
     <div>
       {MOUNTAIN.map((v, index) => {
@@ -48,13 +60,17 @@ function MountainList({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
               </div>
               <div style={{ textAlign: "start" }}>{v.location}</div>
               <div style={{ textAlign: "end" }}>
-                <b>난이도</b> {v.level}
+                <b>난이도 </b> <PrintLevel />
               </div>
             </List>
           </div>
         );
       })}
-      {isModal ? <MountainDetail setIsModal={setIsModal} value={value} /> : <></>}
+      {isModal ? (
+        <MountainDetail isModal={isModal} setIsModal={setIsModal} value={value} />
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

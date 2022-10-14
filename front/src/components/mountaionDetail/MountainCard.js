@@ -61,7 +61,7 @@ function MountainCard({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
         setValue(v);
       }}
     >
-      <Img src={v.src} />
+      <Img src={v.img} />
       <H3>{v.name}</H3>
       <div>{v.location}</div>
     </Card>

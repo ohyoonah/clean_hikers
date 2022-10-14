@@ -1,4 +1,3 @@
-import { Button } from "antd";
 import { NonIconBlueBtnStyled, NonIconGreenBtnStyled } from "./NonIconBtnStyled";
 
 function NonIconBlueBtn({ text }) {

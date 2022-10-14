@@ -7,6 +7,7 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { Button, Row, Tabs } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { NonIconGreenBtn } from "../common/button/NonIconBtn";
+import { LowLevel, MiddelLevel, HighLevel } from "../common/level/Level";
 
 const Modal = styled.div`
   /* Positioning */
@@ -28,18 +29,15 @@ const Modal = styled.div`
   /* Color */
   background-color: white;
 `;
+
 const ModalBackground = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(200, 200, 200, 0.5);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  /* backdrop-filter: blur(1px); */
 `;
 
 const Detail = styled.div`
-  /* Display & Box Model */
-
   /* Text */
   text-align: left;
 `;
@@ -70,7 +68,7 @@ const H1 = styled.h1`
 function MountainDetailPage({ mountainName, setIsModal, value }) {
   useEffect(() => {
     document.body.style.cssText = `
-      position: fixed; 
+      position: fixed;
       top: -${window.scrollY}px;
       overflow-y: scroll;
       width: 100%;`;
@@ -80,9 +78,22 @@ function MountainDetailPage({ mountainName, setIsModal, value }) {
       window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
     };
   }, []);
+
+  function PrintLevel() {
+    let result;
+    if (value.level == "하") {
+      result = <LowLevel />;
+    } else if (value.level == "중") {
+      result = <MiddelLevel />;
+    } else if (value.level == "상") {
+      result = <HighLevel />;
+    }
+    return result;
+  }
+
   return (
     <ModalBackground>
-      <Modal>
+      <Modal onClick={(e) => e.stopPropagation()}>
         <Detail>
           <Row justify="end">
             <ClosedBtn
@@ -96,7 +107,8 @@ function MountainDetailPage({ mountainName, setIsModal, value }) {
           <H1>{value.name}</H1>
           <b>위치</b> {value.location}
           <br />
-          <b>난이도</b> {value.level}
+          <b>난이도 </b>
+          <PrintLevel />
         </Detail>
 
         <Tabs defaultActiveKey="1" centered>
