@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const Main = styled.div`
   /* Display & Box Model */
-  width: 800px;
+  width: 80%;
   height: fit-content;
   padding-bottom: 70px;
   border: 0px solid black;
@@ -61,7 +61,7 @@ function MountainCard({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
         setValue(v);
       }}
     >
-      <Img src={v.src} />
+      <Img src={v.img} />
       <H3>{v.name}</H3>
       <div>{v.location}</div>
     </Card>
