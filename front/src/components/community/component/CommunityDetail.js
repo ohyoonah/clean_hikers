@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import {
   CommunityDetailAlign,
   CommunityDetailStyled,
@@ -11,12 +11,19 @@ import { Avatar, Button, Card, Col, Row } from "antd";
 import Meta from "antd/lib/card/Meta";
 import { NonIconBlueBtn } from "../../common/button/NonIconBtn";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
+import CommentList from "./CommentList";
 
-function CommunityDetail({ post, handleRemove }) {
-  const [data, setData] = useState(initialState.users);
+function CommunityDetail({ handleRemove }) {
+  const [datas, setData] = useState(initialState.users);
   const { no } = useParams();
-  const OnRemove = () => {
-    handleRemove(post.no);
+  const navigate = useNavigate();
+
+  const handleDelete = async function () {
+    handleRemove();
+    if (window.confirm("해당 게시물을 삭제하시겠습니까?")) {
+      alert("삭제가 완료되었습니다.");
+      return navigate(-1);
+    }
   };
 
   useEffect(() => {
@@ -29,31 +36,27 @@ function CommunityDetail({ post, handleRemove }) {
         <Col>
           <Button
             onClick={() => {
-              OnRemove(post.no);
+              handleDelete();
             }}
           >
             삭제
           </Button>
-          <Button
-            onClick={() => {
-              OnRemove(post.no);
-            }}
-          >
-            수정
-          </Button>
+          <Button onClick={() => {}}>수정</Button>
         </Col>
         <Row>
           <Col span={14}>
             <div className="community-detail-main">
-              <h1>{data.title}</h1>
+              <h1>{datas.title}</h1>
               <b>
                 {<Avatar size="small" icon={<UserOutlined />} />}
-                {data.userName}
+                {datas.userName}
               </b>
               <p>
-                {<EnvironmentOutlined />} {data.location}
+                {<EnvironmentOutlined />} {datas.location}
               </p>
-              <p className="community-detail-discription">{data.discription}</p>
+              <p className="community-detail-discription">
+                {datas.discription}
+              </p>
             </div>
           </Col>
           <Col span={7} push={2}>
@@ -85,13 +88,13 @@ function CommunityDetail({ post, handleRemove }) {
                     title={
                       <p>
                         {<EnvironmentOutlined />}
-                        {data.location}
+                        {datas.location}
                       </p>
                     }
                     description={
                       <p>
-                        {data.visitDate} <br />
-                        {data.visitMember} 자리 남음
+                        {datas.visitDate} <br />
+                        {datas.visitMember} 자리 남음
                       </p>
                     }
                   />
@@ -101,6 +104,7 @@ function CommunityDetail({ post, handleRemove }) {
             <NonIconBlueBtn text={"참여신청"}></NonIconBlueBtn>
           </Col>
         </Row>
+        <CommentList />
       </CommunityDetailAlign>
     </>
   );

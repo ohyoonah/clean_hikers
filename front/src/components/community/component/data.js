@@ -1,5 +1,3 @@
-import React from "react";
-
 const deadline = Date.now();
 
 const initialState = {
@@ -55,8 +53,8 @@ const initialState = {
       userName: "과자먹고싶다",
       title: "태백산 가실 분",
       discription:
-        "sapien, cursus in, hendrerit consectetuer, cursus et, magna. Praesent interdum",
-      location: "Ulster",
+        "We supply a series of design principles, practical patterns and highquality design resources (Sketch and Axure), to help people create theirproduct prototypes beautifully and efficiently.",
+      location: "태백산",
       visitDate: "2022년 10월 9일 (일), 오전 10시",
       visitMember: 2,
       state: "모집중",
