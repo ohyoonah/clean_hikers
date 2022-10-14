@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Divider } from "antd";
 import { theme } from "../styles/palette";
 import { ROUTES } from "../../../enum/routes";
 import { UserStateContext, DispatchContext } from "../../../App";
@@ -10,6 +10,7 @@ function Navigation() {
   const { Header } = Layout;
 
   const userState = useContext(UserStateContext);
+  const navigate = useNavigate();
   const location = useLocation();
 
   const isLogin = !!userState.user;
@@ -23,10 +24,17 @@ function Navigation() {
     border-bottom: 1px solid #f0f0f0;
   `;
 
+  const IconMenu = styled(Menu.SubMenu)`
+    & .ant-menu-item-icon {
+      margin-bottom: 4px;
+    }
+  `;
+
   const NavMenu = styled(Menu)`
     display: flex;
     justify-content: end;
     font-size: 16px;
+    align-items: center;
 
     & > .ant-menu-item-selected a,
     & > .ant-menu-item a:hover {
@@ -37,6 +45,14 @@ function Navigation() {
     & .ant-menu-item::after,
     .ant-menu-submenu::after {
       border: none !important;
+    }
+  `;
+
+  const NavSubMenuItem = styled(Menu.Item)`
+    & .ant-menu-title-content,
+    & .ant-menu-title-content a {
+      color: rgba(0, 0, 0, 0.85);
+      background-color: transparent;
     }
   `;
 
@@ -53,6 +69,8 @@ function Navigation() {
     object-fit: contain;
     padding: 4px 10px 8px 0;
   `;
+
+  function logout() {}
 
   return (
     <Layout>
@@ -79,11 +97,20 @@ function Navigation() {
             </Link>
           </Menu.Item>
           {isLogin ? (
-            <Menu.Item key={ROUTES.USER.USER_PAGE}>
-              <Link to={ROUTES.USER.USER_PAGE}>MYPAGE ICON</Link>
-            </Menu.Item>
+            <IconMenu
+              key="SubMenu"
+              icon={<img src="/profilecircle.svg" width="45px" />}
+            >
+              <NavSubMenuItem key="mypage">
+                <Link to={ROUTES.USER.USER_PAGE}>마이페이지</Link>
+              </NavSubMenuItem>
+              <Menu.Divider />
+              <NavSubMenuItem>
+                <span onClick={logout}>로그아웃</span>
+              </NavSubMenuItem>
+            </IconMenu>
           ) : (
-            <Menu.Item key={ROUTES.USER.LOGIN}>
+            <Menu.Item key="login">
               <Link to={ROUTES.USER.LOGIN}>로그인</Link>
             </Menu.Item>
           )}
