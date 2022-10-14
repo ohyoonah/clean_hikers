@@ -8,7 +8,7 @@ class userService{
         const user = await User.findByEmail({email})
         console.log(user)
         if(user) {
-            throw new Error('')
+            throw new Error('이미 존재하는 id 입니다')
         }
 
         const hashedPassword = await bcrypt.hash(password,10)
@@ -31,7 +31,8 @@ class userService{
             throw new Error('해당 유저는 존재하지 않습니다')
         }
         const correctPassword = userEmail.password
-        const isPasswordRight = bcrypt.compare(password, correctPassword)
+        const isPasswordRight = await bcrypt.compare(password, correctPassword)
+        console.log(isPasswordRight)
         if(!isPasswordRight){
             throw new Error('비밀번호가 틀렸습니다')
         }
@@ -54,9 +55,9 @@ class userService{
         }
     }
 
-    static async findCurrentUserData(userId){
+    static async findCurrentUserData(userID){
         try{
-            const currentUser = await User.findByID(userId)
+            const currentUser = await User.findByID(userID)
             if(!currentUser){
                 throw new Error('해당 유저는 존재하지 않습니다2')
             }
@@ -66,6 +67,63 @@ class userService{
         }
     }
 
+    static async findByEmail(userMail){
+        try{
+            const checkUser = await User.findByEmail({email:userMail})
+            if(!checkUser){
+                //null일 경우는 여기서 걸러버림
+                //null = 일치하는 유저가 없음
+                return true
+            }
+            else{
+                return false
+            }
+        }
+        catch(error){
+            throw error
+        }
+    }
+
+    static async changeUserNickname(userID, changeNickname){
+        try{
+            const currentUser = await User.findByIDandChangeNickname(userID, changeNickname)
+            if(!currentUser){
+                throw new Error('해당 유저는 존재하지 않습니다-nickname')
+            }
+            return currentUser
+        }
+        catch(error){
+            throw error
+        }
+    }
+
+    static async changeUserPassword(userID, changePassword){
+        try{
+            const encryptPassword = await bcrypt.hash(changePassword, 10)
+            const currentUser = await User.findByIDandChangePassword(userID, encryptPassword)
+            if(!currentUser){
+                throw new Error('해당 유저는 존재하지 않습니다-password')
+            }
+            return currentUser
+        }
+        catch(error){
+            throw error
+        }
+    }
+
+
+    static async changeUserImage(userID, imageString){
+        try{
+            const createImage = await User.findByIDandChangePhoto(userID, imageString)
+            if(!createImage){
+                throw new Error('해당 유저는 존재하지 않습니다')
+            }
+            return createImage
+        }
+        catch(error){
+            throw error
+        }
+    }
 }
 
 export  {userService}

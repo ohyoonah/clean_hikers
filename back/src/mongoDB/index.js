@@ -2,6 +2,7 @@ import { connect } from 'mongoose'
 import {User} from '../user/userModel.js'
 
 
+
 import * as dotenv from "dotenv";
 dotenv.config();
 const {MONGO_URI} = process.env
