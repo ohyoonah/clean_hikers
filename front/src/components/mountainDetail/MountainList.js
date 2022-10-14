@@ -2,7 +2,12 @@
 import styled from "styled-components";
 import MountainDetail from "./MountainDetail.js";
 import { LowLevel, MiddelLevel, HighLevel } from "../common/level/Level";
-
+import { Pagination } from "antd";
+const PaginationWrapper = styled(Pagination)`
+  /* Display & Box Model */
+  display: block;
+  text-align: center;
+`;
 const List = styled.div`
   /* Display & Box Model */
   display: grid;
@@ -65,6 +70,12 @@ function MountainList({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
           </div>
         );
       })}
+      <PaginationWrapper
+        defaultCurrent={1}
+        total={36}
+        defaultPageSize={5}
+        showSizeChanger={false}
+      />
       {isModal ? (
         <MountainDetail isModal={isModal} setIsModal={setIsModal} value={value} />
       ) : (
