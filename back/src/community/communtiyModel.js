@@ -1,4 +1,4 @@
-import { PostModel } from "./communitySchema.js";
+import { PostModel } from "./postSchema.js";
 import { CommentModel } from "./commentSchema.js";
 import { PersonModel } from "./personSchema.js";
 
@@ -111,9 +111,9 @@ class Comment {
         return updatedComment;
     }
 
-    static async deleteByCommentId({ Comment_id }) {
+    static async deleteByCommentId({ comment_id }) {
         const comment = await CommentModel.deleteOne({
-            Comment_id: Comment_id,
+            comment_id: comment_id,
         });
         return comment;
     }

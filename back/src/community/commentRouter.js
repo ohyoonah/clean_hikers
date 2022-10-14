@@ -1,10 +1,9 @@
 import is from "@sindresorhus/is";
 import { Router } from "express";
-import { postService } from "./communityService.js";
+import { commentService } from "./communityService.js";
 import { ErrorMessage } from "../middlewares/errorMiddleware.js";
 
 const commentRouter = Router();
-// const postService = postService;
 
 // 댓글 추가
 commentRouter.post("/post/comment", async function (req, res, next) {
@@ -15,10 +14,8 @@ commentRouter.post("/post/comment", async function (req, res, next) {
             );
         }
 
-        const newComment = await postService.addComment(req.body);
-        // const post = await postService.getAPosts(req.body.post_id);
-        // post.comments.push(newComment);
-        // console.log(req.body);
+        const newComment = await commentService.addComment(req.body);
+
         ErrorMessage(newComment);
         res.status(201).json(newComment);
     } catch (error) {
@@ -30,7 +27,7 @@ commentRouter.post("/post/comment", async function (req, res, next) {
 commentRouter.get("/posts/comments/:post_id", async function (req, res, next) {
     try {
         const post_id = req.params.post_id;
-        const comments = await postService.getComments({ post_id });
+        const comments = await commentService.getComments({ post_id });
 
         ErrorMessage(comments);
         res.status(200).send(comments);
@@ -47,7 +44,8 @@ commentRouter.put(
             const comment_id = req.params.comment_id;
 
             const toUpdate = req.body;
-            const updatedComment = await postService.setComment({
+
+            const updatedComment = await commentService.setComment({
                 comment_id,
                 toUpdate,
             });
@@ -66,7 +64,7 @@ commentRouter.delete(
     async function (req, res, next) {
         try {
             const comment_id = req.params.comment_id;
-            const comments = await postService.deleteComment({ comment_id });
+            const comments = await commentService.deleteComment({ comment_id });
 
             ErrorMessage(comments);
             res.send("삭제가 완료되었습니다.");

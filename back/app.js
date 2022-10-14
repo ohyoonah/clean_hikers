@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import { commentRouter } from "./src/community/commentRouter.js";
-import { postRouter } from "./src/community/communityRouter.js";
+import { postRouter } from "./src/community/postRouter.js";
 import { personRouter } from "./src/community/personRouter.js";
 import { errorMiddleware } from "./src/middlewares/errorMiddleware.js";
 

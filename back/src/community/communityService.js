@@ -90,7 +90,7 @@ class postService {
 
     static async getAPosts({ post_id }) {
         const posts = await Post.findOne({ post_id });
-        // console.log(posts);
+
         return posts;
     }
 
@@ -182,7 +182,9 @@ class postService {
 
         return posts;
     }
+}
 
+class commentService {
     static async addComment({
         post_id,
         user_id,
@@ -204,22 +206,47 @@ class postService {
         const createdNewComment = await Comment.create({ newComment });
 
         const toUpdate = await postService.getAPosts({ post_id });
-        console.log("post불러옴 =>", toUpdate);
-        console.log("comment", newComment);
+
         toUpdate.comment.push(newComment);
-        // console.log("comment 추가함", toUpdate);
+
         const createPostComment = await postService.setPost({
             post_id,
             toUpdate,
         });
 
+        createdNewComment.errorMessage = null;
 
-        return createPostComment;
+        return createdNewComment;
     }
 
     static async getComments({ post_id }) {
         const comments = await Comment.findByPostId({ post_id });
         return comments;
+    }
+
+    static async deleteComment({ comment_id }) {
+        let comments = await Comment.findByCommentId({ comment_id });
+        // console.log("삭제할 댓글", comments);
+        const post_id = comments.post_id;
+
+        if (!comments) {
+            const errorMessage = "내역이 없습니다. 다시 한 번 확인해 주세요.";
+            return { errorMessage };
+        }
+        comments = await Comment.deleteByCommentId({ comment_id });
+        // console.log("삭제된 댓글", comment_id);
+        const newComments = await Comment.findByPostId({ post_id });
+        // console.log("댓글 리스트", newComments);
+        const twoUpdate = await postService.getAPosts({ post_id });
+
+        twoUpdate.comment = newComments;
+        // console.log("새로 출력되야 할", twoUpdate);
+        const createPostComment = await postService.setPost({
+            post_id,
+            toUpdate: twoUpdate,
+        });
+        // console.log("출력된", createPostComment);
+        return newComments;
     }
 
     static async setComment({ comment_id, toUpdate }) {
@@ -260,8 +287,29 @@ class postService {
             });
         }
 
+        const post_id = comment.post_id;
+
+        const twoUpdate = await postService.getAPosts({ post_id });
+
+        const newComment = twoUpdate.comment;
+
+        let beingcomment = newComment.find((item) => {
+            return item.comment_id == comment_id;
+        });
+
+        const idx = newComment.indexOf(beingcomment);
+
+        newComment.splice(idx, 1, comment);
+
+        twoUpdate.comment = newComment;
+
+        const createPostComment = await postService.setPost({
+            post_id,
+            toUpdate: twoUpdate,
+        });
+
         return comment;
     }
 }
 
-export { postService, personService };
+export { postService, commentService, personService };
