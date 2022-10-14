@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import { theme } from "../styles/palette";
+import { ROUTES } from "../../../enum/routes";
 // import { UserStateContext, DispatchContext } from "../App";
 
 function Navigation() {
@@ -22,7 +23,8 @@ function Navigation() {
   const isLogin = false;
 
   const NavMenu = styled(Menu)`
-    float: right;
+    display: flex;
+    justify-content: end;
     font-size: 16px;
 
     & > .ant-menu-item-selected a,
@@ -37,16 +39,7 @@ function Navigation() {
     }
   `;
 
-  const NavLink = styled(Link)`
-    box-sizing: border-box;
-    display: inline-block;
-    color: #000;
-    &:hover {
-      color: #9ac355;
-    }
-  `;
-
-  const Logo = styled.div`
+  const LogoWrapper = styled.div`
     float: left;
     width: 180px;
     height: 44px;
@@ -60,6 +53,15 @@ function Navigation() {
     padding: 4px 10px 8px 0;
   `;
 
+  const NavLink = styled(Link)`
+    box-sizing: border-box;
+    display: inline-block;
+    color: #000;
+    &:hover {
+      color: #9ac355;
+    }
+  `;
+
   function handleClick() {
     console.log(homeMenu.current);
     homeMenu.current.click();
@@ -69,23 +71,23 @@ function Navigation() {
     <Layout>
       <HeaderLight>
         <Link to="/">
-          <Logo onClick={handleClick}>
+          <LogoWrapper onClick={handleClick}>
             <LogoImage src="/Logo.png" />
-          </Logo>
+          </LogoWrapper>
         </Link>
         <NavMenu mode="horizontal" defaultSelectedKeys={["1"]}>
           <Menu.Item key="1">
-            <Link to="/" ref={homeMenu}>
+            <Link to={ROUTES.HOME} ref={homeMenu}>
               <span>홈</span>
             </Link>
           </Menu.Item>
           <Menu.Item key="2">
-            <Link to="/detail">
+            <Link to={ROUTES.MOUNTAIN.DETAIL}>
               <span>산찾기</span>
             </Link>
           </Menu.Item>
           <Menu.Item key="3">
-            <Link to="/community">
+            <Link to={ROUTES.COMMUNITY.ROOT}>
               <span>커뮤니티</span>
             </Link>
           </Menu.Item>
@@ -93,7 +95,7 @@ function Navigation() {
             {isLogin ? (
               <Link to="/users/:userId">MYPAGE ICON</Link>
             ) : (
-              <Link to="/login">로그인</Link>
+              <Link to={ROUTES.USER.LOGIN}>로그인</Link>
             )}
           </Menu.Item>
         </NavMenu>
