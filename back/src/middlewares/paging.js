@@ -1,6 +1,6 @@
-const paging =  (page, totalPost) => {
-    const maxPost = 10; // 한 페이지의 게시물 량
-    const maxPage = 10; // 총 보여줄 페이지 량 > 나중에 데이터 보고 수정
+const paging =  (page, totalPost,maxPost,maxPage) => {
+    const maxPost = maxPost; // 한 페이지의 게시물 량
+    const maxPage = maxPage; // 총 보여줄 페이지 량 > 나중에 데이터 보고 수정
     let currentPage = page ? parseInt(page) : 1; // 현재 페이지
     const hidePost = page === 1 ? 0 : (page - 1) * maxPost; // 
     const totalPage = Math.ceil(totalPost / maxPost); // (5)
