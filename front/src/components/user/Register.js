@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import * as api from "../../api/api";
 import { ROUTES } from "../../enum/routes";
@@ -16,8 +16,8 @@ function Register() {
     email: "",
     nickname: "",
     password: "",
+    checkPassword: "",
   });
-  const [checkPassword, setCheckPassword] = useState("");
   const [form] = Form.useForm();
 
   function onChange(e) {
@@ -26,10 +26,6 @@ function Register() {
       ...prev,
       [name]: value,
     }));
-  }
-
-  function handleChange(e) {
-    setCheckPassword(e.target.value);
   }
 
   async function onFinish() {
@@ -44,6 +40,50 @@ function Register() {
     }
   }
 
+  const validateEmail = useCallback((_, value) => {
+    if (!value) {
+      return Promise.reject(new Error("이메일을 입력해 주세요."));
+    }
+    const regExp =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!value.match(regExp)) {
+      return Promise.reject(new Error("이메일 형식이 올바르지 않습니다."));
+    }
+    return Promise.resolve();
+  }, []);
+
+  const validateNickName = useCallback((_, value) => {
+    if (!value) {
+      return Promise.reject(new Error("닉네임을 입력해 주세요."));
+    }
+    if (/\s/.test(value)) {
+      return Promise.reject(new Error("닉네임은 공백을 포함 할 수 없습니다."));
+    }
+    const regExp = /^[A-Za-z0-9]{2,}$/;
+    if (!regExp.test(value)) {
+      return Promise.reject(
+        new Error("닉네임은 두 자 이상 열 자 이하로 입력해 주세요.")
+      );
+    }
+    return Promise.resolve();
+  }, []);
+
+  const validatePassword = useCallback((_, value) => {
+    if (!value) {
+      return Promise.reject(new Error("비밀번호를 입력해 주세요."));
+    }
+    const regExp =
+      /^[A-Za-z0-9`~!@#\$%\^&\*\(\)\{\}\[\]\-_=\+\\|;:'"<>,\./\?]{8,16}$/;
+    if (!regExp.test(value)) {
+      return Promise.reject(
+        new Error(
+          "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
+        )
+      );
+    }
+    return Promise.resolve();
+  }, []);
+
   return (
     <PageBlock>
       <FormBlock form={form} onFinish={onFinish}>
@@ -52,20 +92,7 @@ function Register() {
           <span>회원가입을 위해 정보를 입력해 주세요.</span>
         </TitleBlock>
         <EmailBlock>
-          <Form.Item
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "이메일을 입력해 주세요.",
-              },
-              {
-                pattern:
-                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                message: "이메일 형식이 올바르지 않습니다.",
-              },
-            ]}
-          >
+          <Form.Item name="email" rules={[{ validator: validateEmail }]}>
             <InputBlock
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="Email"
@@ -80,20 +107,7 @@ function Register() {
         <span className="informationText">
           비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
         </span>
-        <Form.Item
-          name="nickname"
-          rules={[
-            {
-              required: true,
-              message: "닉네임을 입력해 주세요.",
-            },
-            {
-              min: 2,
-              message: "닉네임은 두 글자 이상 입력해 주세요.",
-            },
-            { whitespace: true, message: "닉네임은 공백 없이 입력해 주세요." },
-          ]}
-        >
+        <Form.Item name="nickname" rules={[{ validator: validateNickName }]}>
           <InputBlock
             prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="Nickname"
@@ -102,21 +116,7 @@ function Register() {
             onChange={onChange}
           />
         </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "비밀번호를 입력해 주세요.",
-            },
-            {
-              pattern:
-                /^[A-Za-z0-9`~!@#\$%\^&\*\(\)\{\}\[\]\-_=\+\\|;:'"<>,\./\?]{8,16}$/,
-              message:
-                "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.",
-            },
-          ]}
-        >
+        <Form.Item name="password" rules={[{ validator: validatePassword }]}>
           <InputBlock
             prefix={<LockOutlined className="site-form-item-icon" />}
             placeholder="Password"
@@ -147,8 +147,8 @@ function Register() {
             placeholder="Check Password"
             type="password"
             name="checkPassword"
-            value={checkPassword}
-            onChange={handleChange}
+            value={formValue.checkPassword}
+            onChange={onChange}
           />
         </Form.Item>
         <ButtonBlock htmlType="submit">회원가입</ButtonBlock>

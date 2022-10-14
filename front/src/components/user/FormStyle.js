@@ -36,6 +36,9 @@ export const FormBlock = styled(Form)`
   .toRegister {
     margin-bottom: 5rem;
   }
+  .error {
+    color: red;
+  }
 `;
 
 export const TitleBlock = styled.div`

@@ -1,19 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Profile from "./Profile";
 import ProfileEdit from "./ProfileEdit";
 import UserPostList from "./UserPostList";
+import * as api from "../../api/api";
 
 import { TabBlock } from "./TabStyle";
 
 function Users() {
-  const [user, setUser] = useState({
-    nickname: "ohyoonah",
-    password: 123456789,
-    checkPassword: 123456789,
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/e/e9/Felis_silvestris_silvestris_small_gradual_decrease_of_quality.png",
-  });
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    async function getUserData() {
+      try {
+        await api.get("user/userPage").then((res) =>
+          setUser({
+            nickname: res.data.nickname,
+            password: res.data.password,
+            checkPassword: res.data.password,
+            image: "",
+          })
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    getUserData();
+  }, []);
 
   const [isEdit, setIsEdit] = useState(false);
   const items = [
