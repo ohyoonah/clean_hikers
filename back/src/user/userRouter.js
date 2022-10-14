@@ -20,11 +20,10 @@ userRouter.post('/register', async function (req,res,next){
     }
 })
 
-userRouter.post('/emailCheck', async function(req,res,next){
+userRouter.post('/email-check', async function(req,res,next){
     try{
         const checkEmail = req.body.email
         const isEmailExist = await userService.findByEmail(checkEmail)
-
         if(isEmailExist){
             res.status(201).json({"message" : "사용할 수 있는 이메일입니다"})
         }
@@ -40,18 +39,15 @@ userRouter.post('/emailCheck', async function(req,res,next){
 userRouter.post('/login', async function (req,res,next){
     try{const email = req.body.email
     const password = req.body.password
-
     const login = await userService.login({email, password})
-
     res.status(201).json({jwt : login})
 }catch(error){
     next(error)
 }   
 })
 
-userRouter.get('/userPage',loginRequired,async function (req,res,next){
+userRouter.get('/user-page',loginRequired,async function (req,res,next){
     try{
-        
         const id = req.loginedUser.id
         const currentUser = await userService.findCurrentUserData(id)
         res.status(201).json(currentUser)
@@ -61,7 +57,7 @@ userRouter.get('/userPage',loginRequired,async function (req,res,next){
     }
 })
 
-userRouter.put('/fixNickName',loginRequired, async function(req,res,next){
+userRouter.put('/nickname',loginRequired, async function(req,res,next){
     try{
         const id = req.loginedUser.id
         const nickname = req.body.nickname
@@ -72,13 +68,25 @@ userRouter.put('/fixNickName',loginRequired, async function(req,res,next){
     }
 })
 
-userRouter.put('/fixPassword',loginRequired, async function(req,res,next){
+userRouter.put('/password',loginRequired, async function(req,res,next){
     try{
         const id = req.loginedUser.id
         const password = req.body.password
         const currentUser = await  userService.changeUserPassword(id,password)
         res.status(201).json(currentUser)
     }catch(error){
+        next(error)
+    }
+})
+
+userRouter.put('/picture',loginRequired,async function(req,res,next){
+    try{
+        const id = req.loginedUser.id
+        const image = req.body.image
+        const currentUser = await userService.changeUserImage(id,image)
+        res.status(201).json(currentUser)
+    }
+    catch(error){
         next(error)
     }
 })

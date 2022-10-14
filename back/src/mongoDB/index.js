@@ -1,5 +1,5 @@
 import { connect } from 'mongoose'
-import {User} from '../user/model/userModel.js'
+import {User} from '../user/userModel.js'
 
 
 

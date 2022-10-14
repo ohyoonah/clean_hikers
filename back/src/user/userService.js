@@ -8,7 +8,7 @@ class userService{
         const user = await User.findByEmail({email})
         console.log(user)
         if(user) {
-            throw new Error('')
+            throw new Error('이미 존재하는 id 입니다')
         }
 
         const hashedPassword = await bcrypt.hash(password,10)
@@ -112,14 +112,18 @@ class userService{
     }
 
 
-    // static async createImage(userID, imageString){
-    //     try{
-    //         const create
-    //     }
-    //     catch(error){
-    //         throw error
-    //     }
-    // }
+    static async changeUserImage(userID, imageString){
+        try{
+            const createImage = await User.findByIDandChangePhoto(userID, imageString)
+            if(!createImage){
+                throw new Error('해당 유저는 존재하지 않습니다')
+            }
+            return createImage
+        }
+        catch(error){
+            throw error
+        }
+    }
 }
 
 export  {userService}

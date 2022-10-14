@@ -1,4 +1,4 @@
-import { UserModel } from '../schema/userSchema.js';
+import { UserModel } from './userSchema.js';
 
 class   User {
     //추후 해당하는 기능 추가 예정
@@ -15,6 +15,12 @@ class   User {
         return findUser
     }
 
+    static async findByID(id){
+        const findUser = await UserModel.findOne({id : id})
+        console.log("findUser 결과",findUser)
+        return findUser
+    }
+
     static async findByIDandChangeNickname(userID, changingData){
         const filter = {
             id : userID
@@ -22,7 +28,7 @@ class   User {
         const update = {
             nickname : changingData
         }
-        const changedUser = await UserModel.findOneAndUpdate(filter, update, {new : true})
+        const changedUser = await UserModel.findOneAndUpdate(filter, update)
         console.log('Nickname changed : ',changedUser.nickname)
         return changedUser
     }
@@ -35,12 +41,22 @@ class   User {
             password : changingData
         }
 
-        //공식문서에선 object를 반환해주는게 아니라 document를 반환해주는 것이기 때문에 뒤에 new option을 넣어야한다고 하는데
-        //이게 무슨 의미인지 명확하게 이해가 안됨(document?)
-        //https://mongoosejs.com/docs/tutorials/findoneandupdate.html
-        const changedUser = await UserModel.findOneAndUpdate(filter, update, {new : true})
+        const changedUser = await UserModel.findOneAndUpdate(filter, update)
         console.log('password changed : ',changedUser.password)
         return changedUser
+    }
+
+    static async findByIDandChangePhoto(userID, image){
+        const filter = {
+            id : userID
+        }
+        const update = {
+            defaultImage : image
+        }
+
+        const changedImage = await UserModel.findOneAndUpdate(filter, update)
+        console.log('image changed' , changedImage.defaultImage)
+        return changedImage
     }
 }
 

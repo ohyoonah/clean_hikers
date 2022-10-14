@@ -29,9 +29,8 @@ const UserSchema = new Schema(
       default : false
     },
     defaultImage:{
-      type : Boolean,
-      required : true,
-      default : false
+      type : String,
+      default : null
     }
   },
   {
