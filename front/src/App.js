@@ -40,7 +40,6 @@ function App() {
           payload: currentUser,
         });
         console.log("로그인 상태");
-        console.log(currentUser);
       });
     } catch (e) {
       console.log("로그아웃 상태");
