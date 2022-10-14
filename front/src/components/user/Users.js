@@ -13,7 +13,7 @@ function Users() {
   useEffect(() => {
     async function getUserData() {
       try {
-        await api.get("user/userPage").then((res) =>
+        await api.get("user/user-page").then((res) =>
           setUser({
             nickname: res.data.nickname,
             password: res.data.password,

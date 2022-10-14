@@ -7,7 +7,6 @@ import { message, Form, Input } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 function ProfileEdit({ setIsEdit, user, setUser }) {
-  const { nickname, password, checkPassword, image } = user;
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(user.image);
   const [form] = Form.useForm();

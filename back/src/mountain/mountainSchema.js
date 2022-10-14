@@ -1,36 +1,33 @@
 import { Schema, model } from 'mongoose';
 
-const UserSchema = new Schema(
+const MountainSchema = new Schema(
   {
     id: {
       type: String,
       required: true,
     },
-    email: {
+    name: {
       type: String,
       required: true,
     },
-    nickname: {
+    latitude: {
       type: String,
       required: true,
     },
-    password: {
+    longitude: {
       type: String,
       required: true,
     },
-    description: {
+    location: {
       type: String,
-      required: false,
-      default: "설명이 아직 없습니다. 추가해 주세요.",
+      required: true,
     },
-    deleted : {
-      type : Boolean,
-      required : true,
-      default : false
-    },
-    defaultImage:{
+    level : {
       type : String,
-      default : null
+      required : true,
+    },
+    image:{
+      type : String,
     }
   },
   {
@@ -38,6 +35,6 @@ const UserSchema = new Schema(
   }
 );
 
-const UserModel = model("User", UserSchema);
+const MountainModel = model("User", MountainSchema);
 
-export  {UserModel}
+export  {MountainModel}

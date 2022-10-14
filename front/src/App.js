@@ -34,7 +34,7 @@ function App() {
 
   async function fetchCurrentUser() {
     try {
-      await api.get("user/userPage").then((res) => {
+      await api.get("user/user-page").then((res) => {
         const currentUser = res.data;
         dispatch({
           type: "LOGIN_SUCCESS",
