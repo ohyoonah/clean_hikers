@@ -29,6 +29,10 @@ export const Title = styled(Row)`
 
 export const Text = styled(Row)`
   color: #d9dbe1;
+
+  & > a {
+    color: #d9dbe1;
+  }
 `;
 
 export { Col };

@@ -10,6 +10,7 @@ import {
 
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../../enum/routes";
+import KakaoShare from "./share/KakaoShare";
 
 function Footer() {
   return (
@@ -22,19 +23,19 @@ function Footer() {
       </Col>
       <Col span={6}>
         <Title>Site Map</Title>
-        <Link to={ROUTES.HOME}>
-          <Text>홈</Text>
-        </Link>
-        <Link to={ROUTES.MOUNTAIN.DETAIL}>
-          <Text>산찾기</Text>
-        </Link>
-        <Link to={ROUTES.COMMUNITY.ROOT}>
-          <Text>커뮤니티</Text>
-        </Link>
+        <Text>
+          <Link to={ROUTES.HOME}>홈 </Link>
+        </Text>
+        <Text>
+          <Link to={ROUTES.MOUNTAIN.DETAIL}>산찾기 </Link>
+        </Text>
+        <Text>
+          <Link to={ROUTES.COMMUNITY.ROOT}>커뮤니티 </Link>
+        </Text>
       </Col>
       <Col span={6}>
         <Title>Share</Title>
-        <Text>공유하기 버튼</Text>
+        <KakaoShare />
       </Col>
     </FooterWrapper>
   );
