@@ -2,9 +2,7 @@ import styled from "styled-components";
 import { theme } from "../styles/palette";
 import { Layout, Menu } from "antd";
 
-const { Header } = Layout;
-
-export const HeaderLight = styled(Header)`
+export const HeaderLight = styled(Layout.Header)`
   background-color: white;
   border-bottom: 1px solid #f0f0f0;
 `;
@@ -52,3 +50,5 @@ export const ProfileIcon = styled.img`
   width: 45px;
   padding-bottom: 4px;
 `;
+
+export { Layout };

@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Layout, Menu } from "antd";
 import { ROUTES } from "../../../enum/routes";
 import { UserStateContext, DispatchContext } from "../../../App";
 import {
@@ -65,20 +64,18 @@ function Navigation() {
   }
 
   return (
-    <Layout>
-      <HeaderLight>
-        <LogoWrapper onClick={() => navigate(ROUTES.HOME)}>
-          <LogoImage src="/Logo.png" />
-        </LogoWrapper>
-        <NavMenu
-          mode="horizontal"
-          selectedKeys={location.pathname}
-          items={items}
-          onClick={onClick}
-          triggerSubMenuAction="click"
-        ></NavMenu>
-      </HeaderLight>
-    </Layout>
+    <HeaderLight>
+      <LogoWrapper onClick={() => navigate(ROUTES.HOME)}>
+        <LogoImage src="/Logo.png" />
+      </LogoWrapper>
+      <NavMenu
+        mode="horizontal"
+        selectedKeys={location.pathname}
+        items={items}
+        onClick={onClick}
+        triggerSubMenuAction="click"
+      ></NavMenu>
+    </HeaderLight>
   );
 }
 
