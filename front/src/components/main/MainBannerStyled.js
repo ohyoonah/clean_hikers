@@ -5,8 +5,8 @@ import { theme } from "../common/styles/palette";
 // Main Banner Style
 export const Box = styled.div`
   max-width: 100%;
-  height: 860px;
-  padding-top: 196px;
+  height: 1000px;
+  padding-top: 200px;
   background: url("/backgroundImage.png") no-repeat bottom;
   background-size: contain;
   background-color: #e2efff;
