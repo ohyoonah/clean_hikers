@@ -99,10 +99,6 @@ class postService {
         return posts;
     }
 
-    // static async putCommentPost() {
-    //     cont posts = await Post.
-    // }
-
     static async setPost({ post_id, toUpdate }) {
         let post = await Post.findByPostId({ post_id });
 
@@ -207,7 +203,6 @@ class postService {
 
         const createdNewComment = await Comment.create({ newComment });
 
-        // const toUpdate = { comment: createdNewComment };
         const toUpdate = await postService.getAPosts({ post_id });
         console.log("post불러옴 =>", toUpdate);
         console.log("comment", newComment);
@@ -217,9 +212,7 @@ class postService {
             post_id,
             toUpdate,
         });
-        // console.log(createdNewComment);
 
-        createPostComment.errorMessage = null;
 
         return createPostComment;
     }
@@ -268,16 +261,6 @@ class postService {
         }
 
         return comment;
-    }
-
-    static async deleteComment({ comment_id }) {
-        let comments = await Comment.findByCommentId({ comment_id });
-        if (!comments) {
-            const errorMessage = "내역이 없습니다. 다시 한 번 확인해 주세요.";
-            return { errorMessage };
-        }
-        comments = await Comment.deleteByCommentId({ comment_id });
-        return comments;
     }
 }
 

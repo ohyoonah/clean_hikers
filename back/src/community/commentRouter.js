@@ -26,36 +26,6 @@ commentRouter.post("/post/comment", async function (req, res, next) {
     }
 });
 
-// function addComment(req) {
-//     const newComment = postService.addComment(req.body);
-//     return newComment;
-// }
-
-// async function postData() {
-//     return new Promise(
-//         commentRouter.post("/post/comment", function (req, res, next) {
-//             if (is.emptyObject(req.body)) {
-//                 throw new Error(
-//                     "headers의 Content-Type을 application/json으로 설정해주세요"
-//                 );
-//             }
-//             const addcomment = await addComment(req);
-//             const newComment = postService.addComment(req.body);
-//             console.log(newComment);
-//             ErrorMessage(newComment);
-//             res.status(201).json(newComment);
-//         })
-//     );
-// }
-
-// postData()
-//     .then(function (data) {
-//         // console.log(data);
-//     })
-//     .catch(function (err) {
-//         // console.log(err);
-//     });
-
 //댓글 조회
 commentRouter.get("/posts/comments/:post_id", async function (req, res, next) {
     try {

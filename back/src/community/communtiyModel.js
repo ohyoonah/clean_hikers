@@ -20,13 +20,6 @@ class Post {
 
     static async findOne({ post_id }) {
         const post = await PostModel.findOne({ post_id: post_id });
-        // .populate({
-        //     path: "comment",
-        //     populate: {
-        //         path: "post_id",
-        //     },
-        // });
-        // console.log(post);
         return post;
     }
 
