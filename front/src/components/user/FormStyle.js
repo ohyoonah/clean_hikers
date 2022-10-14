@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { theme } from "../common/styles/palette";
 import { Form } from "antd";
 
 export const PageBlock = styled.div`
   width: 100%;
   height: 100vh;
+  position: relative;
   background: url("./backgroundImage.png") no-repeat center;
   background-size: cover;
 `;
@@ -36,6 +36,9 @@ export const FormBlock = styled(Form)`
   .toRegister {
     margin-bottom: 5rem;
   }
+  .error {
+    color: red;
+  }
 `;
 
 export const TitleBlock = styled.div`
@@ -58,7 +61,7 @@ export const EmailBlock = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   .ant-form-item {
     margin-bottom: 0;
     width: 70%;
@@ -74,10 +77,8 @@ export const EmailBlock = styled.div`
     height: 50px;
     box-sizing: inherit;
     border-radius: 10px;
-    border: 1px solid ${theme.deepBlue};
     background: transparent;
-    color: ${theme.deepBlue};
-    margin-top: 1rem;
+    margin: 1rem 0 0 0;
     cursor: pointer;
   }
 `;

@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as api from "../../api/api";
 import { ROUTES } from "../../enum/routes";
+import {
+  validateEmail,
+  validatePassword,
+  validateNickName,
+} from "../../util/formValidation";
 
 import { PageBlock, FormBlock, TitleBlock, EmailBlock } from "./FormStyle";
 import { InputBlock, ButtonBlock } from "../common/form/FormStyled";
@@ -16,8 +21,9 @@ function Register() {
     email: "",
     nickname: "",
     password: "",
+    checkPassword: "",
   });
-  const [checkPassword, setCheckPassword] = useState("");
+  const [error, setError] = useState("");
   const [form] = Form.useForm();
 
   function onChange(e) {
@@ -28,19 +34,16 @@ function Register() {
     }));
   }
 
-  function handleChange(e) {
-    setCheckPassword(e.target.value);
-  }
-
   async function onFinish() {
     try {
       const res = await api.post("user/register", {
         ...formValue,
       });
-      alert(`${res.data.nickname}님 환영합니다`);
+      alert(`${res.data.nickname}님 환영합니다.`);
       navigate(ROUTES.USER.LOGIN);
     } catch (e) {
-      console.log(e);
+      console.log(e.response.data);
+      // setError(e.response.data);
     }
   }
 
@@ -51,21 +54,9 @@ function Register() {
           <h2>Sign Up</h2>
           <span>회원가입을 위해 정보를 입력해 주세요.</span>
         </TitleBlock>
+        <span className="error">{error}</span>
         <EmailBlock>
-          <Form.Item
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "이메일을 입력해 주세요.",
-              },
-              {
-                pattern:
-                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                message: "이메일 형식이 올바르지 않습니다.",
-              },
-            ]}
-          >
+          <Form.Item name="email" rules={[{ validator: validateEmail }]}>
             <InputBlock
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="Email"
@@ -80,20 +71,7 @@ function Register() {
         <span className="informationText">
           비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
         </span>
-        <Form.Item
-          name="nickname"
-          rules={[
-            {
-              required: true,
-              message: "닉네임을 입력해 주세요.",
-            },
-            {
-              min: 2,
-              message: "닉네임은 두 글자 이상 입력해 주세요.",
-            },
-            { whitespace: true, message: "닉네임은 공백 없이 입력해 주세요." },
-          ]}
-        >
+        <Form.Item name="nickname" rules={[{ validator: validateNickName }]}>
           <InputBlock
             prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="Nickname"
@@ -102,21 +80,7 @@ function Register() {
             onChange={onChange}
           />
         </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "비밀번호를 입력해 주세요.",
-            },
-            {
-              pattern:
-                /^[A-Za-z0-9`~!@#\$%\^&\*\(\)\{\}\[\]\-_=\+\\|;:'"<>,\./\?]{8,16}$/,
-              message:
-                "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.",
-            },
-          ]}
-        >
+        <Form.Item name="password" rules={[{ validator: validatePassword }]}>
           <InputBlock
             prefix={<LockOutlined className="site-form-item-icon" />}
             placeholder="Password"
@@ -147,8 +111,8 @@ function Register() {
             placeholder="Check Password"
             type="password"
             name="checkPassword"
-            value={checkPassword}
-            onChange={handleChange}
+            value={formValue.checkPassword}
+            onChange={onChange}
           />
         </Form.Item>
         <ButtonBlock htmlType="submit">회원가입</ButtonBlock>

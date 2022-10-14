@@ -8,6 +8,7 @@ import { UserOutlined } from "@ant-design/icons";
 
 function Profile({ setIsEdit, user }) {
   const { nickname, image } = user;
+
   return (
     <ProfileBlock>
       <h2>프로필</h2>
