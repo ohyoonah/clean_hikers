@@ -77,7 +77,11 @@ function MountainList({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
         showSizeChanger={false}
       />
       {isModal ? (
-        <MountainDetail isModal={isModal} setIsModal={setIsModal} value={value} />
+        <MountainDetail
+          isModal={isModal}
+          setIsModal={setIsModal}
+          value={value}
+        />
       ) : (
         <></>
       )}

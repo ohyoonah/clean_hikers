@@ -94,7 +94,11 @@ function MountainSearch() {
       </SelectWrapper>
 
       {/* 난이도선택 셀렉트 */}
-      <SelectWrapper bordered={false} defaultValue="난이도" onChange={(e) => setLevel(e)}>
+      <SelectWrapper
+        bordered={false}
+        defaultValue="난이도"
+        onChange={(e) => setLevel(e)}
+      >
         <Option value="high">상</Option>
         <Option value="middle">중</Option>
         <Option value="low">하</Option>

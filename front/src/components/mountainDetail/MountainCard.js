@@ -71,7 +71,11 @@ function MountainCard({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
     <Main>
       <H1>가장 쓰레기가 많은 산들이에요</H1>
       <Display>{CardList}</Display>
-      {isModal ? <MountainDetail setIsModal={setIsModal} value={value} /> : <></>}
+      {isModal ? (
+        <MountainDetail setIsModal={setIsModal} value={value} />
+      ) : (
+        <></>
+      )}
     </Main>
   );
 }
