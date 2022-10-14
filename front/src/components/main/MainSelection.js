@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserStateContext } from "../../App";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../enum/routes";
+
 import { Form } from "antd";
 import {
   FormWrapper,
@@ -7,13 +10,15 @@ import {
   DatePickerWrapper,
 } from "./MainBannerStyled";
 import { NonIconBlueBtnStyled } from "../common/button/NonIconBtnStyled";
-import { ROUTES } from "../../enum/routes";
 
 const { Option } = SelectWrapper;
 
 function MainSelection() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const userState = useContext(UserStateContext);
+
+  const isLogin = !!userState.user;
 
   const regions = [
     "서울",
@@ -33,10 +38,14 @@ function MainSelection() {
   const counts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   function onFinish(values) {
-    if (values["date"]) {
-      values["date"] = values["date"].format("YYYY-MM-DD");
+    if (isLogin) {
+      if (values["date"]) {
+        values["date"] = values["date"].format("YYYY-MM-DD");
+      }
+      navigate(ROUTES.COMMUNITY.COMMUNITY_CREATE, { state: values });
+    } else {
+      navigate(ROUTES.USER.LOGIN);
     }
-    navigate(ROUTES.COMMUNITY.COMMUNITY_CREATE, { state: values });
   }
 
   return (
