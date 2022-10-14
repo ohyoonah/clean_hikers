@@ -8,12 +8,10 @@ import {
   Col,
 } from "./FooterStyled";
 
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ROUTES } from "../../../enum/routes";
 
 function Footer() {
-  const navigate = useNavigate();
-
   return (
     <FooterWrapper>
       <Col span={12}>
@@ -24,9 +22,15 @@ function Footer() {
       </Col>
       <Col span={6}>
         <Title>Site Map</Title>
-        <Text onClick={() => navigate(ROUTES.HOME)}>홈</Text>
-        <Text onClick={() => navigate(ROUTES.MOUNTAIN.DETAIL)}>산찾기</Text>
-        <Text onClick={() => navigate(ROUTES.COMMUNITY.ROOT)}>커뮤니티</Text>
+        <Link to={ROUTES.HOME}>
+          <Text>홈</Text>
+        </Link>
+        <Link to={ROUTES.MOUNTAIN.DETAIL}>
+          <Text>산찾기</Text>
+        </Link>
+        <Link to={ROUTES.COMMUNITY.ROOT}>
+          <Text>커뮤니티</Text>
+        </Link>
       </Col>
       <Col span={6}>
         <Title>Share</Title>
