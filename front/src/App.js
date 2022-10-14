@@ -33,13 +33,14 @@ function App() {
 
   async function fetchCurrentUser() {
     try {
-      await api.get("user/userPage").then((res) => {
+      await api.get("user/user-page").then((res) => {
         const currentUser = res.data;
         dispatch({
           type: "LOGIN_SUCCESS",
           payload: currentUser,
         });
         console.log("로그인 상태");
+        console.log(currentUser);
       });
     } catch (e) {
       console.log("로그아웃 상태");
