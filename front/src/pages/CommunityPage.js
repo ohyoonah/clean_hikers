@@ -4,6 +4,8 @@ import initialState from "../components/community/component/data";
 
 function CommunityPage() {
   const [posts, setPosts] = useState([]);
+  const [tap, setTap] = useState("모집중");
+
   useEffect(() => {
     setPosts(initialState.users);
   }, []);
@@ -18,6 +20,8 @@ function CommunityPage() {
         posts={posts}
         setPosts={setPosts}
         handleRemove={handleRemove}
+        tap={tap}
+        setTap={setTap}
       />
     </>
   );
