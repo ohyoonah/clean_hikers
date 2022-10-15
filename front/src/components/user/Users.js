@@ -4,6 +4,7 @@ import Profile from "./Profile";
 import ProfileEdit from "./ProfileEdit";
 import UserPostList from "./UserPostList";
 import * as api from "../../api/api";
+import { HttpStatusCode } from "../../enum/httpStautsCode";
 
 import { TabBlock } from "./TabStyle";
 
@@ -13,16 +14,18 @@ function Users() {
   useEffect(() => {
     async function getUserData() {
       try {
-        await api.get("user/user-page").then((res) =>
+        const { data: currentUser, status } = await api.get("user/user-page");
+        if (status === HttpStatusCode.Created) {
+          const { nickname, password, defaultImage } = currentUser;
           setUser({
-            nickname: res.data.nickname,
-            password: res.data.password,
-            checkPassword: res.data.password,
-            image: "",
-          })
-        );
+            nickname,
+            password,
+            checkPassword: password,
+            image: defaultImage,
+          });
+        }
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     }
     getUserData();
