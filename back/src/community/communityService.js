@@ -234,6 +234,8 @@ class commentService {
         newComment.splice(idx, 1, comment);
 
         twoUpdate.comment = newComment;
+
+        return comment;
     }
 
     static async deleteComment({ comment_id }) {
@@ -281,6 +283,10 @@ class personService {
             toUpdate.person = people;
 
             toUpdate.count = people.length;
+
+            if (toUpdate.station == "모집완료") {
+                toUpdate.station = "모집중";
+            }
 
             // console.log("뺐어", toUpdate.count);
 
