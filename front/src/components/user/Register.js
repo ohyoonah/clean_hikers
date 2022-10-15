@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import * as api from "../../api/api";
 import { ROUTES } from "../../enum/routes";
 import {
   validateEmail,
   validatePassword,
   validateNickName,
 } from "../../util/formValidation";
+import { HttpStatusCode } from "../../enum/httpStautsCode";
+import * as api from "../../api/api";
 
 import { PageBlock, FormBlock, TitleBlock, EmailBlock } from "./FormStyle";
 import { InputBlock, ButtonBlock } from "../common/form/FormStyled";
 
 import { Form } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import "antd/dist/antd.css";
 
 function Register() {
   const navigate = useNavigate();
@@ -54,18 +54,21 @@ function Register() {
 
   async function onEmailCheck() {
     try {
-      const res = await api.post("user/email-check", {
+      const {
+        status,
+        data: { message },
+      } = await api.post("user/email-check", {
         email: formValue.email,
       });
-      if (res.status === 201) {
-        setFormValue({ ...formValue, error: res.data.message });
+      if (status === HttpStatusCode.Created) {
+        setFormValue((value) => ({ ...value, error: message }));
         setEmailCheck(true);
       }
-      if (res.status === 200) {
-        setFormValue({ ...formValue, error: res.data.message });
+      if (status === HttpStatusCode.Ok) {
+        setFormValue((value) => ({ ...value, error: message }));
       }
     } catch (e) {
-      console.log(e.response.data);
+      console.error(e);
     }
   }
 

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 
+import * as api from "../../api/api";
+
 import { ProfileBlock, UploadBlock } from "./ProfileStyle";
 import { ButtonBlock } from "../common/form/FormStyled";
 
 import { message, Form, Input } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import * as api from "../../api/api";
 
 function ProfileEdit({ setIsEdit, user, setUser }) {
   const [loading, setLoading] = useState(false);

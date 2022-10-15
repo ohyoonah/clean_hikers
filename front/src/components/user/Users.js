@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import Profile from "./Profile";
 import ProfileEdit from "./ProfileEdit";
 import UserPostList from "./UserPostList";
-import * as api from "../../api/api";
 import { HttpStatusCode } from "../../enum/httpStautsCode";
+import * as api from "../../api/api";
 
 import { TabBlock } from "./TabStyle";
 
