@@ -1,35 +1,32 @@
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Form } from "antd";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "antd/dist/antd.css";
+import * as api from "../../api/api";
+import { ROUTES } from "../../enum/routes";
 import {
-  PageBlock,
-  FormBlock,
-  ButtonBlock,
-  InputBlock,
-  TitleBlock,
-  EmailBlock,
-} from "./FormStyle";
+  validateEmail,
+  validatePassword,
+  validateNickName,
+} from "../../util/formValidation";
+
+import { PageBlock, FormBlock, TitleBlock, EmailBlock } from "./FormStyle";
+import { InputBlock, ButtonBlock } from "../common/form/FormStyled";
+
+import { Form } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import "antd/dist/antd.css";
 
 function Register() {
   const navigate = useNavigate();
   const [formValue, setFormValue] = useState({
     email: "",
-    username: "",
+    nickname: "",
     password: "",
     checkPassword: "",
+    error: "",
   });
+  const [emailCheck, setEmailCheck] = useState(false);
   const [form] = Form.useForm();
 
-  // const onChange = (key) => {
-  //   return (value) => {
-  //     setFormValue((prev) => ({
-  //       ...prev,
-  //       [key]: value,
-  //     }));
-  //   };
-  // };
   function onChange(e) {
     const { name, value } = e.currentTarget;
     setFormValue((prev) => ({
@@ -38,96 +35,81 @@ function Register() {
     }));
   }
 
-  async function onFinish(values) {
+  async function onFinish() {
+    if (emailCheck) {
+      try {
+        const res = await api.post("user/register", {
+          ...formValue,
+        });
+        alert(`${res.data.nickname}님 환영합니다.`);
+        navigate(ROUTES.USER.LOGIN);
+      } catch (e) {
+        console.log(e.response.data);
+        setEmailCheck(false);
+      }
+    } else {
+      setFormValue({ ...formValue, error: "이메일 중복확인을 해주세요." });
+    }
+  }
+
+  async function onEmailCheck() {
     try {
-      setFormValue({
-        email: "",
-        username: "",
-        password: "",
-        checkPassword: "",
+      const res = await api.post("user/email-check", {
+        email: formValue.email,
       });
-      // setFormValue(values);
-      navigate("/login");
+      if (res.status === 201) {
+        setFormValue({ ...formValue, error: res.data.message });
+        setEmailCheck(true);
+      }
+      if (res.status === 200) {
+        setFormValue({ ...formValue, error: res.data.message });
+      }
     } catch (e) {
-      console.log(e);
+      console.log(e.response.data);
     }
   }
 
   return (
     <PageBlock>
-      <FormBlock
-        form={form}
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-      >
+      <FormBlock form={form} onFinish={onFinish}>
         <TitleBlock>
           <h2>Sign Up</h2>
           <span>회원가입을 위해 정보를 입력해 주세요.</span>
         </TitleBlock>
+        <span className="error">{formValue.error}</span>
         <EmailBlock>
-          <Form.Item
-            name="email"
-            rules={[
-              {
-                reqired: true,
-                message: "이메일을 입력해 주세요!",
-              },
-              {
-                pattern:
-                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                message: "이메일 형식이 올바르지 않습니다!",
-              },
-            ]}
-          >
+          <Form.Item name="email" rules={[{ validator: validateEmail }]}>
             <InputBlock
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="Email"
+              name="email"
               value={formValue.email}
               onChange={onChange}
               className="registerEmail"
             />
           </Form.Item>
-          <button type="button">중복확인</button>
+          <ButtonBlock type="button" onClick={onEmailCheck}>
+            중복확인
+          </ButtonBlock>
         </EmailBlock>
         <span className="informationText">
           비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
         </span>
-        <Form.Item
-          name="username"
-          rules={[
-            {
-              required: true,
-              message: "이름을 입력해 주세요!",
-            },
-            {
-              min: 2,
-              message: "이름은 두 글자 이상 입력해 주세요!",
-            },
-            { whitespace: true, message: "이름은 공백 없이 입력해 주세요!" },
-          ]}
-        >
+        <Form.Item name="nickname" rules={[{ validator: validateNickName }]}>
           <InputBlock
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Username"
-            value={formValue.username}
+            placeholder="Nickname"
+            name="nickname"
+            value={formValue.nickname}
             onChange={onChange}
           />
         </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "비밀번호를 입력해 주세요!",
-            },
-          ]}
-        >
+        <Form.Item name="password" rules={[{ validator: validatePassword }]}>
           <InputBlock
             prefix={<LockOutlined className="site-form-item-icon" />}
             placeholder="Password"
             type="password"
+            name="password"
             value={formValue.password}
             onChange={onChange}
           />
@@ -138,13 +120,13 @@ function Register() {
           rules={[
             {
               required: true,
-              message: "비밀번호를 입력해 주세요!",
+              message: "비밀번호를 입력해 주세요.",
             },
             ({ getFieldValue }) => ({
               validator: (_, value) =>
                 !value || getFieldValue("password") === value
                   ? Promise.resolve()
-                  : Promise.reject(new Error("비밀번호가 일치하지 않습니다!")),
+                  : Promise.reject(new Error("비밀번호가 일치하지 않습니다.")),
             }),
           ]}
         >
@@ -152,6 +134,7 @@ function Register() {
             prefix={<LockOutlined className="site-form-item-icon" />}
             placeholder="Check Password"
             type="password"
+            name="checkPassword"
             value={formValue.checkPassword}
             onChange={onChange}
           />
