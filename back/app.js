@@ -4,6 +4,7 @@ import { userRouter } from "./src/user/userRouter.js";
 import { commentRouter } from "./src/community/commentRouter.js";
 import { postRouter } from "./src/community/postRouter.js";
 import { personRouter } from "./src/community/personRouter.js";
+import { mainRouter } from "./src/main/mainRouter.js"
 import { errorMiddleware } from "./src/middlewares/errorMiddleware.js";
 
 const app = express();
@@ -23,6 +24,7 @@ app.use("/user", userRouter);
 app.use("/community", postRouter);
 app.use("/community", commentRouter);
 app.use("/community", personRouter);
+app.use("/main", mainRouter)
 
 app.use(errorMiddleware);
 

@@ -1,6 +1,7 @@
 import { connect } from "mongoose";
 import { User } from "../user/userModel.js";
 import { Post, Comment } from "../community/communtiyModel.js";
+import {Main} from "../main/mainModel.js"
 
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -10,4 +11,4 @@ connect(MONGO_URI)
     .then(() => console.log("MongoDB와 연결에 성공했습니다"))
     .catch((error) => console.error(error));
 
-export { User, Post, Comment };
+export { User, Post, Comment, Main };
