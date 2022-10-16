@@ -1,4 +1,4 @@
-import {MountainModel} from './mountainSchema'
+import {MountainModel} from './mountainSchema.js'
 
 class Mountain {
     // static async read(data){

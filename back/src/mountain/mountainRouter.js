@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { userService } from './mountainService.js'
+import { mountainService } from './mountainService.js'
 
 const mountainRouter = Router()
 
@@ -12,7 +12,7 @@ mountainRouter.get('/basic-data', function(req,res,next){
         const currentPage = req.body.page
         const maxData = req.body.maxData
 
-        const readData = await 
+        // const readData = await 
     }
     catch(error){
         next(error)

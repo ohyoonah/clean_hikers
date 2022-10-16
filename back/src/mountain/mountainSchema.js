@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 const MountainSchema = new Schema(
+
   {
     id: {
       type: String,
@@ -10,6 +11,7 @@ const MountainSchema = new Schema(
       type: String,
       required: true,
     },
+
     latitude: {
       type: String,
       required: true,
@@ -22,23 +24,17 @@ const MountainSchema = new Schema(
       type: String,
       required: true,
     },
-    level : {
-      type : String,
-      required : true,
-    },
     image:{
       type : String,
+      default : null
     },
-    way : {
-        type : String,
-        enum : ['LineString']
-    }
   },
   {
     timestamps: true,
   }
+
 );
 
-const MountainModel = model("User", MountainSchema);
+const MountainModel = model("Mountain", MountainSchema);
 
 export  {MountainModel}

@@ -28,7 +28,7 @@ userRouter.post('/email-check', async function(req,res,next){
             res.status(201).json({"message" : "사용할 수 있는 이메일입니다"})
         }
         else{
-            res.status(201).json({"message" : "중복 된 이메일입니다"})
+            res.status(200).json({"message" : "중복 된 이메일입니다"})
         }
     }
     catch(error){
