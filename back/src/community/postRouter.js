@@ -1,5 +1,5 @@
 import is from "@sindresorhus/is";
-import { Router } from "express";
+import { query, Router, urlencoded } from "express";
 import { postService } from "./communityService.js";
 import { ErrorMessage } from "../middlewares/errorMiddleware.js";
 
@@ -37,12 +37,24 @@ postRouter.get("/posts/:user_id", async function (req, res, next) {
     }
 });
 
-//모든 게시글 조회
+// //모든 게시글 조회
+// postRouter.get("/postlist", async function (req, res, next) {
+//     try {
+//         const posts = await postService.getAllPosts();
+
+//         res.status(200).send(posts);
+//     } catch (error) {
+//         next(error);
+//     }
+// });
+
+//모든 게시글 조회 (5개씩 출력)
 postRouter.get("/postlist", async function (req, res, next) {
     try {
-        const posts = await postService.getAllPosts();
-        // console.log(req);
-        res.status(200).send(posts);
+        const send = req.query;
+        console.log(send);
+        const postList = await postService.getAllPosts(send);
+        res.status(200).send(postList);
     } catch (error) {
         next(error);
     }

@@ -45,11 +45,9 @@ const PostSchema = new Schema(
         },
         personnel: {
             type: Number,
-            required: true,
         },
         station: {
             type: String,
-            default: "모집중",
         },
         comment: [
             {
