@@ -1,6 +1,5 @@
 import { Post, Comment, User } from "../mongoDB/index.js";
 import { v4 } from "uuid";
-// import { ObjectID } from "bson";
 
 class postService {
     static async addPost({
@@ -51,9 +50,27 @@ class postService {
         return posts;
     }
 
-    static async getAllPosts() {
-        const posts = await Post.findAll();
-        return posts;
+    static async getAllPosts(send) {
+        const station = send.station;
+        const posts = await Post.findByStation({ station });
+
+        const page = Number(send.page || 1);
+        const perPage = Number(send.perPage || 5);
+
+        const total = posts.length;
+
+        const postsList = posts.sort((a, b) => {
+            if (a.createdAt > b.createdAt) {
+                return -1;
+            }
+        });
+        const totalPage = Math.ceil(total / perPage);
+        const perPostsList = postsList.slice(
+            perPage * (page - 1),
+            perPage * page
+        );
+        console.log(totalPage);
+        return perPostsList;
     }
 
     static async setPost({ post_id, toUpdate }) {
@@ -112,9 +129,9 @@ class postService {
             post = await Post.update({ post_id, fieldToUpdate, newValue });
         }
 
-        if (toUpdate.header) {
-            const fieldToUpdate = "header";
-            const newValue = toUpdate.header;
+        if (toUpdate.count) {
+            const fieldToUpdate = "count";
+            const newValue = toUpdate.count;
             post = await Post.update({ post_id, fieldToUpdate, newValue });
         }
 
@@ -234,6 +251,8 @@ class commentService {
         newComment.splice(idx, 1, comment);
 
         twoUpdate.comment = newComment;
+
+        return comment;
     }
 
     static async deleteComment({ comment_id }) {
@@ -265,8 +284,9 @@ class commentService {
 class personService {
     static async addPerson({ post_id, email }) {
         const post = await postService.getAPosts({ post_id });
+        const toUpdate = post;
 
-        const people = post.person;
+        const people = toUpdate.person;
 
         let beingPerson = people.find((item) => {
             return item.email == email;
@@ -277,9 +297,13 @@ class personService {
 
             people.splice(idx, 1);
 
-            post.person = people;
+            toUpdate.person = people;
 
-            const toUpdate = post;
+            toUpdate.count = people.length;
+
+            if (toUpdate.station == "모집완료") {
+                toUpdate.station = "모집중";
+            }
 
             const deletedBeingPerson = await postService.setPost({
                 post_id,
@@ -292,17 +316,36 @@ class personService {
 
             const toUpdate = await postService.getAPosts({ post_id });
 
-            if (newPerson !== null) {
+            if (toUpdate.count == toUpdate.personnel) {
+                const errorMessage = "모집 인원이 마감되었습니다.";
+                return { errorMessage };
+            } else {
                 toUpdate.person.push(newPerson);
+                toUpdate.count = toUpdate.person.length;
 
                 const createPostPerson = await postService.setPost({
                     post_id,
                     toUpdate,
                 });
 
-                createPostPerson.errorMessage = null;
+                if (parseInt(toUpdate.count) == toUpdate.personnel) {
+                    console.log("모집 인원이 마감되었습니다.");
 
-                return createPostPerson;
+                    toUpdate.station = "모집완료";
+
+                    const createPostPerson = await postService.setPost({
+                        post_id,
+                        toUpdate,
+                    });
+
+                    createPostPerson.errorMessage = null;
+
+                    return createPostPerson;
+                } else {
+                    createPostPerson.errorMessage = null;
+
+                    return createPostPerson;
+                }
             }
         }
     }
@@ -315,46 +358,6 @@ class personService {
         const people = post.person;
 
         return people;
-    }
-
-    static async deletePerson({ email, post_id }) {
-        let person = await User.findByEmail({ email });
-
-        if (!person) {
-            const errorMessage =
-                "참가 이력이 없습니다. 다시 한 번 확인해 주세요.";
-            return { errorMessage };
-        }
-
-        const post = await postService.getAPosts({ post_id });
-
-        const newPostPeople = post.person;
-
-        // console.log(newPostPeople);
-        console.log(email);
-        let toDeletePerson = newPostPeople.find((item) => {
-            return item == person;
-        });
-        // console.log(newPostPeople);
-
-        const idx = newPostPeople.indexOf(toDeletePerson);
-
-        console.log(idx);
-
-        newPostPeople.splice(idx, 1);
-
-        if (person !== null) {
-            post.person.push(newPostPeople);
-
-            const deletedPostPerson = await postService.setPost({
-                post_id,
-                toUpdate: post,
-            });
-        }
-
-        person.errorMessage = null;
-
-        return person;
     }
 }
 
