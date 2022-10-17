@@ -1,5 +1,5 @@
 import is from "@sindresorhus/is";
-import { query, Router, urlencoded } from "express";
+import { Router } from "express";
 import { postService } from "./communityService.js";
 import { ErrorMessage } from "../middlewares/errorMiddleware.js";
 

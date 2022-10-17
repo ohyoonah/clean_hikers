@@ -1,7 +1,5 @@
-import {MainModel} from './mainSchema.js'
+import { MainModel } from "./mainSchema.js";
 
-class  Main{
+class Main {}
 
-}
-
-export {Main}
+export { Main };
