@@ -13,13 +13,12 @@ import { NonIconBlueBtn } from "../../common/button/NonIconBtn";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import CommentList from "./CommentList";
 
-function CommunityDetail({ handleRemove }) {
+function CommunityDetail({ setPosts, posts }) {
   const [datas, setData] = useState(initialState.users);
   const { no } = useParams();
   const navigate = useNavigate();
 
   const handleDelete = async function () {
-    handleRemove();
     if (window.confirm("해당 게시물을 삭제하시겠습니까?")) {
       alert("삭제가 완료되었습니다.");
       return navigate(-1);
