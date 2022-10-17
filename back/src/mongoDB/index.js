@@ -10,6 +10,7 @@ const { MONGO_URI } = process.env;
 =======
 import { connect } from 'mongoose'
 import {User} from '../user/userModel.js'
+import {Mountain} from '../mountain/mountainModel.js'
 
 //ejs 모듈에서도 _dirname 사용하기 위한 코드
 import * as url from 'url';
@@ -29,4 +30,11 @@ connect(MONGO_URI)
     .then(() => console.log("MongoDB와 연결에 성공했습니다"))
     .catch((error) => console.error(error));
 
+<<<<<<< HEAD
 export { User, Post, Comment, Main };
+=======
+export {
+    User,
+    Mountain
+}
+>>>>>>> d2b4bb7928d77ee9e6c1ba54cfea855a76ec6378
