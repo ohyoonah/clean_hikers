@@ -20,7 +20,6 @@ function Login() {
     password: "",
   });
   const [form] = Form.useForm();
-  const [isLoading, setIsLoading] = useState(false);
 
   function onChange(e) {
     const { name, value } = e.currentTarget;
@@ -31,7 +30,6 @@ function Login() {
   }
 
   async function onFinish() {
-    setIsLoading(true);
     try {
       const res = await api.post("user/login", {
         ...formValue,
@@ -39,11 +37,10 @@ function Login() {
       const user = res.data;
       const jwtToken = user.jwt;
       sessionStorage.setItem("userToken", jwtToken);
-      await dispatch({
-        type: "LOGIN_SUCCESS",
+      dispatch({
+        type: "LOGGIN_SUCCESS",
         payload: user,
       });
-      setIsLoading(false);
       navigate(ROUTES.HOME);
     } catch (e) {
       console.log("로그인 실패", e.response.data);
@@ -51,9 +48,7 @@ function Login() {
     }
   }
 
-  return isLoading ? (
-    <Loading />
-  ) : (
+  return (
     <PageBlock>
       <FormBlock form={form} onFinish={onFinish}>
         <TitleBlock>
