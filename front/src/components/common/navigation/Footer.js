@@ -9,8 +9,10 @@ import {
 } from "./FooterStyled";
 
 import { Link } from "react-router-dom";
-import { ROUTES } from "../../../enum/routes";
 import KakaoShare from "./share/KakaoShare";
+import LinkShare from "./share/LinkShare";
+import { ROUTES } from "../../../enum/routes";
+import FacebookShare from "./share/FacebookShare";
 
 function Footer() {
   return (
@@ -19,10 +21,10 @@ function Footer() {
         <LogoWrapper>
           <LogoWhite src="/Logo.png" />
         </LogoWrapper>
-        <Text>Copyright © 2022 10점 만점에 10점. All rights reserved</Text>
+        <Text>Copyright © 2022 10점 만점에 10점. All rights reserved.</Text>
       </Col>
       <Col span={6}>
-        <Title>Site Map</Title>
+        <Title>사이트맵</Title>
         <Text>
           <Link to={ROUTES.HOME}>홈 </Link>
         </Text>
@@ -34,8 +36,10 @@ function Footer() {
         </Text>
       </Col>
       <Col span={6}>
-        <Title>Share</Title>
+        <Title>공유하기</Title>
         <KakaoShare />
+        <FacebookShare />
+        <LinkShare />
       </Col>
     </FooterWrapper>
   );

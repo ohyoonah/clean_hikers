@@ -13,29 +13,29 @@ import { NonIconBlueBtnStyled } from "../common/button/NonIconBtnStyled";
 
 const { Option } = SelectWrapper;
 
+const REGION_ARR = [
+  "서울",
+  "경기",
+  "인천",
+  "강원",
+  "충북",
+  "충남",
+  "경북",
+  "경남",
+  "전북",
+  "전남",
+  "부산",
+  "제주",
+];
+
+const COUNT_ARR = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
 function MainSelection() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const userState = useContext(UserStateContext);
 
   const isLogin = !!userState.user;
-
-  const regions = [
-    "서울",
-    "경기",
-    "인천",
-    "강원",
-    "충북",
-    "충남",
-    "경북",
-    "경남",
-    "전북",
-    "전남",
-    "부산",
-    "제주",
-  ];
-
-  const counts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   function onFinish(values) {
     if (isLogin) {
@@ -52,7 +52,7 @@ function MainSelection() {
     <FormWrapper form={form} onFinish={onFinish}>
       <Form.Item name="region">
         <SelectWrapper bordered={false} placeholder="지역">
-          {regions.map((region) => {
+          {REGION_ARR.map((region) => {
             return <Option key={region}>{region}</Option>;
           })}
         </SelectWrapper>
@@ -62,8 +62,8 @@ function MainSelection() {
       </Form.Item>
       <Form.Item name="count">
         <SelectWrapper bordered={false} placeholder="인원">
-          {counts.map((cnt) => {
-            return <Option key={cnt}>{cnt}명</Option>;
+          {COUNT_ARR.map((count) => {
+            return <Option key={count}>{count}명</Option>;
           })}
         </SelectWrapper>
       </Form.Item>
