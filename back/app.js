@@ -1,19 +1,11 @@
-<<<<<<< HEAD
 import cors from "cors";
 import express from "express";
 import { userRouter } from "./src/user/userRouter.js";
 import { commentRouter } from "./src/community/commentRouter.js";
 import { postRouter } from "./src/community/postRouter.js";
 import { personRouter } from "./src/community/personRouter.js";
-import { mainRouter } from "./src/main/mainRouter.js"
-=======
-import cors from "cors"
-import express from "express"
-const app = express()
-const port = 5000
-
-
->>>>>>> d2b4bb7928d77ee9e6c1ba54cfea855a76ec6378
+import { mainRouter } from "./src/main/mainRouter.js";
+import { mountainRouter } from "./src/mountain/mountainRouter.js";
 import { errorMiddleware } from "./src/middlewares/errorMiddleware.js";
 
 const app = express();
@@ -29,39 +21,12 @@ app.get("/", (req, res) => {
 });
 
 //라우터 추가
-<<<<<<< HEAD
 app.use("/user", userRouter);
 app.use("/community", postRouter);
 app.use("/community", commentRouter);
 app.use("/community", personRouter);
-app.use("/main", mainRouter)
-=======
-import {userRouter} from './src/user/userRouter.js'
-import { mountainRouter } from "./src/mountain/mountainRouter.js"
-
-
-app.use(cors())
-app.use(express.json()); 
-app.use(express.urlencoded( {extended : false } ));
-/*
-@swagger
-/product :
-    get:
-        tags:
-        -pro
-*/
-app.get('/', (req,res) => {
-    res.send('hello world')
-})
-
-app.use('/user', userRouter)
-<<<<<<< HEAD
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
->>>>>>> b94764a604fd582aac526096ba6a0e1cf1c0d066
-=======
-app.use('/mountain', mountainRouter)
->>>>>>> d2b4bb7928d77ee9e6c1ba54cfea855a76ec6378
+app.use("/main", mainRouter);
+app.use("/mountain", mountainRouter);
 
 app.use(errorMiddleware);
 
