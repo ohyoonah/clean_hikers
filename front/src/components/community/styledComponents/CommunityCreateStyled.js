@@ -1,9 +1,7 @@
-import { Col, Form } from "antd";
 import styled from "styled-components";
 
 const AllContentAlign = styled.div`
-  width: 80%;
-  justify-content: space-between;
+  width: 100%;
 `;
 const TitleAlign = styled.div``;
 

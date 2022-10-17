@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import "antd/dist/antd.css";
-import { theme, Pagination } from "antd";
 
 const CommunityItemStyled = styled.div`
   color: black;

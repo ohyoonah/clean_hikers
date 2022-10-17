@@ -1,8 +1,6 @@
-import { Card } from "antd";
-import React, { useEffect, useInsertionEffect, useState } from "react";
-import CommunityNavStyled, {
-  TabBlock,
-} from "../styledComponents/CommunityNavStyled";
+import { Card, Col, Row } from "antd";
+import React, { useState } from "react";
+import CommunityNavStyled from "../styledComponents/CommunityNavStyled";
 import CommunityItem from "./CommunityItem";
 import initialState from "./data";
 
@@ -56,21 +54,29 @@ function CommunityNav({ setPosts, posts, setViewPost }) {
     setActiveTabKey1(key);
   };
   return (
-    <CommunityNavStyled>
-      <Card
-        style={{
-          width: "100%",
-        }}
-        tabList={tabList}
-        activeTabKey={activeTabKey1}
-        onTabChange={(key) => {
-          onTab1Change(key);
-          setTabs(key);
-        }}
-      >
-        {contentList[activeTabKey1]}
-      </Card>
-    </CommunityNavStyled>
+    <>
+      <Row>
+        <Col span={2}></Col>
+        <Col span={20}>
+          <CommunityNavStyled>
+            <Card
+              style={{
+                width: "100%",
+              }}
+              tabList={tabList}
+              activeTabKey={activeTabKey1}
+              onTabChange={(key) => {
+                onTab1Change(key);
+                setTabs(key);
+              }}
+            >
+              {contentList[activeTabKey1]}
+            </Card>
+          </CommunityNavStyled>
+        </Col>
+        <Col span={2}></Col>
+      </Row>
+    </>
   );
 }
 
