@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../enum/routes";
 import {
   validateEmail,
+  validateEmailCheck,
   validatePassword,
   validateNickName,
 } from "../../util/formValidation";
 import { HttpStatusCode } from "../../enum/httpStautsCode";
+import { successMessage, errorMessage } from "../common/form/Message";
 import * as api from "../../api/api";
 
 import { PageBlock, FormBlock, TitleBlock, EmailBlock } from "./FormStyle";
@@ -22,7 +24,6 @@ function Register() {
     nickname: "",
     password: "",
     checkPassword: "",
-    error: "",
   });
   const [emailCheck, setEmailCheck] = useState(false);
   const [form] = Form.useForm();
@@ -41,16 +42,18 @@ function Register() {
         const res = await api.post("user/register", {
           ...formValue,
         });
-        alert(`${res.data.nickname}님 환영합니다.`);
+        successMessage(`${res.data.nickname}님 환영합니다`);
         navigate(ROUTES.USER.LOGIN);
       } catch (e) {
         console.log(e.response.data);
         setEmailCheck(false);
       }
     } else {
-      setFormValue({ ...formValue, error: "이메일 중복확인을 해주세요." });
+      errorMessage("이메일 중복확인을 해주세요");
     }
   }
+
+  const isEmailValid = validateEmailCheck(formValue.email);
 
   async function onEmailCheck() {
     try {
@@ -61,11 +64,11 @@ function Register() {
         email: formValue.email,
       });
       if (status === HttpStatusCode.Created) {
-        setFormValue((value) => ({ ...value, error: message }));
+        successMessage(message);
         setEmailCheck(true);
       }
       if (status === HttpStatusCode.Ok) {
-        setFormValue((value) => ({ ...value, error: message }));
+        errorMessage(message);
       }
     } catch (e) {
       console.error(e);
@@ -79,7 +82,6 @@ function Register() {
           <h2>Sign Up</h2>
           <span>회원가입을 위해 정보를 입력해 주세요.</span>
         </TitleBlock>
-        <span className="error">{formValue.error}</span>
         <EmailBlock>
           <Form.Item name="email" rules={[{ validator: validateEmail }]}>
             <InputBlock
@@ -91,14 +93,24 @@ function Register() {
               className="registerEmail"
             />
           </Form.Item>
-          <ButtonBlock type="button" onClick={onEmailCheck}>
+          <ButtonBlock
+            type="button"
+            onClick={onEmailCheck}
+            disabled={!isEmailValid}
+          >
             중복확인
           </ButtonBlock>
         </EmailBlock>
         <span className="informationText">
           비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
         </span>
-        <Form.Item name="nickname" rules={[{ validator: validateNickName }]}>
+        <Form.Item
+          name="nickname"
+          rules={[
+            { required: true, message: "닉네임을 입력해 주세요." },
+            { validator: validateNickName },
+          ]}
+        >
           <InputBlock
             prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="Nickname"

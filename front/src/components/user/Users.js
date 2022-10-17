@@ -16,11 +16,10 @@ function Users() {
       try {
         const { data: currentUser, status } = await api.get("user/user-page");
         if (status === HttpStatusCode.Created) {
-          const { nickname, password, defaultImage } = currentUser;
+          const { nickname, defaultImage } = currentUser;
           setUser({
             nickname,
-            password,
-            checkPassword: password,
+            password: "",
             image: defaultImage,
           });
         }
