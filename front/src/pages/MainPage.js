@@ -4,10 +4,10 @@ import DataBanner from "../components/main/DataBanner";
 
 function MainPage() {
   return (
-    <>
+    <div>
       <MainBanner />
       <DataBanner />
-    </>
+    </div>
   );
 }
 
