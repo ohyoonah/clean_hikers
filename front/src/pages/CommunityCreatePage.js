@@ -3,9 +3,9 @@ import CommunityCreate from "../components/community/component/CommunityCreate";
 
 function CommunityCreatePage() {
   return (
-    <div>
+    <>
       <CommunityCreate />
-    </div>
+    </>
   );
 }
 
