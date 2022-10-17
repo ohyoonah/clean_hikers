@@ -1,10 +1,13 @@
 import cors from "cors";
 import express from "express";
-import { userRouter } from "./src/user/userRouter.js";
-import { commentRouter } from "./src/community/commentRouter.js";
-import { postRouter } from "./src/community/postRouter.js";
-import { personRouter } from "./src/community/personRouter.js";
+const app = express();
+const port = 5000;
+//swagger.js에서 내용을 가져옴
+import { swaggerUi, specs } from "./swagger/swagger.js";
+
 import { errorMiddleware } from "./src/middlewares/errorMiddleware.js";
+//라우터 추가
+import { userRouter } from "./src/user/userRouter.js";
 
 app.use(cors());
 app.use(express.json());
