@@ -21,7 +21,10 @@ dotenv.config({ path: path.join(__dirname, "../../../.env") });
 
 // console.log(MONGO_URI);
 
-connect(MONGO_URI)
+connect(MONGO_URI, {
+    useNewUrlParser: "true",
+    useUnifiedTopology: "true",
+})
     .then(() => console.log("MongoDB와 연결에 성공했습니다"))
     .catch((error) => console.error(error));
 
