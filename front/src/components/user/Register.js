@@ -45,7 +45,7 @@ function Register() {
         successMessage(`${res.data.nickname}님 환영합니다`);
         navigate(ROUTES.USER.LOGIN);
       } catch (e) {
-        console.log(e.response.data);
+        console.error(e);
         setEmailCheck(false);
       }
     } else {
@@ -63,6 +63,7 @@ function Register() {
       } = await api.post("user/email-check", {
         email: formValue.email,
       });
+
       if (status === HttpStatusCode.Created) {
         successMessage(message);
         setEmailCheck(true);

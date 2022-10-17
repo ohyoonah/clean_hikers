@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { errorMessage } from "../common/form/Message";
 import * as api from "../../api/api";
 
-import { ProfileBlock, UploadBlock } from "./ProfileStyle";
+import { ProfileBlock } from "./ProfileStyle";
 import { ButtonBlock } from "../common/form/FormStyled";
 
-import { message, Form, Input, Button } from "antd";
+import { Form, Input, Button, Upload } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 function ProfileEdit({ setIsEdit, user, setUser }) {
@@ -21,14 +21,12 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
 
   function beforeUpload(file) {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-
     if (!isJpgOrPng) {
-      message.error("JPG/PNG 파일만 업로드 가능합니다!");
+      errorMessage("JPG/PNG 파일만 업로드 가능합니다");
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
-
     if (!isLt2M) {
-      message.error("2MB 이하의 파일만 업로드 가능합니다!");
+      errorMessage("2MB 이하의 파일만 업로드 가능합니다");
     }
     return isJpgOrPng && isLt2M;
   }
@@ -42,23 +40,20 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
       getBase64(info.file.originFileObj, (url) => {
         setLoading(false);
         setUser((user) => ({ ...user, image: url }));
+        changeImage(url);
       });
     }
   }
 
-  async function changeImage() {
+  async function changeImage(url) {
     try {
       await api.put("user/picture", {
-        image: user.image,
+        image: url,
       });
     } catch (e) {
       console.error(e);
     }
   }
-
-  useEffect(() => {
-    changeImage();
-  }, [onChangeImage]);
 
   async function deleteImage() {
     try {
@@ -87,10 +82,6 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
     }
   }
 
-  function onFinish() {
-    setIsEdit(false);
-  }
-
   async function changePassword() {
     const regExp =
       /^[A-Za-z0-9`~!@#\$%\^&\*\(\)\{\}\[\]\-_=\+\\|;:'"<>,\./\?]{8,16}$/;
@@ -109,11 +100,15 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
     }
   }
 
+  function onFinish() {
+    setIsEdit(false);
+  }
+
   return (
     <ProfileBlock>
       <h2>프로필 수정</h2>
       <Form form={form} initialValues={user}>
-        <UploadBlock
+        <Upload
           name="image"
           listType="picture-card"
           showUploadList={false}
@@ -128,30 +123,22 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
           ) : (
             <>{loading ? <LoadingOutlined /> : <PlusOutlined />}</>
           )}
-        </UploadBlock>
+        </Upload>
         {user.image && (
           <button type="button" className="delete" onClick={deleteImage}>
             기본이미지로 변경
           </button>
         )}
-
         <Form.Item colon={false} label="닉네임" name="nickname">
           <Input.Group>
             <Input
               name="nickname"
               value={user.nickname}
               onChange={(e) => {
-                setUser((prev) => {
-                  return { ...prev, nickname: e.target.value };
-                });
+                setUser((prev) => ({ ...prev, nickname: e.target.value }));
               }}
             />
-            <Button
-              className="submitButton"
-              type="primary"
-              htmlType="button"
-              onClick={changeNickname}
-            >
+            <Button className="submitButton" onClick={changeNickname}>
               저장
             </Button>
           </Input.Group>
@@ -161,16 +148,10 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
             <Input.Password
               value={user.password}
               onChange={(e) => {
-                setUser((prev) => {
-                  return { ...prev, password: e.target.value };
-                });
+                setUser((prev) => ({ ...prev, password: e.target.value }));
               }}
             />
-            <Button
-              className="submitButton"
-              type="primary"
-              onClick={changePassword}
-            >
+            <Button className="submitButton" onClick={changePassword}>
               저장
             </Button>
           </Input.Group>

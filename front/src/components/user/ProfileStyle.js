@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { theme } from "../common/styles/palette";
-import { Upload } from "antd";
 
 export const ProfileBlock = styled.div`
   height: 100%;
@@ -46,28 +45,16 @@ export const ProfileBlock = styled.div`
     left: -70px;
     font-weight: 700;
   }
-  .ant-form-item label {
-    margin: 0;
-  }
   .ant-input-group {
     display: flex;
   }
   .submitButton {
     background: ${theme.primary};
+    color: white;
     border: none;
   }
   .smallButton {
     margin-top: 3rem;
     margin-bottom: 5rem;
-  }
-  .error {
-    color: red;
-  }
-`;
-
-export const UploadBlock = styled(Upload)`
-  overflow: hidden;
-  img {
-    height: 100%;
   }
 `;
