@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navigation from "./components/common/navigation/Navigation";
 import Footer from "./components/common/navigation/Footer";
 import CommunityCreatePage from "./pages/CommunityCreatePage";
+import CommunityDetailPage from "./pages/CommunityDetailPage";
 import CommunityPage from "./pages/CommunityPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
@@ -33,7 +34,7 @@ function App() {
 
   async function fetchCurrentUser() {
     try {
-      await api.get("user/userPage").then((res) => {
+      await api.get("user/user-page").then((res) => {
         const currentUser = res.data;
         dispatch({
           type: "LOGIN_SUCCESS",
@@ -67,6 +68,10 @@ function App() {
               <Route
                 path={ROUTES.COMMUNITY.COMMUNITY_CREATE}
                 element={<CommunityCreatePage />}
+              />
+              <Route
+                path={ROUTES.COMMUNITY.COMMUNITY_DETAIL}
+                element={<CommunityDetailPage />}
               />
               <Route path={ROUTES.USER.LOGIN} element={<LoginPage />} />
               <Route path={ROUTES.USER.REGISTER} element={<RegisterPage />} />

@@ -3,6 +3,7 @@ export const ROUTES = {
   COMMUNITY: {
     ROOT: "/community",
     COMMUNITY_CREATE: "/community/communityCreate",
+    COMMUNITY_DETAIL: "/community/communityDetail/:no",
   },
   USER: {
     LOGIN: "/login",

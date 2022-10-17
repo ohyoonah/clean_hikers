@@ -8,6 +8,8 @@ const RecruitBlueBtnAlign = styled.div`
 `;
 
 const CommunityPagenationStyled = styled.div`
+  padding: 50px 20px;
+
   .ant-pagination-item-active a {
     color: #89a550;
     border: none;
@@ -24,4 +26,17 @@ const CommunityListAlign = styled.div`
   text-align: center;
 `;
 
-export { RecruitBlueBtnAlign, CommunityPagenationStyled, CommunityListAlign };
+const CommunityItemStyled = styled.div`
+  color: black;
+  .writer-user-name {
+    display: flex;
+    justify-content: end;
+  }
+`;
+
+export {
+  RecruitBlueBtnAlign,
+  CommunityPagenationStyled,
+  CommunityListAlign,
+  CommunityItemStyled,
+};
