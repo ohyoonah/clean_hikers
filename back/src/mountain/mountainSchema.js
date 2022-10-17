@@ -11,6 +11,10 @@ const MountainSchema = new Schema(
       type: String,
       required: true,
     },
+    trash:{
+      type : String,
+      required : true,
+    },
 
     latitude: {
       type: String,
@@ -20,8 +24,12 @@ const MountainSchema = new Schema(
       type: String,
       required: true,
     },
-    location: {
+    address: {
       type: String,
+      required: true,
+    },
+    difficulty:{
+      type:String,
       required: true,
     },
     image:{
