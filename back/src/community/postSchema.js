@@ -39,15 +39,15 @@ const PostSchema = new Schema(
                 // ref: "Person",
             },
         ],
-        count: [],
+        count: {
+            type: String,
+            required: false,
+        },
         personnel: {
             type: Number,
-            required: true,
         },
         station: {
             type: String,
-            emum: ["모집중", "모집완료"],
-            default: "모집중",
         },
         comment: [
             {
