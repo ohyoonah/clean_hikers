@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   CommunityDetailAlign,
   CommunityDetailStyled,
@@ -12,9 +12,10 @@ import Meta from "antd/lib/card/Meta";
 import { NonIconBlueBtn } from "../../common/button/NonIconBtn";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import CommentList from "./CommentList";
+import * as api from "../../../api/api";
 
-function CommunityDetail({ setPosts, posts }) {
-  const [datas, setData] = useState(initialState.users);
+function CommunityDetail() {
+  const [datas, setDatas] = useState([]);
   const { no } = useParams();
   const navigate = useNavigate();
 
@@ -25,10 +26,23 @@ function CommunityDetail({ setPosts, posts }) {
     }
   };
 
-  useEffect(() => {
-    setData(initialState.users[no]);
-  }, []);
+  // useEffect(() => {
+  //   setData(initialState.users[no]);
+  // }, []);
 
+  useEffect(() => {
+    // setData(initialState.users[no]);
+    async function getCommunityDetailDdata() {
+      try {
+        await api
+          .get(`post/:post_id`)
+          .then((res) => (setDatas(res.data), console.log(res.data)));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    getCommunityDetailDdata();
+  }, []);
   return (
     <>
       <CommunityDetailAlign>

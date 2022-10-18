@@ -9,7 +9,6 @@ import CommunityPage from "./pages/CommunityPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import MountainDetailPage from "./pages/MountainDetailPage";
-import MountainSearchPage from "./pages/MountainSearchPage";
 import RegisterPage from "./pages/RegisterPage";
 import UserPage from "./pages/UserPage";
 import Loading from "./components/common/loading/Loading";
@@ -84,14 +83,7 @@ function App() {
               <Route path={ROUTES.USER.LOGIN} element={<LoginPage />} />
               <Route path={ROUTES.USER.REGISTER} element={<RegisterPage />} />
               <Route path={ROUTES.USER.USER_PAGE} element={<UserPage />} />
-              <Route
-                path={ROUTES.MOUNTAIN.DETAIL}
-                element={<MountainDetailPage />}
-              />
-              <Route
-                path={ROUTES.MOUNTAIN.SEARCH}
-                element={<MountainSearchPage />}
-              />
+              <Route path={ROUTES.MOUNTAIN.DETAIL} element={<MountainDetailPage />} />
             </Routes>
             <Footer />
           </Router>

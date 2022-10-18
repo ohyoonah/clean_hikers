@@ -1,7 +1,8 @@
-import { Pagination, Row } from "antd";
+import { Col, Pagination, Row } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { RecruitBlueBtn } from "../../common/button/IconBtn";
+import BottomNavigation from "../../common/navigation/BottomNavigation";
 
 import {
   RecruitBlueBtnAlign,
@@ -26,11 +27,7 @@ function CommunityList({ posts, setPosts }) {
         setPosts={setPosts}
         setViewPost={setViewPost}
       />
-      <CommunityListAlign>
-        <CommunityPagenationStyled>
-          <Pagination size="small" total={50} />
-        </CommunityPagenationStyled>
-      </CommunityListAlign>
+      <BottomNavigation />
     </div>
   );
 }
