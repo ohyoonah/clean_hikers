@@ -124,8 +124,9 @@ function MountainDetailPage({ mountainName, setIsModal, detail }) {
           <H1>{detail.name}</H1>
           <b>위치</b> {detail.address}
           <br />
-          <b>난이도 </b>
-          <Level value={detail} />
+          <b>등산 난이도 </b> <Level difficulty={detail.difficulty} />
+          <br />
+          <b>연간 쓰레기 처리량 </b> {Number(detail.trash).toFixed(1)}톤
         </Detail>
         <Tabs items={items} centered />
         <Row justify="center" style={{ paddingTop: "30px" }}>
