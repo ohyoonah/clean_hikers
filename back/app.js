@@ -7,6 +7,7 @@ import { postRouter } from "./src/community/postRouter.js";
 import { personRouter } from "./src/community/personRouter.js";
 import { mainRouter } from "./src/main/mainRouter.js";
 import { mountainRouter } from "./src/mountain/mountainRouter.js";
+import { locationRouter } from "./src/community/locationRouter.js";
 import { errorMiddleware } from "./src/middlewares/errorMiddleware.js";
 const app = express();
 
@@ -25,6 +26,7 @@ app.use("/user", userRouter);
 app.use("/community", postRouter);
 app.use("/community", commentRouter);
 app.use("/community", personRouter);
+app.use("/community", locationRouter);
 app.use("/main", mainRouter);
 app.use("/mountain", mountainRouter);
 

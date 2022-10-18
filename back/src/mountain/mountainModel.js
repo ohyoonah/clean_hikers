@@ -1,9 +1,6 @@
 import { MountainModel } from "./mountainSchema.js";
 
 class Mountain {
-    // static async read(data){
-    //     const
-    // }
     static async totalMountainData() {
         const totalData = await MountainModel.countDocuments({});
         return totalData;

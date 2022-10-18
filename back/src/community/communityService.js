@@ -1,4 +1,4 @@
-import { Post, Comment, User } from "../mongoDB/index.js";
+import { Post, Comment, User, Mountain } from "../mongoDB/index.js";
 import { v4 } from "uuid";
 
 class postService {
@@ -16,6 +16,7 @@ class postService {
         location,
     }) {
         const post_id = v4();
+        const [locationDetail] = await Mountain.findData(location, null, null);
 
         const newPost = {
             post_id,
@@ -29,7 +30,7 @@ class postService {
             station,
             comment,
             count,
-            location,
+            location: locationDetail,
         };
 
         const createdNewPost = await Post.create({ newPost });
@@ -45,32 +46,82 @@ class postService {
     }
 
     static async getAPosts({ post_id }) {
-        const posts = await Post.findOne({ post_id });
-
+        const posts = await Post.findByPostId({ post_id });
+        // console.log(post_id);
         return posts;
     }
 
     static async getAllPosts(send) {
-        const station = send.station;
-        const posts = await Post.findByStation({ station });
+        if (send.station == undefined) {
+            if (send.location == undefined) {
+                const posts = await Post.findAll();
+                const page = Number(send.page || 1);
+                const perPage = Number(send.perPage || 5);
 
-        const page = Number(send.page || 1);
-        const perPage = Number(send.perPage || 5);
+                const total = posts.length;
+                console.log(send);
+                const postsList = posts.sort((a, b) => {
+                    if (a.createdAt > b.createdAt) {
+                        return -1;
+                    }
+                });
+                const totalPage = Math.ceil(total / perPage);
+                const allPostsList = postsList.slice(
+                    perPage * (page - 1),
+                    perPage * page
+                );
 
-        const total = posts.length;
+                return allPostsList;
+            } else {
+                const location = send.location;
 
-        const postsList = posts.sort((a, b) => {
-            if (a.createdAt > b.createdAt) {
-                return -1;
+                const [locationDetail] = await Mountain.findData(
+                    location,
+                    null,
+                    null
+                );
+
+                const posts = await Post.findByLocation({ locationDetail });
+                const page = Number(send.page || 1);
+                const perPage = Number(send.perPage || 5);
+                console.log("게시글", posts);
+
+                const total = posts.length;
+                console.log(send);
+                const postsList = posts.sort((a, b) => {
+                    if (a.createdAt > b.createdAt) {
+                        return -1;
+                    }
+                });
+                const totalPage = Math.ceil(total / perPage);
+                const allPostsList = postsList.slice(
+                    perPage * (page - 1),
+                    perPage * page
+                );
+
+                return allPostsList;
             }
-        });
-        const totalPage = Math.ceil(total / perPage);
-        const perPostsList = postsList.slice(
-            perPage * (page - 1),
-            perPage * page
-        );
-        console.log(totalPage);
-        return perPostsList;
+        } else {
+            const station = send.station;
+            const posts = await Post.findByStation({ station });
+            const page = Number(send.page || 1);
+            const perPage = Number(send.perPage || 5);
+
+            const total = posts.length;
+
+            const postsList = posts.sort((a, b) => {
+                if (a.createdAt > b.createdAt) {
+                    return -1;
+                }
+            });
+            const totalPage = Math.ceil(total / perPage);
+            const allPostsList = postsList.slice(
+                perPage * (page - 1),
+                perPage * page
+            );
+
+            return allPostsList;
+        }
     }
 
     static async setPost({ post_id, toUpdate }) {
@@ -361,4 +412,41 @@ class personService {
     }
 }
 
-export { postService, commentService, personService };
+class locationService {
+    // static async addLocation({ query }) {
+    //     const mountainName = query.mountain || null;
+    //     const mountainLocation = query.location || null;
+    //     const mountainDifficulty = query.level || null;
+    //     console.log(mountainName, mountainLocation, mountainDifficulty);
+    //     const Location = await Mountain.findData(
+    //         mountainName,
+    //         mountainLocation,
+    //         mountainDifficulty
+    //     );
+
+    //     const toUpdate = await postService.getAPosts({ post_id });
+
+    //     toUpdate.comment.push(newComment);
+
+    //     const createPostComment = await postService.setPost({
+    //         post_id,
+    //         toUpdate,
+    //     });
+
+    //     createdNewComment.errorMessage = null;
+
+    //     return createdNewComment;
+    // }
+
+    static async getData() {
+        const data = await Mountain.findData();
+        // console.log("data", data);
+        return data;
+    }
+
+    static async detailLocation() {
+        const data = await Mountain.findData();
+    }
+}
+
+export { postService, commentService, personService, locationService };
