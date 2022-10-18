@@ -21,4 +21,14 @@ mountainRouter.get("/detail", async function (req, res, next) {
     }
 });
 
+
+mountainRouter.get("/most-garbage",async function(req,res,next){
+    try{
+        const result = await mountainService.readDataBasedGarbage();
+
+        res.status(200).json(result)
+    }catch(error){
+        next(error)
+    }
+})
 export { mountainRouter };
