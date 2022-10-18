@@ -9,17 +9,27 @@ import {
 } from "../styledComponents/CommunityCreateStyled";
 import { RegisterBtnStyled } from "../../common/button/IconBtnStyled";
 
+import * as api from "../../../api/api";
+
 const { Option } = Select;
 
 function CommunityCreate() {
   const [componentSize, setComponentSize] = useState("default");
+  const [title, setTitle] = useState("");
+  const [discription, setDiscription] = useState("");
+  const [date, setDate] = useState("");
+  const [state, setState] = useState("");
 
   const onFormLayoutChange = ({ size }) => {
     setComponentSize(size);
   };
-  const onFinish = (v) => {
+
+  const onFinish = async (e) => {
+    await api.post("community/post", {
+      ...e,
+    });
     const createAt = moment().format("YYYY.MM.DD  HH:mm:ss");
-    console.log("Success", { ...v, createAt });
+    console.log("Success", { ...e, createAt });
   };
 
   const onChange = (e) => {
@@ -49,6 +59,7 @@ function CommunityCreate() {
             <Form.Item
               name="title"
               rules={[{ required: true, message: "제목을 입력하세요" }]}
+              onChange={(e) => setTitle(e.target.value)}
             >
               <Input placeholder="제목을 입력하세요" className="title" />
             </Form.Item>
@@ -56,26 +67,37 @@ function CommunityCreate() {
               <Form.Item
                 name="visitDate"
                 rules={[{ required: true, message: "날짜를 입력하세요" }]}
+                onChange={(e) => setDate(e.target.value)}
               >
                 <DatePicker />
               </Form.Item>
               <Form.Item
-                name="title"
+                name="location"
                 rules={[{ required: true, message: "제목을 입력하세요" }]}
               >
                 <Select>
-                  <Select.Option value="visit1">서울</Select.Option>
-                  <Select.Option value="visit2">부산</Select.Option>
+                  <Select.Option value="서울">서울</Select.Option>
+                  <Select.Option value="경기">경기</Select.Option>
+                  <Select.Option value="인천">인천</Select.Option>
+                  <Select.Option value="강원">강원</Select.Option>
+                  <Select.Option value="충북">충북</Select.Option>
+                  <Select.Option value="충남">충남</Select.Option>
+                  <Select.Option value="경북">경북</Select.Option>
+                  <Select.Option value="경남">경남</Select.Option>
+                  <Select.Option value="전북">전북</Select.Option>
+                  <Select.Option value="전남">전남</Select.Option>
+                  <Select.Option value="부산">부산</Select.Option>
+                  <Select.Option value="제주">제주</Select.Option>
                 </Select>
               </Form.Item>
               <Form.Item
-                name="content"
+                name="state"
                 rules={[{ required: true, message: "제목을 입력하세요" }]}
               >
-                <Select defaultValue="Option1">
-                  <Option value="Option1">클린후기</Option>
-                  <Option value="Option2">모집중</Option>
-                  <Option value="Option3">모집완료</Option>
+                <Select defaultValue="클린후기" onChange={(e) => setState(e)}>
+                  <Option value="클린후기">클린후기</Option>
+                  <Option value="모집중">모집중</Option>
+                  <Option value="모집완료">모집완료</Option>
                 </Select>
               </Form.Item>
             </CommunityFormSecond>
@@ -88,7 +110,7 @@ function CommunityCreate() {
                 showCount
                 maxLength={1000}
                 size="large"
-                onChange={onChange}
+                onChange={(e) => setDiscription(e.target.value)}
               />
             </Form.Item>
           </Form>

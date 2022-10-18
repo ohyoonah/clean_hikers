@@ -1,8 +1,9 @@
 import { Card, Col, Row } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommunityNavStyled from "../styledComponents/CommunityNavStyled";
 import CommunityItem from "./CommunityItem";
 import initialState from "./data";
+import * as api from "../../../api/api";
 
 const tabList = [
   {
