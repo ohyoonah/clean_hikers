@@ -27,9 +27,21 @@ class mountainService {
                 perPage * (page - 1),
                 perPage * page
             );
+            const result = {}
 
-            currentPageList[5] = { maxPage: totalPage };
-            return currentPageList;
+            for(var i = 0; i< currentPageList.length; i++){
+                console.log(currentPageList[i])
+                if(currentPageList[i]==undefined){
+                    result.mountain = currentPageList.slice(0,i)
+                    break
+                }
+                if(i == currentPageList.length -1){
+                    result.mountain = currentPageList
+                }
+            }
+            result["maxPage"] = totalPage ;
+            console.log(typeof(result))
+            return result;
         } catch (error) {
             throw error;
         }
