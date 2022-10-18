@@ -7,7 +7,7 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { Button, Row, Tabs } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { NonIconGreenBtn } from "../common/button/NonIconBtn";
-import { LowLevel, MiddelLevel, HighLevel } from "../common/level/Level";
+import { Level } from "../common/level/Level";
 
 const Modal = styled.div`
   /* Positioning */
@@ -65,7 +65,7 @@ const H1 = styled.h1`
   text-align: center;
 `;
 
-function MountainDetailPage({ mountainName, setIsModal, value }) {
+function MountainDetailPage({ mountainName, setIsModal, detail }) {
   useEffect(() => {
     document.body.style.cssText = `
       position: fixed;
@@ -79,17 +79,34 @@ function MountainDetailPage({ mountainName, setIsModal, value }) {
     };
   }, []);
 
-  function PrintLevel() {
-    let result;
-    if (value.level === "하") {
-      result = <LowLevel />;
-    } else if (value.level === "중") {
-      result = <MiddelLevel />;
-    } else if (value.level === "상") {
-      result = <HighLevel />;
-    }
-    return result;
-  }
+  const items = [
+    {
+      label: "위치",
+      key: "0",
+      children: (
+        <Map
+          center={{ lat: detail.latitude, lng: detail.longitude }}
+          style={{ width: "100%", height: "250px", margin: "0px auto" }}
+          level={8}
+        >
+          <MapMarker position={{ lat: detail.latitude, lng: detail.longitude }} />
+        </Map>
+      ),
+    },
+    {
+      label: "등산로",
+      key: "1",
+      children: (
+        <Map
+          center={{ lat: detail.latitude, lng: detail.longitude }}
+          style={{ width: "100%", height: "250px", margin: "0px auto" }}
+          level={7}
+        >
+          <MapMarker position={{ lat: detail.latitude, lng: detail.longitude }} />
+        </Map>
+      ),
+    },
+  ];
 
   return (
     <ModalBackground>
@@ -104,34 +121,13 @@ function MountainDetailPage({ mountainName, setIsModal, value }) {
               <CloseOutlined />
             </ClosedBtn>
           </Row>
-          <H1>{value.name}</H1>
-          <b>위치</b> {value.location}
+          <H1>{detail.name}</H1>
+          <b>위치</b> {detail.address}
           <br />
           <b>난이도 </b>
-          <PrintLevel />
+          <Level value={detail} />
         </Detail>
-
-        <Tabs defaultActiveKey="1" centered>
-          <Tabs.TabPane tab="위치" key="1">
-            <Map
-              center={{ lat: value.lat, lng: value.lng }}
-              style={{ width: "100%", height: "250px", margin: "0px auto" }}
-              level={8}
-            >
-              <MapMarker position={{ lat: value.lat, lng: value.lng }} />
-            </Map>
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="등산로" key="2">
-            <Map
-              center={{ lat: value.lat, lng: value.lng }}
-              style={{ width: "100%", height: "250px", margin: "0px auto" }}
-              level={7}
-            >
-              <MapMarker position={{ lat: value.lat, lng: value.lng }} />
-            </Map>
-          </Tabs.TabPane>
-        </Tabs>
-
+        <Tabs items={items} centered />
         <Row justify="center" style={{ paddingTop: "30px" }}>
           <NonIconGreenBtn text={"함께하기"} />
         </Row>

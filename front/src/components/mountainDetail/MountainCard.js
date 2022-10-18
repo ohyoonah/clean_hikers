@@ -52,13 +52,14 @@ const H3 = styled.h3`
   font-weight: 700;
 `;
 
-function MountainCard({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
+function MountainCard({ isModal, setIsModal, detail, setDetail }) {
+  const MOUNTAIN = [{ img: "", name: "북한산", address: "서울" }];
   const CardList = MOUNTAIN.map((v, index) => (
     <Card
       key={index}
       onClick={() => {
         setIsModal(true);
-        setValue(v);
+        setDetail(v);
       }}
     >
       <Img src={v.img} />
@@ -71,11 +72,7 @@ function MountainCard({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
     <Main>
       <H1>가장 쓰레기가 많은 산들이에요</H1>
       <Display>{CardList}</Display>
-      {isModal ? (
-        <MountainDetail setIsModal={setIsModal} value={value} />
-      ) : (
-        <></>
-      )}
+      {isModal ? <MountainDetail setIsModal={setIsModal} detail={detail} /> : <></>}
     </Main>
   );
 }
