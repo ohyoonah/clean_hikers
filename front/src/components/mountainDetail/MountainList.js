@@ -1,11 +1,9 @@
 /* 국립공원 리스트 */
-import { useState, useEffect } from "react";
 import styled from "styled-components";
 import MountainDetail from "./MountainDetail.js";
 import { Level } from "../common/level/Level";
 import { Pagination } from "antd";
-// import BottomNavigation from "../common/navigation/BottomNavigation";
-import * as api from "../../api/api";
+import { useEffect } from "react";
 
 const PaginationWrapper = styled(Pagination)`
   /* Display & Box Model */
@@ -76,26 +74,10 @@ function MountainList({
   setIsModal,
   detail,
   setDetail,
-  location,
-  difficulty,
-  search,
-  pageNum,
-  setPageNum,
   mountainList,
-  setMountainList,
+  maxPage,
+  setPageNum,
 }) {
-  useEffect(() => {
-    async function getMountainData() {
-      try {
-        await api
-          .get(`mountain/detail`, `?currentPage=${pageNum}`)
-          .then((res) => setMountainList(res.data.mountain));
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    getMountainData();
-  }, [pageNum]);
   return (
     <div>
       <Desc>
@@ -126,10 +108,9 @@ function MountainList({
 
       <PaginationWrapper
         defaultCurrent={1}
-        total={18}
+        total={maxPage * 5}
         defaultPageSize={5}
         size="small"
-        showSizeChanger={false}
         onChange={(e) => setPageNum(e)}
       />
       {isModal ? (

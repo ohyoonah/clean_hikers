@@ -56,12 +56,12 @@ const H3 = styled.h3`
 `;
 
 function MountainCard({ isModal, setIsModal, detail, setDetail }) {
-  const [Mountains, setMountains] = useState([]);
+  const [cardList, setCardList] = useState([]);
 
   useEffect(() => {
     async function getMountainData() {
       try {
-        await api.get("mountain/most-garbage").then((res) => setMountains(res.data));
+        await api.get("mountain/most-garbage").then((res) => setCardList(res.data));
       } catch (e) {
         console.log(e);
       }
@@ -69,7 +69,7 @@ function MountainCard({ isModal, setIsModal, detail, setDetail }) {
     getMountainData();
   }, []);
 
-  const CardList = Mountains.map((detail, index) => (
+  const ShowCardList = cardList.map((detail, index) => (
     <Card
       key={index}
       onClick={() => {
@@ -86,7 +86,7 @@ function MountainCard({ isModal, setIsModal, detail, setDetail }) {
   return (
     <Main>
       <H1>가장 쓰레기가 많은 산들이에요</H1>
-      <Display>{CardList}</Display>
+      <Display>{ShowCardList}</Display>
       {isModal ? <MountainDetail setIsModal={setIsModal} detail={detail} /> : <></>}
     </Main>
   );
