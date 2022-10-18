@@ -1,18 +1,13 @@
 import React from "react";
-import styled from "styled-components";
 import MainBanner from "../components/main/MainBanner";
+import DataBanner from "../components/main/DataBanner";
 
 function MainPage() {
-  const Insight = styled.div`
-    height: 800px;
-    background-color: #f8f8f8;
-  `;
-
   return (
-    <>
+    <div>
       <MainBanner />
-      <Insight className="data-visualization" />
-    </>
+      <DataBanner />
+    </div>
   );
 }
 
