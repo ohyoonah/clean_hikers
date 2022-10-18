@@ -9,11 +9,6 @@ class Mountain {
         return totalData;
     }
 
-    static async fullMountainData() {
-        const data = await MountainModel.find();
-        return data;
-    }
-
     static async findData(mountain, location, level) {
         const regex = (pattern) => new RegExp(`.*${pattern}.*`);
         const mountainRegex = regex(mountain);
