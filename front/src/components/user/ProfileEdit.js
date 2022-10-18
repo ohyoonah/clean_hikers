@@ -1,71 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { errorMessage } from "../common/form/Message";
 import * as api from "../../api/api";
 
-import { ProfileBlock, UploadBlock } from "./ProfileStyle";
+import { ProfileBlock, ImageBlock } from "./ProfileStyle";
 import { ButtonBlock } from "../common/form/FormStyled";
 
-import { message, Form, Input, Button } from "antd";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { Form, Input, Button, Avatar } from "antd";
+import { LoadingOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
 
 function ProfileEdit({ setIsEdit, user, setUser }) {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm();
 
-  function getBase64(img, callback) {
+  function onImageChange(e) {
+    e.preventDefault();
     const reader = new FileReader();
-    reader.addEventListener("load", () => callback(reader.result));
-    reader.readAsDataURL(img);
-  }
-
-  function beforeUpload(file) {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-
-    if (!isJpgOrPng) {
-      message.error("JPG/PNG 파일만 업로드 가능합니다!");
-    }
+    const file = e.target.files[0];
+    const isJpgOrPng =
+      file.type === "image/jpg" ||
+      file.type === "image/jpeg" ||
+      file.type === "image/png";
     const isLt2M = file.size / 1024 / 1024 < 2;
-
-    if (!isLt2M) {
-      message.error("2MB 이하의 파일만 업로드 가능합니다!");
-    }
-    return isJpgOrPng && isLt2M;
-  }
-
-  function onChangeImage(info) {
-    if (info.file.status === "uploading") {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === "done") {
-      getBase64(info.file.originFileObj, (url) => {
-        setLoading(false);
-        setUser((user) => ({ ...user, image: url }));
-      });
+    if (!isJpgOrPng) {
+      errorMessage("JPG/PNG 파일만 업로드 가능합니다");
+    } else if (!isLt2M) {
+      errorMessage("2MB 이하의 파일만 업로드 가능합니다");
+    } else {
+      if (reader !== undefined && file !== undefined) {
+        reader.onloadend = () => {
+          setUser((user) => ({ ...user, image: reader.result }));
+          changeImage(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
     }
   }
 
-  async function changeImage() {
+  async function changeImage(url) {
     try {
-      await api.put("user/picture", {
-        image: user.image,
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  useEffect(() => {
-    changeImage();
-  }, [onChangeImage]);
-
-  async function deleteImage() {
-    try {
-      setUser((user) => ({ ...user, image: null }));
-      await api.put("user/picture", {
-        image: null,
-      });
+      await api.put("user/picture", { image: url });
     } catch (e) {
       console.error(e);
     }
@@ -87,10 +61,6 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
     }
   }
 
-  function onFinish() {
-    setIsEdit(false);
-  }
-
   async function changePassword() {
     const regExp =
       /^[A-Za-z0-9`~!@#\$%\^&\*\(\)\{\}\[\]\-_=\+\\|;:'"<>,\./\?]{8,16}$/;
@@ -109,31 +79,48 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
     }
   }
 
+  async function deleteImage() {
+    try {
+      setUser((user) => ({ ...user, image: null }));
+      await api.put("user/picture", {
+        image: null,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function onFinish() {
+    setIsEdit(false);
+  }
+
   return (
     <ProfileBlock>
       <h2>프로필 수정</h2>
       <Form form={form} initialValues={user}>
-        <UploadBlock
-          name="image"
-          listType="picture-card"
-          showUploadList={false}
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-          beforeUpload={beforeUpload}
-          onChange={onChangeImage}
-        >
-          {user.image ? (
-            <>
-              <img src={user.image} alt="profile_image" />
-            </>
-          ) : (
-            <>{loading ? <LoadingOutlined /> : <PlusOutlined />}</>
+        <ImageBlock>
+          <label htmlFor="file">
+            <PlusOutlined className="uploadButton" />
+            {user.image ? (
+              <Avatar size={100} src={user.image} alt="profile_image" />
+            ) : (
+              <Avatar size={100} />
+            )}
+          </label>
+          <input
+            type="file"
+            name="avatar"
+            id="file"
+            accept=".jpeg, .png, .jpg"
+            onChange={onImageChange}
+            src={user.image}
+          />
+          {user.image && (
+            <button type="button" className="delete" onClick={deleteImage}>
+              기본이미지로 변경
+            </button>
           )}
-        </UploadBlock>
-        {user.image && (
-          <button type="button" className="delete" onClick={deleteImage}>
-            기본이미지로 변경
-          </button>
-        )}
+        </ImageBlock>
 
         <Form.Item colon={false} label="닉네임" name="nickname">
           <Input.Group>
@@ -141,17 +128,10 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
               name="nickname"
               value={user.nickname}
               onChange={(e) => {
-                setUser((prev) => {
-                  return { ...prev, nickname: e.target.value };
-                });
+                setUser((prev) => ({ ...prev, nickname: e.target.value }));
               }}
             />
-            <Button
-              className="submitButton"
-              type="primary"
-              htmlType="button"
-              onClick={changeNickname}
-            >
+            <Button className="submitButton" onClick={changeNickname}>
               저장
             </Button>
           </Input.Group>
@@ -161,16 +141,10 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
             <Input.Password
               value={user.password}
               onChange={(e) => {
-                setUser((prev) => {
-                  return { ...prev, password: e.target.value };
-                });
+                setUser((prev) => ({ ...prev, password: e.target.value }));
               }}
             />
-            <Button
-              className="submitButton"
-              type="primary"
-              onClick={changePassword}
-            >
+            <Button className="submitButton" onClick={changePassword}>
               저장
             </Button>
           </Input.Group>

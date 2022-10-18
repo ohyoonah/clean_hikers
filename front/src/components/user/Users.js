@@ -16,8 +16,10 @@ function Users() {
       try {
         const { data: currentUser, status } = await api.get("user/user-page");
         if (status === HttpStatusCode.Created) {
-          const { nickname, defaultImage } = currentUser;
+          const { id, nickname, defaultImage } = currentUser;
+          console.log(id);
           setUser({
+            id,
             nickname,
             password: "",
             image: defaultImage,
@@ -33,7 +35,13 @@ function Users() {
   const [isEdit, setIsEdit] = useState(false);
   const items = [
     { label: "프로필", key: "1", children: ChangeProfile() },
-    { label: "작성글", key: "2", children: <UserPostList /> },
+    {
+      label: "작성글",
+      key: "2",
+      children: (
+        <UserPostList user={user} setUser={setUser} setIsEdit={setIsEdit} />
+      ),
+    },
   ];
 
   function ChangeProfile() {

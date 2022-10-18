@@ -1,10 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { DispatchContext } from "../../App";
 import { ROUTES } from "../../enum/routes";
 import { validateEmail, validatePassword } from "../../util/formValidation";
 import { errorMessage } from "../common/form/Message";
 import * as api from "../../api/api";
+
+import Loading from "../common/loading/Loading";
 
 import { PageBlock, FormBlock, TitleBlock } from "./FormStyle";
 import { InputBlock, ButtonBlock } from "../common/form/FormStyled";
@@ -29,8 +31,16 @@ function Login() {
     }));
   }
 
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
+
   async function onFinish() {
     try {
+      // setIsLoading(true);
       const res = await api.post("user/login", {
         ...formValue,
       });
@@ -41,8 +51,10 @@ function Login() {
         type: "LOGGIN_SUCCESS",
         payload: user,
       });
+      // setIsLoading(false);
       navigate(ROUTES.HOME);
     } catch (e) {
+      // setIsLoading(false);
       console.log("로그인 실패", e.response.data);
       errorMessage(e.response.data);
     }
