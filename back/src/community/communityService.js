@@ -84,10 +84,9 @@ class postService {
                 const posts = await Post.findByLocation({ locationDetail });
                 const page = Number(send.page || 1);
                 const perPage = Number(send.perPage || 5);
-                console.log("게시글", posts);
 
                 const total = posts.length;
-                console.log(send);
+
                 const postsList = posts.sort((a, b) => {
                     if (a.createdAt > b.createdAt) {
                         return -1;
@@ -102,25 +101,79 @@ class postService {
                 return allPostsList;
             }
         } else {
-            const station = send.station;
-            const posts = await Post.findByStation({ station });
-            const page = Number(send.page || 1);
-            const perPage = Number(send.perPage || 5);
+            if (send.location == undefined) {
+                const station = send.station;
+                const posts = await Post.findByStation({ station });
+                // const posts = await Post.findAll();
+                const page = Number(send.page || 1);
+                const perPage = Number(send.perPage || 5);
 
-            const total = posts.length;
+                const total = posts.length;
+                // console.log(send);
+                const postsList = posts.sort((a, b) => {
+                    if (a.createdAt > b.createdAt) {
+                        return -1;
+                    }
+                });
+                const totalPage = Math.ceil(total / perPage);
+                const allPostsList = postsList.slice(
+                    perPage * (page - 1),
+                    perPage * page
+                );
 
-            const postsList = posts.sort((a, b) => {
-                if (a.createdAt > b.createdAt) {
-                    return -1;
-                }
-            });
-            const totalPage = Math.ceil(total / perPage);
-            const allPostsList = postsList.slice(
-                perPage * (page - 1),
-                perPage * page
-            );
+                return allPostsList;
+            } else {
+                const location = send.location;
 
-            return allPostsList;
+                const [locationDetail] = await Mountain.findData(
+                    location,
+                    null,
+                    null
+                );
+
+                const station = send.station;
+
+                const posts = await Post.findByLocation({ locationDetail });
+                const stationPosts = posts.filter(
+                    (posts) => posts.station == station
+                );
+                const page = Number(send.page || 1);
+                const perPage = Number(send.perPage || 5);
+
+                const total = stationPosts.length;
+
+                const postsList = stationPosts.sort((a, b) => {
+                    if (a.createdAt > b.createdAt) {
+                        return -1;
+                    }
+                });
+                const totalPage = Math.ceil(total / perPage);
+                const allPostsList = postsList.slice(
+                    perPage * (page - 1),
+                    perPage * page
+                );
+
+                return allPostsList;
+            }
+            // const station = send.station;
+            // const posts = await Post.findByStation({ station });
+            // const page = Number(send.page || 1);
+            // const perPage = Number(send.perPage || 5);
+
+            // const total = posts.length;
+
+            // const postsList = posts.sort((a, b) => {
+            //     if (a.createdAt > b.createdAt) {
+            //         return -1;
+            //     }
+            // });
+            // const totalPage = Math.ceil(total / perPage);
+            // const allPostsList = postsList.slice(
+            //     perPage * (page - 1),
+            //     perPage * page
+            // );
+
+            // return allPostsList;
         }
     }
 
