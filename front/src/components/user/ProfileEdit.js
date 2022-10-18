@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { errorMessage } from "../common/form/Message";
 import * as api from "../../api/api";
@@ -7,10 +7,9 @@ import { ProfileBlock, ImageBlock } from "./ProfileStyle";
 import { ButtonBlock } from "../common/form/FormStyled";
 
 import { Form, Input, Button, Avatar } from "antd";
-import { LoadingOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 
 function ProfileEdit({ setIsEdit, user, setUser }) {
-  const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm();
 
   function onImageChange(e) {

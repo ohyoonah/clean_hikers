@@ -17,7 +17,6 @@ function Users() {
         const { data: currentUser, status } = await api.get("user/user-page");
         if (status === HttpStatusCode.Created) {
           const { id, nickname, defaultImage } = currentUser;
-          console.log(id);
           setUser({
             id,
             nickname,
