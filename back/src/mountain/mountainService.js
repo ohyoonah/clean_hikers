@@ -1,4 +1,5 @@
 import { Mountain } from "../mongoDB/index.js";
+import { MountainModel } from "./mountainSchema.js";
 
 class mountainService {
     static async readData(query) {
@@ -44,6 +45,21 @@ class mountainService {
             return result;
         } catch (error) {
             throw error;
+        }
+    }
+
+    static async readDataBasedGarbage(){
+        try{
+            const totalData = await (await Mountain.findData()).sort(function(a,b){
+                return -(a.trash - b.trash)
+            });
+            
+            const result = totalData.slice(0,4)
+
+            return result
+        }
+        catch(error){
+            throw error
         }
     }
 }
