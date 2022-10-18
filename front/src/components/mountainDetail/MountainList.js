@@ -4,7 +4,7 @@ import styled from "styled-components";
 import MountainDetail from "./MountainDetail.js";
 import { Level } from "../common/level/Level";
 import { Pagination } from "antd";
-import BottomNavigation from "../common/navigation/BottomNavigation";
+// import BottomNavigation from "../common/navigation/BottomNavigation";
 import * as api from "../../api/api";
 
 const PaginationWrapper = styled(Pagination)`
@@ -27,7 +27,8 @@ const Desc = styled.div`
   /* Display & Box Model */
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  width: 80%;
+  width: 1130px;
+  max-width: 80%;
   height: 50px;
   padding: 0px 30px;
   border-bottom: 1px solid rgb(220, 220, 220);
@@ -44,7 +45,8 @@ const List = styled.div`
   /* Display & Box Model */
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  width: 80%;
+  width: 1130px;
+  max-width: 80%;
   height: 80px;
   padding: 0px 30px;
   border: 1px solid rgb(220, 220, 220);
@@ -69,22 +71,24 @@ const List = styled.div`
   }
 `;
 
-function MountainList({ isModal, setIsModal, detail, setDetail }) {
-  const [mountainList, setMountainList] = useState([]);
-  const [location, setLocation] = useState("");
-  const [difficulty, setDifficulty] = useState("");
-  const [pageNum, setPageNum] = useState(1);
-  const [mountain, setMountain] = useState("");
-
+function MountainList({
+  isModal,
+  setIsModal,
+  detail,
+  setDetail,
+  location,
+  difficulty,
+  search,
+  pageNum,
+  setPageNum,
+  mountainList,
+  setMountainList,
+}) {
   useEffect(() => {
     async function getMountainData() {
       try {
         await api
-          .get(
-            `mountain/detail`,
-            `?location=${location}&level=${difficulty}&currentPage=${pageNum}&mountain=${mountain}`
-          )
-
+          .get(`mountain/detail`, `?currentPage=${pageNum}`)
           .then((res) => setMountainList(res.data.mountain));
       } catch (e) {
         console.log(e);

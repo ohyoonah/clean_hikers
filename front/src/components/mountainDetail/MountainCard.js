@@ -6,7 +6,8 @@ import * as api from "../../api/api";
 
 const Main = styled.div`
   /* Display & Box Model */
-  width: 80%;
+  width: 1130px;
+  max-width: 80%;
   height: fit-content;
   padding-bottom: 30px;
   border: 0px solid black;
