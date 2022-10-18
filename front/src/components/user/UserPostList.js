@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 
 import * as api from "../../api/api";
 
-import { CommunityItem } from "../community/component/CommunityList";
 import {
   CommunityListAlign,
   CommunityPagenationStyled,
 } from "../community/styledComponents/CommunityListStyled";
 
 import { Pagination } from "antd";
+import CommunityItem from "../community/component/CommunityItem";
 
 function UserPostList({ user }) {
   const [userPost, setUserPost] = useState([]);

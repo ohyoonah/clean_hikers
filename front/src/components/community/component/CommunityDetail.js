@@ -16,6 +16,8 @@ import * as api from "../../../api/api";
 
 function CommunityDetail() {
   const [datas, setDatas] = useState([]);
+  const [pageNum, setPageNum] = useState(1);
+
   const { no } = useParams();
   const navigate = useNavigate();
 
@@ -35,14 +37,14 @@ function CommunityDetail() {
     async function getCommunityDetailDdata() {
       try {
         await api
-          .get(`post/:post_id`)
-          .then((res) => (setDatas(res.data), console.log(res.data)));
-      } catch (e) {
-        console.log(e);
+          .get(`community/postsDetail/:post_id`)
+          .then((res) => console.log(res));
+      } catch (res) {
+        console.log(res);
       }
     }
     getCommunityDetailDdata();
-  }, []);
+  }, [pageNum]);
   return (
     <>
       <CommunityDetailAlign>

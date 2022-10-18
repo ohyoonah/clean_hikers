@@ -5,31 +5,47 @@ import { FormOutlined } from "@ant-design/icons";
 import {
   TitleAlign,
   CommunityFormSecond,
-  AllContentAlign,
 } from "../styledComponents/CommunityCreateStyled";
 import { RegisterBtnStyled } from "../../common/button/IconBtnStyled";
 
 import * as api from "../../../api/api";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
 function CommunityCreate() {
   const [componentSize, setComponentSize] = useState("default");
   const [title, setTitle] = useState("");
-  const [discription, setDiscription] = useState("");
-  const [date, setDate] = useState("");
+  const [description, setDescription] = useState("");
+  const [visitDate, setVisitDate] = useState("");
   const [state, setState] = useState("");
 
   const onFormLayoutChange = ({ size }) => {
     setComponentSize(size);
   };
-
+  const navigate = useNavigate();
   const onFinish = async (e) => {
-    await api.post("community/post", {
-      ...e,
-    });
+    await api
+      .post("community/post", {
+        user_id: 99,
+        title: title,
+        description: description,
+        date: e.visitDate,
+        nickname: "LIM",
+        header: "LIM",
+        station: state,
+        location: e.location,
+        personnel: 3,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     const createAt = moment().format("YYYY.MM.DD  HH:mm:ss");
     console.log("Success", { ...e, createAt });
+    return navigate(-1);
   };
 
   const onChange = (e) => {
@@ -67,7 +83,7 @@ function CommunityCreate() {
               <Form.Item
                 name="visitDate"
                 rules={[{ required: true, message: "날짜를 입력하세요" }]}
-                onChange={(e) => setDate(e.target.value)}
+                onChange={(e) => setVisitDate(e.target.value)}
               >
                 <DatePicker />
               </Form.Item>
@@ -102,7 +118,7 @@ function CommunityCreate() {
               </Form.Item>
             </CommunityFormSecond>
             <Form.Item
-              name="content"
+              name="description"
               rules={[{ required: true, message: "내용을 입력하세요" }]}
             >
               <Input.TextArea
@@ -110,7 +126,7 @@ function CommunityCreate() {
                 showCount
                 maxLength={1000}
                 size="large"
-                onChange={(e) => setDiscription(e.target.value)}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </Form.Item>
           </Form>

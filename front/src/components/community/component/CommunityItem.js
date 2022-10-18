@@ -5,6 +5,7 @@ import { EnvironmentOutlined } from "@ant-design/icons";
 import CommunityItemStyled from "../styledComponents/CommunityItemstyled";
 
 function CommunityItem({ post }) {
+  console.log(post);
   return (
     <>
       <CommunityItemStyled>
@@ -13,17 +14,17 @@ function CommunityItem({ post }) {
             <Row>
               <Col span={18} push={0}>
                 <Row>
-                  <Button>{post.state}</Button>
+                  <Button>{post.station}</Button>
                   <h3> {post.title}</h3>
                 </Row>
                 <p>
                   지역 : {<EnvironmentOutlined />}
                   {post.location}
                 </p>
-                <p>{post.discription}</p>
+                <p>{post.description}</p>
               </Col>
               <Col span={2} push={4}>
-                <p className="writer-user-name">{post.userName}</p>
+                <p className="writer-user-name">{post.nickname}</p>
               </Col>
             </Row>
           </Card>

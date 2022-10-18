@@ -10,7 +10,9 @@ function CommunityPage() {
   // }, []);
 
   useEffect(() => {
-    api.get("community/postlist").then((res) => setPosts(res.data));
+    api
+      .get("community/postlist")
+      .then((res) => (setPosts(res.data), console.log(res)));
   }, []);
 
   return (

@@ -1,14 +1,9 @@
-import { Col, Pagination, Row } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { RecruitBlueBtn } from "../../common/button/IconBtn";
 import BottomNavigation from "../../common/navigation/BottomNavigation";
 
-import {
-  RecruitBlueBtnAlign,
-  CommunityPagenationStyled,
-  CommunityListAlign,
-} from "../styledComponents/CommunityListStyled";
+import { RecruitBlueBtnAlign } from "../styledComponents/CommunityListStyled";
 
 import CommunityNav from "./CommunityNav";
 
