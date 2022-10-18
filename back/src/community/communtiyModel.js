@@ -22,6 +22,11 @@ class Post {
         return posts;
     }
 
+    static async findByLocation({ locationDetail }) {
+        const posts = await PostModel.find({ location: locationDetail });
+        return posts;
+    }
+
     static async findOne({ post_id }) {
         const post = await PostModel.findOne({ post_id: post_id });
         return post;
@@ -29,6 +34,7 @@ class Post {
 
     static async findByPostId({ post_id }) {
         const post = await PostModel.find({ post_id });
+        console.log(post);
         return post;
     }
 
