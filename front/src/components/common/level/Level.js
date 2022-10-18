@@ -5,14 +5,14 @@ import {
   UnknownLevelStyled,
 } from "./LevelStyled";
 
-function Level({ value }) {
-  if (value.difficulty === "하") {
+function Level({ difficulty }) {
+  if (difficulty === "하") {
     return <LowLevel />;
-  } else if (value.difficulty === "중") {
+  } else if (difficulty === "중") {
     return <MiddleLevel />;
-  } else if (value.difficulty === "상") {
+  } else if (difficulty === "상") {
     return <HighLevel />;
-  } else if (value.difficulty === "미분류") {
+  } else if (difficulty === "미분류") {
     return <UnknownLevel />;
   }
 

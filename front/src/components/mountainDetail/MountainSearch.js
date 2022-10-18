@@ -16,7 +16,6 @@ const Main = styled(Form)`
   padding: 15px;
   border-radius: 20px;
   margin: 0 auto;
-  margin-bottom: 30px;
 
   /* Color */
   background-color: rgb(230, 230, 230);

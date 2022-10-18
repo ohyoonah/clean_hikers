@@ -1,12 +1,14 @@
 /* 상단 쓰레기가 많은 산 출력부*/
+import { useState, useEffect } from "react";
 import MountainDetail from "./MountainDetail.js";
 import styled from "styled-components";
+import * as api from "../../api/api";
 
 const Main = styled.div`
   /* Display & Box Model */
   width: 80%;
   height: fit-content;
-  padding-bottom: 70px;
+  padding-bottom: 30px;
   border: 0px solid black;
   margin: 0 auto;
   text-align: center;
@@ -53,18 +55,30 @@ const H3 = styled.h3`
 `;
 
 function MountainCard({ isModal, setIsModal, detail, setDetail }) {
-  const MOUNTAIN = [{ img: "", name: "북한산", address: "서울" }];
-  const CardList = MOUNTAIN.map((v, index) => (
+  const [Mountains, setMountains] = useState([]);
+
+  useEffect(() => {
+    async function getMountainData() {
+      try {
+        await api.get("mountain/most-garbage").then((res) => setMountains(res.data));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    getMountainData();
+  }, []);
+
+  const CardList = Mountains.map((detail, index) => (
     <Card
       key={index}
       onClick={() => {
         setIsModal(true);
-        setDetail(v);
+        setDetail(detail);
       }}
     >
-      <Img src={v.img} />
-      <H3>{v.name}</H3>
-      <div>{v.location}</div>
+      <Img src={detail.img} />
+      <H3>{detail.name}</H3>
+      <div>{detail.location}</div>
     </Card>
   ));
 

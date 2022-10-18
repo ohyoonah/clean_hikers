@@ -30,7 +30,7 @@ export const modeContext = createContext(null);
 function App() {
   ConfigProvider.config({
     theme: {
-      primaryColor: theme.primary,
+      primaryColor: theme.naturalGreen,
     },
   });
 
@@ -84,14 +84,8 @@ function App() {
               <Route path={ROUTES.USER.LOGIN} element={<LoginPage />} />
               <Route path={ROUTES.USER.REGISTER} element={<RegisterPage />} />
               <Route path={ROUTES.USER.USER_PAGE} element={<UserPage />} />
-              <Route
-                path={ROUTES.MOUNTAIN.DETAIL}
-                element={<MountainDetailPage />}
-              />
-              <Route
-                path={ROUTES.MOUNTAIN.SEARCH}
-                element={<MountainSearchPage />}
-              />
+              <Route path={ROUTES.MOUNTAIN.DETAIL} element={<MountainDetailPage />} />
+              <Route path={ROUTES.MOUNTAIN.SEARCH} element={<MountainSearchPage />} />
             </Routes>
             <Footer />
           </Router>

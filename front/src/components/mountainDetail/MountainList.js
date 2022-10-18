@@ -4,19 +4,48 @@ import styled from "styled-components";
 import MountainDetail from "./MountainDetail.js";
 import { Level } from "../common/level/Level";
 import { Pagination } from "antd";
+import BottomNavigation from "../common/navigation/BottomNavigation";
 import * as api from "../../api/api";
 
 const PaginationWrapper = styled(Pagination)`
   /* Display & Box Model */
   display: block;
   text-align: center;
+  padding-top: 15px;
+
+  .ant-pagination-item-active a {
+    color: #89a550;
+    border: none;
+  }
+  .ant-pagination-item-active {
+    border: none;
+    text-decoration: underline 2px;
+  }
 `;
+
+const Desc = styled.div`
+  /* Display & Box Model */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 80%;
+  height: 50px;
+  padding: 0px 30px;
+  border-bottom: 1px solid rgb(220, 220, 220);
+  /* border-radius: 10px; */
+  margin: 0 auto;
+  margin-bottom: 15px;
+
+  /* Text */
+  line-height: 70px;
+  text-align: center;
+`;
+
 const List = styled.div`
   /* Display & Box Model */
   display: grid;
-  grid-template-columns: 40% 40% 20%;
+  grid-template-columns: repeat(4, 1fr);
   width: 80%;
-  height: 50px;
+  height: 80px;
   padding: 0px 30px;
   border: 1px solid rgb(220, 220, 220);
   border-radius: 10px;
@@ -24,8 +53,8 @@ const List = styled.div`
   margin-bottom: 15px;
 
   /* Text */
-  line-height: 50px;
-  text-align: start;
+  line-height: 80px;
+  text-align: center;
 
   /* Other */
   cursor: pointer;
@@ -40,20 +69,23 @@ const List = styled.div`
   }
 `;
 
-function MountainList({ MOUNTAIN, isModal, setIsModal, detail, setDetail }) {
+function MountainList({ isModal, setIsModal, detail, setDetail }) {
   const [mountainList, setMountainList] = useState([]);
+  const [location, setLocation] = useState("");
+  const [difficulty, setDifficulty] = useState("");
   const [pageNum, setPageNum] = useState(1);
+  const [mountain, setMountain] = useState("");
 
   useEffect(() => {
     async function getMountainData() {
       try {
         await api
-          .get(`mountain/detail`, `?currentPage=${pageNum}`)
-          .then(
-            (res) => (
-              setMountainList(res.data), console.log(res) /*배포시 로그코드 제거필요*/
-            )
-          );
+          .get(
+            `mountain/detail`,
+            `?location=${location}&level=${difficulty}&currentPage=${pageNum}&mountain=${mountain}`
+          )
+
+          .then((res) => setMountainList(res.data.mountain));
       } catch (e) {
         console.log(e);
       }
@@ -62,31 +94,37 @@ function MountainList({ MOUNTAIN, isModal, setIsModal, detail, setDetail }) {
   }, [pageNum]);
   return (
     <div>
-      {mountainList.map((v, idx) => {
+      <Desc>
+        <b style={{ textAlign: "start" }}>산이름</b>
+        <b>위치</b>
+        <b>연간 쓰레기 처리량(톤)</b>
+        <b style={{ textAlign: "end" }}>등산 난이도</b>
+      </Desc>
+      {mountainList.map((detail, idx) => {
         return (
           <div key={idx}>
             <List
               onClick={() => {
                 setIsModal(true);
-                setDetail(v);
+                setDetail(detail);
               }}
             >
-              <div>
-                <b>{v.name}</b>
-              </div>
-              <div style={{ textAlign: "start" }}>{v.address}</div>
-              <div style={{ textAlign: "end" }}>
-                <b>난이도 </b>
-                <Level value={v} />
+              <b style={{ textAlign: "start" }}>{detail.name}</b>
+              <div>{detail.address}</div>
+              <div>{Number(detail.trash).toFixed(1)}</div>
+              <div style={{ textAlign: "end", paddingRight: "20px" }}>
+                <Level difficulty={detail.difficulty} />
               </div>
             </List>
           </div>
         );
       })}
+
       <PaginationWrapper
         defaultCurrent={1}
         total={18}
         defaultPageSize={5}
+        size="small"
         showSizeChanger={false}
         onChange={(e) => setPageNum(e)}
       />
