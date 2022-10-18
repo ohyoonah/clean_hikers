@@ -30,24 +30,38 @@ export const ProfileBlock = styled.div`
   .textBlcok {
     font-size: 1rem;
     margin: 1.5rem 0 3rem 0;
-    .label {
-      font-weight: 700;
-      margin-right: 1rem;
-    }
   }
   .ant-form-item {
     width: 300px;
     margin: 1.5rem auto;
-    label {
-      display: flex;
-      justify-content: end;
-      width: 100px;
-      font-weight: 700;
-    }
+    text-align: start;
+    position: relative;
+  }
+  .label {
+    font-weight: 700;
+    margin-right: 1rem;
+  }
+  .ant-form-item-label {
+    position: absolute;
+    left: -70px;
+    font-weight: 700;
+  }
+  .ant-form-item label {
+    margin: 0;
+  }
+  .ant-input-group {
+    display: flex;
+  }
+  .submitButton {
+    background: ${theme.primary};
+    border: none;
   }
   .smallButton {
     margin-top: 3rem;
     margin-bottom: 5rem;
+  }
+  .error {
+    color: red;
   }
 `;
 

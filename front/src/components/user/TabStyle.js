@@ -4,8 +4,7 @@ import { Tabs } from "antd";
 
 export const TabBlock = styled(Tabs)`
   width: 80%;
-  margin: 0 auto;
-  margin-top: 2rem;
+  margin: 3rem auto;
   .ant-tabs-tab {
     color: gray;
   }
