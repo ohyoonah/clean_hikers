@@ -1,25 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import * as api from "../../api/api";
 
 import { CommunityItem } from "../community/component/CommunityList";
 import {
   CommunityListAlign,
   CommunityPagenationStyled,
 } from "../community/styledComponents/CommunityListStyled";
-import initialState from "../community/component/data";
 
 import { Pagination } from "antd";
 
-function UserPostList() {
+function UserPostList({ user }) {
+  const [userPost, setUserPost] = useState([]);
+
+  useEffect(() => {
+    const id = user.id;
+    async function getPostData() {
+      try {
+        const { data } = await api.get("community/posts", `${id}`);
+        setUserPost(data);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    getPostData();
+  }, [user.id]);
+
   return (
     <>
-      <p>
-        {initialState.users.map((post) => (
-          <CommunityItem key={post.no} post={post} />
-        ))}
-      </p>
+      {userPost.map((post, i) => (
+        <CommunityItem key={userPost[i].post_id} post={post} />
+      ))}
       <CommunityListAlign>
         <CommunityPagenationStyled>
-          <Pagination size="small" total={50} />
+          <Pagination
+            size="small"
+            defaultPageSize={5}
+            total={userPost.length}
+          />
         </CommunityPagenationStyled>
       </CommunityListAlign>
     </>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { DispatchContext } from "../../App";
 import { ROUTES } from "../../enum/routes";
@@ -32,9 +32,16 @@ function Login() {
     }));
   }
 
-  async function onFinish() {
+  useEffect(() => {
     setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
+
+  async function onFinish() {
     try {
+      // setIsLoading(true);
       const res = await api.post("user/login", {
         ...formValue,
       });
@@ -45,9 +52,10 @@ function Login() {
         type: "LOGIN_SUCCESS",
         payload: user,
       });
-      setIsLoading(false);
+      // setIsLoading(false);
       navigate(ROUTES.HOME);
     } catch (e) {
+      // setIsLoading(false);
       console.log("로그인 실패", e.response.data);
       errorMessage(e.response.data);
     }
