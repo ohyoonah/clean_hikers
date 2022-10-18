@@ -22,6 +22,7 @@ function Login() {
     password: "",
   });
   const [form] = Form.useForm();
+  const [isLoading, setIsLoading] = useState(false);
 
   function onChange(e) {
     const { name, value } = e.currentTarget;
@@ -47,8 +48,8 @@ function Login() {
       const user = res.data;
       const jwtToken = user.jwt;
       sessionStorage.setItem("userToken", jwtToken);
-      dispatch({
-        type: "LOGGIN_SUCCESS",
+      await dispatch({
+        type: "LOGIN_SUCCESS",
         payload: user,
       });
       // setIsLoading(false);
@@ -60,7 +61,9 @@ function Login() {
     }
   }
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <PageBlock>
       <FormBlock form={form} onFinish={onFinish}>
         <TitleBlock>
