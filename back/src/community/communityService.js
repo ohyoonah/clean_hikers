@@ -59,7 +59,7 @@ class postService {
                 const perPage = Number(send.perPage || 5);
 
                 const total = posts.length;
-                console.log(send);
+                // console.log(send);
                 const postsList = posts.sort((a, b) => {
                     if (a.createdAt > b.createdAt) {
                         return -1;
@@ -283,8 +283,7 @@ class commentService {
 
         const createdNewComment = await Comment.create({ newComment });
 
-        const toUpdate = await postService.getAPosts({ post_id });
-
+        const [toUpdate] = await postService.getAPosts({ post_id });
         toUpdate.comment.push(newComment);
 
         const createPostComment = await postService.setPost({
@@ -300,6 +299,12 @@ class commentService {
     static async getComments({ post_id }) {
         const comments = await Comment.findByPostId({ post_id });
         return comments;
+    }
+
+    static async pushComments({ toUpdate, newComment }) {
+        toUpdate.comment.push(newComment);
+        console.log(toUpdate.comment);
+        return toUpdate;
     }
 
     static async setComment({ comment_id, toUpdate }) {
@@ -457,7 +462,7 @@ class personService {
     static async getPersons({ post_id }) {
         const post = await postService.getAPosts({ post_id });
 
-        console.log(post);
+        // console.log(post);
 
         const people = post.person;
 
