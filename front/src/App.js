@@ -16,16 +16,24 @@ import Loading from "./components/common/loading/Loading";
 import { loginReducer } from "./reducer";
 import { ROUTES } from "./enum/routes";
 
-import "./App.css";
+import "antd/dist/antd.variable.min.css";
 import "./fonts/font.css";
+import { ConfigProvider } from "antd";
 
 import * as api from "./api/api";
+import { theme } from "./components/common/styles/palette";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
 export const modeContext = createContext(null);
 
 function App() {
+  ConfigProvider.config({
+    theme: {
+      primaryColor: theme.primary,
+    },
+  });
+
   const [userState, dispatch] = useReducer(loginReducer, {
     user: null,
   });
