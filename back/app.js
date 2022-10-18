@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 const port = 5000;
 
 app.get("/", (req, res) => {
-    res.send("hello world");
+  res.send("hello world");
 });
 
 //라우터 추가
@@ -31,5 +31,5 @@ app.use("/mountain", mountainRouter);
 app.use(errorMiddleware);
 
 app.listen(port, () => {
-    console.log(`${port}에 연결되었습니다`);
+  console.log(`${port}에 연결되었습니다`);
 });

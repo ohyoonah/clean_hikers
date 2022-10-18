@@ -1,8 +1,11 @@
 /* 국립공원 리스트 */
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import MountainDetail from "./MountainDetail.js";
-import { LowLevel, MiddelLevel, HighLevel } from "../common/level/Level";
+import { Level } from "../common/level/Level";
 import { Pagination } from "antd";
+import * as api from "../../api/api";
+
 const PaginationWrapper = styled(Pagination)`
   /* Display & Box Model */
   display: block;
@@ -37,34 +40,44 @@ const List = styled.div`
   }
 `;
 
-function MountainList({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
-  function PrintLevel({ v }) {
-    if (v.level === "하") {
-      return <LowLevel />;
-    } else if (v.level === "중") {
-      return <MiddelLevel />;
-    } else if (v.level === "상") {
-      return <HighLevel />;
+function MountainList({ MOUNTAIN, isModal, setIsModal, detail, setDetail }) {
+  const [mountainList, setMountainList] = useState([]);
+  const [pageNum, setPageNum] = useState(1);
+
+  useEffect(() => {
+    async function getMountainData() {
+      try {
+        await api
+          .get(`mountain/detail`, `?currentPage=${pageNum}`)
+          .then(
+            (res) => (
+              setMountainList(res.data), console.log(res) /*배포시 로그코드 제거필요*/
+            )
+          );
+      } catch (e) {
+        console.log(e);
+      }
     }
-  }
+    getMountainData();
+  }, [pageNum]);
   return (
     <div>
-      {MOUNTAIN.map((v, index) => {
+      {mountainList.map((v, idx) => {
         return (
-          <div key={index}>
+          <div key={idx}>
             <List
               onClick={() => {
                 setIsModal(true);
-                setValue(v);
+                setDetail(v);
               }}
             >
               <div>
                 <b>{v.name}</b>
               </div>
-              <div style={{ textAlign: "start" }}>{v.location}</div>
+              <div style={{ textAlign: "start" }}>{v.address}</div>
               <div style={{ textAlign: "end" }}>
                 <b>난이도 </b>
-                <PrintLevel v={v} />
+                <Level value={v} />
               </div>
             </List>
           </div>
@@ -72,16 +85,13 @@ function MountainList({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
       })}
       <PaginationWrapper
         defaultCurrent={1}
-        total={36}
+        total={18}
         defaultPageSize={5}
         showSizeChanger={false}
+        onChange={(e) => setPageNum(e)}
       />
       {isModal ? (
-        <MountainDetail
-          isModal={isModal}
-          setIsModal={setIsModal}
-          value={value}
-        />
+        <MountainDetail isModal={isModal} setIsModal={setIsModal} detail={detail} />
       ) : (
         <></>
       )}

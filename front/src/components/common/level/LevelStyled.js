@@ -12,11 +12,11 @@ const LowLevelStyled = styled.div`
   font-weight: 700;
 
   /* Color */
-  background-color: ${theme.blue};
+  background-color: ${theme.naturalGreen};
   color: white;
 `;
 
-const MiddelLevelStyled = styled.div`
+const MiddleLevelStyled = styled.div`
   /* Display & Box Model */
   display: inline;
   padding: 1px 2px;
@@ -46,4 +46,19 @@ const HighLevelStyled = styled.div`
   color: white;
 `;
 
-export { LowLevelStyled, MiddelLevelStyled, HighLevelStyled };
+const UnknownLevelStyled = styled.div`
+  /* Display & Box Model */
+  display: inline;
+  padding: 1px 2px;
+  border-radius: 2px;
+
+  /* Text */
+  font-size: small;
+  font-weight: 700;
+
+  /* Color */
+  background-color: gray;
+  color: white;
+`;
+
+export { LowLevelStyled, MiddleLevelStyled, HighLevelStyled, UnknownLevelStyled };

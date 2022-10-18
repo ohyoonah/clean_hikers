@@ -1,16 +1,16 @@
 /*검색창*/
 import { useState } from "react";
 import styled from "styled-components";
-import { Select, Input } from "antd";
+import { Select, Input, Form } from "antd";
 import { NonIconBlueBtn } from "../common/button/NonIconBtn";
 
 const { Option } = Select;
 
-const Main = styled.form`
+const Main = styled(Form)`
   /* Display & Box Model */
   display: grid;
   justify-content: center;
-  grid-template-columns: 1fr 1fr 3fr 1fr;
+  grid-template-columns: 150px 150px 3fr 120px;
   grid-column-gap: 15px;
   width: 80%;
   padding: 15px;
@@ -52,10 +52,26 @@ const SelectWrapper = styled(Select)`
   background-color: white;
 `;
 
+const regions = [
+  "서울",
+  "경기",
+  "인천",
+  "강원",
+  "충북",
+  "충남",
+  "경북",
+  "경남",
+  "전북",
+  "전남",
+  "부산",
+  "제주",
+];
+
 function MountainSearch() {
   const [location, setLocation] = useState("");
   const [level, setLevel] = useState("");
   const [search, setSearch] = useState("");
+  const [form] = Form.useForm();
 
   const onSubmit = (e) => {
     e.preventDefault(); // 엔터 press 시 자동 submit 막는 기능
@@ -72,33 +88,22 @@ function MountainSearch() {
   };
 
   return (
-    <Main onSubmit={onSubmit}>
+    <Main onFinish={onSubmit} form={form}>
       {/* 위치선택 셀렉트 */}
       <SelectWrapper
         bordered={false}
         defaultValue="지역"
         onChange={(e) => setLocation(e)}
       >
-        <Option value="0"> 서울</Option>
-        <Option value="1"> 경기</Option>
-        <Option value="2"> 인천</Option>
-        <Option value="3"> 강원</Option>
-        <Option value="4"> 충북</Option>
-        <Option value="5"> 충남</Option>
-        <Option value="6"> 경북</Option>
-        <Option value="7"> 경남</Option>
-        <Option value="8"> 전북</Option>
-        <Option value="9"> 전남</Option>
-        <Option value="10"> 부산</Option>
-        <Option value="11"> 제주</Option>
+        {regions.map((area, idx) => (
+          <Option value={idx} key={idx}>
+            {area}
+          </Option>
+        ))}
       </SelectWrapper>
 
       {/* 난이도선택 셀렉트 */}
-      <SelectWrapper
-        bordered={false}
-        defaultValue="난이도"
-        onChange={(e) => setLevel(e)}
-      >
+      <SelectWrapper bordered={false} defaultValue="난이도" onChange={(e) => setLevel(e)}>
         <Option value="high">상</Option>
         <Option value="middle">중</Option>
         <Option value="low">하</Option>
@@ -111,7 +116,14 @@ function MountainSearch() {
         value={search}
         autoFocus={true}
       />
-      <NonIconBlueBtn text={"검색"} />
+      <NonIconBlueBtn
+        htmlType="submit"
+        text={"검색"}
+        onClick={(e) => {
+          e.preventDefault();
+          console.log(level, location, search);
+        }}
+      />
     </Main>
   );
 }
