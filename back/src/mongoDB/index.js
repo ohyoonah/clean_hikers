@@ -19,6 +19,4 @@ connect(MONGO_URI)
   .then(() => console.log("MongoDB와 연결에 성공했습니다"))
   .catch((error) => console.error(error));
 
-export { User };
-
-export { User };
+export { User, Mountain };
