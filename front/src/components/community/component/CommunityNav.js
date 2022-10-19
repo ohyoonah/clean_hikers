@@ -1,9 +1,8 @@
 import { Card, Col, Row } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CommunityNavStyled from "../styledComponents/CommunityNavStyled";
 import CommunityItem from "./CommunityItem";
 import initialState from "./data";
-import * as api from "../../../api/api";
 
 const tabList = [
   {
@@ -29,7 +28,7 @@ function CommunityNav({ setPosts, posts, setViewPost }) {
   const [tabs, setTabs] = useState(initialState.inputs.state);
 
   const filterItem = posts
-    .filter((post) => post.state === tabs)
+    .filter((post) => post.station === tabs)
     .map((post) => <CommunityItem key={post.no} post={post} />);
 
   const contentList = {

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Col, DatePicker, Form, Input, Row, Select, Space } from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Col, DatePicker, Form, Input, Row, Select } from "antd";
 import moment from "moment";
 import { FormOutlined } from "@ant-design/icons";
 import {
@@ -9,20 +9,16 @@ import {
 import { RegisterBtnStyled } from "../../common/button/IconBtnStyled";
 
 import * as api from "../../../api/api";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
 function CommunityCreate() {
-  const [componentSize, setComponentSize] = useState("default");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [visitDate, setVisitDate] = useState("");
   const [state, setState] = useState("");
 
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
-  };
   const navigate = useNavigate();
   const onFinish = async (e) => {
     await api
@@ -32,7 +28,6 @@ function CommunityCreate() {
         description: description,
         date: e.visitDate,
         nickname: "LIM",
-        header: "LIM",
         station: state,
         location: e.location,
         personnel: 3,
@@ -47,10 +42,15 @@ function CommunityCreate() {
     console.log("Success", { ...e, createAt });
     return navigate(-1);
   };
+  async function fetchData() {
+    const res = await api.get("community/location");
+    console.log(res.data);
+  }
 
-  const onChange = (e) => {
-    console.log("Change:", e.target.value);
-  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <Row>
@@ -92,18 +92,18 @@ function CommunityCreate() {
                 rules={[{ required: true, message: "제목을 입력하세요" }]}
               >
                 <Select>
-                  <Select.Option value="서울">서울</Select.Option>
-                  <Select.Option value="경기">경기</Select.Option>
-                  <Select.Option value="인천">인천</Select.Option>
-                  <Select.Option value="강원">강원</Select.Option>
-                  <Select.Option value="충북">충북</Select.Option>
-                  <Select.Option value="충남">충남</Select.Option>
-                  <Select.Option value="경북">경북</Select.Option>
-                  <Select.Option value="경남">경남</Select.Option>
-                  <Select.Option value="전북">전북</Select.Option>
-                  <Select.Option value="전남">전남</Select.Option>
-                  <Select.Option value="부산">부산</Select.Option>
-                  <Select.Option value="제주">제주</Select.Option>
+                  <Select.Option value="가야산">가야산</Select.Option>
+                  <Select.Option value="계룡산">계룡산</Select.Option>
+                  <Select.Option value="내장산">내장산</Select.Option>
+                  <Select.Option value="덕유산">덕유산</Select.Option>
+                  <Select.Option value="무등산">무등산</Select.Option>
+                  <Select.Option value="북한산">북한산</Select.Option>
+                  <Select.Option value="설악산">설악산</Select.Option>
+                  <Select.Option value="소백산">소백산</Select.Option>
+                  <Select.Option value="속리산">속리산</Select.Option>
+                  <Select.Option value="오대산">오대산</Select.Option>
+                  <Select.Option value="월악산">월악산</Select.Option>
+                  <Select.Option value="월출산">월출산</Select.Option>
                 </Select>
               </Form.Item>
               <Form.Item

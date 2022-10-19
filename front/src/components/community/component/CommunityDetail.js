@@ -4,7 +4,7 @@ import {
   CommunityDetailAlign,
   CommunityDetailStyled,
 } from "../styledComponents/CommunityDetailStyled";
-import initialState from "./data";
+
 import { EnvironmentOutlined } from "@ant-design/icons";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Card, Col, Row } from "antd";
@@ -16,18 +16,18 @@ import * as api from "../../../api/api";
 
 function CommunityDetail() {
   const [datas, setDatas] = useState([]);
-  const [pageNum, setPageNum] = useState(1);
 
   const { no } = useParams();
   const navigate = useNavigate();
 
   const handleDelete = async function () {
     if (window.confirm("해당 게시물을 삭제하시겠습니까?")) {
+      await api.delete(`community/posts/${no}`);
       alert("삭제가 완료되었습니다.");
       return navigate(-1);
     }
   };
-
+  console.log(no);
   // useEffect(() => {
   //   setData(initialState.users[no]);
   // }, []);
@@ -37,14 +37,14 @@ function CommunityDetail() {
     async function getCommunityDetailDdata() {
       try {
         await api
-          .get(`community/postsDetail/:post_id`)
-          .then((res) => console.log(res));
+          .get(`community/postsDetail/${no}`)
+          .then((res) => (setDatas(res.data[0]), console.log(res.data[0])));
       } catch (res) {
         console.log(res);
       }
     }
     getCommunityDetailDdata();
-  }, [pageNum]);
+  }, [no]);
   return (
     <>
       <CommunityDetailAlign>
@@ -64,13 +64,13 @@ function CommunityDetail() {
               <h1>{datas.title}</h1>
               <b>
                 {<Avatar size="small" icon={<UserOutlined />} />}
-                {datas.userName}
+                {datas.nickname}
               </b>
               <p>
                 {<EnvironmentOutlined />} {datas.location}
               </p>
               <p className="community-detail-discription">
-                {datas.discription}
+                {datas.description}
               </p>
             </div>
           </Col>
@@ -109,7 +109,7 @@ function CommunityDetail() {
                     description={
                       <p>
                         {datas.visitDate} <br />
-                        {datas.visitMember} 자리 남음
+                        {datas.personnel} 명 모집됨
                       </p>
                     }
                   />
