@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { DispatchContext } from "../../App";
 import { ROUTES } from "../../enum/routes";
 import { validateEmail, validatePassword } from "../../util/formValidation";
-import { errorMessage } from "../common/form/Message";
+import { errorMessage, notificationMessage } from "../common/form/Message";
 import * as api from "../../api/api";
 
 import Loading from "../common/loading/Loading";
@@ -23,6 +23,7 @@ function Login() {
   });
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
+  const JWT_EXPIRY_TIME = 30 * 60 * 1000;
 
   useEffect(() => {
     setIsLoading(true);
@@ -41,17 +42,21 @@ function Login() {
 
   async function onFinish() {
     try {
-      const res = await api.post("user/login", {
+      const { data } = await api.post("user/login", {
         ...formValue,
       });
-      const user = res.data;
-      const jwtToken = user.jwt;
+      const jwtToken = data.jwt;
       sessionStorage.setItem("userToken", jwtToken);
       await dispatch({
         type: "LOGIN_SUCCESS",
-        payload: user,
+        payload: data,
       });
       navigate(ROUTES.HOME);
+
+      setTimeout(async () => {
+        notificationMessage("top");
+        await dispatch({ type: "LOGOUT" });
+      }, JWT_EXPIRY_TIME - 5 * 60 * 1000);
     } catch (e) {
       console.log("로그인 실패", e.response.data);
       errorMessage(e.response.data);
