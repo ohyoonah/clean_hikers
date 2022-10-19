@@ -10,6 +10,7 @@ import { TabBlock } from "./TabStyle";
 
 function Users() {
   const [user, setUser] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     async function getUserData() {
@@ -31,7 +32,6 @@ function Users() {
     getUserData();
   }, []);
 
-  const [isEdit, setIsEdit] = useState(false);
   const items = [
     { label: "프로필", key: "1", children: ChangeProfile() },
     {

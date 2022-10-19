@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 import * as api from "../../api/api";
 import BottomNavigation from "../common/navigation/BottomNavigation";
 
-import CommunityItemStyled from "../community/styledComponents/CommunityItemstyled";
+import {
+  CommunityItemStyled,
+  StateButton,
+} from "../community/styledComponents/CommunityItemstyled";
 
-import { Button, Card, Col, Row } from "antd";
+import { Card, Col, Row } from "antd";
 import { EnvironmentOutlined } from "@ant-design/icons";
 
 function UserPostList({ user }) {
   const [userPost, setUserPost] = useState([]);
+  const postTime = moment(userPost.createdAt).fromNow();
 
   useEffect(() => {
     const id = user.id;
@@ -27,30 +32,32 @@ function UserPostList({ user }) {
 
   return (
     <>
-      {userPost.map((post, i) => (
-        <CommunityItemStyled key={userPost[i].post_id}>
-          <Link to={`/community/communityDetail/${userPost.post_id}`}>
-            <Card hoverable>
-              <Row>
-                <Col span={18} push={0}>
-                  <Row>
-                    <Button>{post.state}</Button>
-                    <h3> {post.title}</h3>
-                  </Row>
-                  <p>
-                    지역 : {<EnvironmentOutlined />}
-                    {post.location}
-                  </p>
-                  <p>{post.discription}</p>
-                </Col>
-                <Col span={2} push={4}>
-                  <p className="writer-user-name">{post.userName}</p>
-                </Col>
-              </Row>
-            </Card>
-          </Link>
-        </CommunityItemStyled>
-      ))}
+      {userPost &&
+        userPost.map((post, i) => (
+          <CommunityItemStyled key={userPost[i].post_id}>
+            <Link to={`/community/communityDetail/${post.post_id}`}>
+              <Card hoverable>
+                <Row>
+                  <Col span={18} push={0}>
+                    <Row>
+                      <StateButton>{post.station}</StateButton>
+                      <h3> {post.title}</h3>
+                    </Row>
+                    <p>
+                      지역 : {<EnvironmentOutlined />}
+                      {post.location.name} | {post.location.address}
+                    </p>
+                    <p>{post.description}</p>
+                  </Col>
+                  <Col span={2} push={4}>
+                    <p>{postTime}</p>
+                  </Col>
+                  <p className="writer-user-name">{user.nickname}</p>
+                </Row>
+              </Card>
+            </Link>
+          </CommunityItemStyled>
+        ))}
       <BottomNavigation props={userPost.length} />
     </>
   );
