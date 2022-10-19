@@ -10,6 +10,7 @@ const NonIconBlueBtnStyled = styled(Button)`
 
   /* Color */
   background-color: ${theme.mainBlue};
+  color: #fff;
 
   :hover {
     background-color: ${theme.mainBlue};
