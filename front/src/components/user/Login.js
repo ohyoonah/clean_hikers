@@ -24,6 +24,13 @@ function Login() {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
+
   function onChange(e) {
     const { name, value } = e.currentTarget;
     setFormValue((prev) => ({
@@ -32,16 +39,8 @@ function Login() {
     }));
   }
 
-  useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-  }, []);
-
   async function onFinish() {
     try {
-      // setIsLoading(true);
       const res = await api.post("user/login", {
         ...formValue,
       });
@@ -52,10 +51,8 @@ function Login() {
         type: "LOGIN_SUCCESS",
         payload: user,
       });
-      // setIsLoading(false);
       navigate(ROUTES.HOME);
     } catch (e) {
-      // setIsLoading(false);
       console.log("로그인 실패", e.response.data);
       errorMessage(e.response.data);
     }
