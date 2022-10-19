@@ -67,7 +67,7 @@ function CommunityDetail() {
                 {datas.nickname}
               </b>
               <p>
-                {<EnvironmentOutlined />} {datas.location}
+                {<EnvironmentOutlined />} {datas.location.name}
               </p>
               <p className="community-detail-discription">
                 {datas.description}
@@ -103,7 +103,7 @@ function CommunityDetail() {
                     title={
                       <p>
                         {<EnvironmentOutlined />}
-                        {datas.location}
+                        {datas.location.name} | {datas.location.address}
                       </p>
                     }
                     description={

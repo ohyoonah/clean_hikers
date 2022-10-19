@@ -23,7 +23,7 @@ function CommunityItem({ post }) {
                 </Row>
                 <p>
                   지역 : {<EnvironmentOutlined />}
-                  {/* {post.location} */}
+                  {post.location.name}
                 </p>
                 <p>{post.description}</p>
               </Col>
