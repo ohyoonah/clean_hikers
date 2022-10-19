@@ -10,6 +10,7 @@ import {
 import { RegisterBtnStyled } from "../../common/button/IconBtnStyled";
 import * as api from "../../../api/api";
 import { CommunityNavCol } from "../styledComponents/CommunityNavStyled";
+import { useLocation } from "react-router-dom";
 
 const { Option } = Select;
 

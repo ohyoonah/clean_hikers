@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 
 import { errorMessage } from "../common/form/Message";
 import * as api from "../../api/api";
@@ -7,11 +7,13 @@ import { ProfileBlock, ImageBlock } from "./ProfileStyle";
 import { ButtonBlock } from "../common/form/FormStyled";
 
 import { Form, Input, Button, Avatar } from "antd";
-import { LoadingOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
+import { DispatchContext, UserStateContext } from "../../App";
 
 function ProfileEdit({ setIsEdit, user, setUser }) {
-  const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm();
+  const dispatch = useContext(DispatchContext);
+  const userState = useContext(UserStateContext);
 
   function onImageChange(e) {
     e.preventDefault();
@@ -40,6 +42,10 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
   async function changeImage(url) {
     try {
       await api.put("user/picture", { image: url });
+      dispatch({
+        type: "IMAGE_CHANGE",
+        payload: { ...userState.user, defaultImage: url },
+      });
     } catch (e) {
       console.error(e);
     }
