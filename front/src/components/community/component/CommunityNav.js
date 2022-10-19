@@ -1,6 +1,9 @@
 import { Card, Col, Row } from "antd";
 import React, { useState } from "react";
-import CommunityNavStyled from "../styledComponents/CommunityNavStyled";
+import {
+  CommunityNavStyled,
+  CommunityNavCol,
+} from "../styledComponents/CommunityNavStyled";
 import CommunityItem from "./CommunityItem";
 import initialState from "./data";
 
@@ -23,7 +26,7 @@ const tabList = [
   },
 ];
 
-function CommunityNav({ setPosts, posts, setViewPost }) {
+function CommunityNav({ setPosts, posts }) {
   const [activeTabKey1, setActiveTabKey1] = useState("allPost");
   const [tabs, setTabs] = useState(initialState.inputs.state);
 
@@ -40,7 +43,6 @@ function CommunityNav({ setPosts, posts, setViewPost }) {
             posts={posts}
             setPosts={setPosts}
             post={post}
-            setViewPost={setViewPost}
           />
         ))}
       </p>
@@ -55,26 +57,22 @@ function CommunityNav({ setPosts, posts, setViewPost }) {
   };
   return (
     <>
-      <Row>
-        <Col span={2}></Col>
-        <Col span={20}>
-          <CommunityNavStyled>
-            <Card
-              style={{
-                width: "100%",
-              }}
-              tabList={tabList}
-              activeTabKey={activeTabKey1}
-              onTabChange={(key) => {
-                onTab1Change(key);
-                setTabs(key);
-              }}
-            >
-              {contentList[activeTabKey1]}
-            </Card>
+      <Row justify="center">
+        <CommunityNavCol>
+          <CommunityNavStyled
+            style={{
+              width: "100%",
+            }}
+            tabList={tabList}
+            activeTabKey={activeTabKey1}
+            onTabChange={(key) => {
+              onTab1Change(key);
+              setTabs(key);
+            }}
+          >
+            {contentList[activeTabKey1]}
           </CommunityNavStyled>
-        </Col>
-        <Col span={2}></Col>
+        </CommunityNavCol>
       </Row>
     </>
   );

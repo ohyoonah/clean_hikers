@@ -24,7 +24,6 @@ const PaginationWrapper = styled(Pagination)`
   }
 `;
 function CommunityList({ posts, setPosts }) {
-  const [viewPost, setViewPost] = useState(false);
   const [pageNum, setPageNum] = useState(1);
 
   return (
@@ -34,12 +33,7 @@ function CommunityList({ posts, setPosts }) {
           <RecruitBlueBtn />
         </Link>
       </RecruitBlueBtnAlign>
-      <CommunityNav
-        posts={posts}
-        viewPost={viewPost}
-        setPosts={setPosts}
-        setViewPost={setViewPost}
-      />
+      <CommunityNav posts={posts} setPosts={setPosts} />
       <PaginationWrapper
         defaultCurrent={1}
         total={18}

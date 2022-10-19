@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, DatePicker, Form, Input, Row, Select } from "antd";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 import { FormOutlined } from "@ant-design/icons";
 import {
-  TitleAlign,
   CommunityFormSecond,
+  AllContentAlign,
+  CommunityCreateBtn,
 } from "../styledComponents/CommunityCreateStyled";
 import { RegisterBtnStyled } from "../../common/button/IconBtnStyled";
-
 import * as api from "../../../api/api";
-import { useNavigate } from "react-router-dom";
+import { CommunityNavCol } from "../styledComponents/CommunityNavStyled";
+import { HttpStatusCode } from "../../../enum/httpStautsCode";
 
 const { Option } = Select;
 
@@ -18,16 +20,33 @@ function CommunityCreate() {
   const [description, setDescription] = useState("");
   const [visitDate, setVisitDate] = useState("");
   const [state, setState] = useState("");
+  const [id, setId] = useState("");
+  const [nickname, setNickName] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function getUserData() {
+      try {
+        const { data: currentUser } = await api.get("user/user-page");
+        setId(currentUser.id);
+        setNickName(currentUser.nickname);
+        console.log(nickname, id);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    getUserData();
+  }, []);
+
   const onFinish = async (e) => {
     await api
       .post("community/post", {
-        user_id: 99,
+        user_id: id,
         title: title,
         description: description,
         date: e.visitDate,
-        nickname: "LIM",
+        nickname: nickname,
         station: state,
         location: e.location,
         personnel: 3,
@@ -53,15 +72,12 @@ function CommunityCreate() {
 
   return (
     <>
-      <Row>
-        <Col span={2}></Col>
-        <Col span={20}>
-          <TitleAlign>
-            <h1>글 작성</h1>
-          </TitleAlign>
+      <Row justify="center">
+        <CommunityNavCol>
+          <h1>글 작성</h1>
           <Form onFinish={onFinish}>
             <RegisterBtnStyled>
-              <Button
+              <CommunityCreateBtn
                 type="primary"
                 icon={<FormOutlined />}
                 className="community-title-button"
@@ -69,7 +85,7 @@ function CommunityCreate() {
                 htmlType="submit"
               >
                 등록하기
-              </Button>
+              </CommunityCreateBtn>
             </RegisterBtnStyled>
 
             <Form.Item
@@ -130,8 +146,7 @@ function CommunityCreate() {
               />
             </Form.Item>
           </Form>
-        </Col>
-        <Col span={2}></Col>
+        </CommunityNavCol>
       </Row>
     </>
   );

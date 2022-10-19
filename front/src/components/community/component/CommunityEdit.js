@@ -5,6 +5,8 @@ import { FormOutlined } from "@ant-design/icons";
 import {
   TitleAlign,
   CommunityFormSecond,
+  CommunityCreateBtn,
+  AlignBtn,
 } from "../styledComponents/CommunityCreateStyled";
 import { RegisterBtnStyled } from "../../common/button/IconBtnStyled";
 
@@ -53,8 +55,8 @@ function CommentEdit() {
             <h1>글 작성</h1>
           </TitleAlign>
           <Form onFinish={onFinish}>
-            <RegisterBtnStyled>
-              <Button
+            <AlignBtn>
+              <CommunityCreateBtn
                 type="primary"
                 icon={<FormOutlined />}
                 className="community-title-button"
@@ -62,8 +64,8 @@ function CommentEdit() {
                 htmlType="submit"
               >
                 등록하기
-              </Button>
-            </RegisterBtnStyled>
+              </CommunityCreateBtn>
+            </AlignBtn>
 
             <Form.Item
               name="title"
