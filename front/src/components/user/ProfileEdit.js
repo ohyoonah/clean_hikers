@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import { errorMessage } from "../common/form/Message";
+import { DispatchContext } from "../../App";
 import * as api from "../../api/api";
 
 import { ProfileBlock, ImageBlock } from "./ProfileStyle";
@@ -12,6 +13,7 @@ import { PlusOutlined } from "@ant-design/icons";
 function ProfileEdit({ setIsEdit, user, setUser }) {
   const [form] = Form.useForm();
   const [loadings, setLoadings] = useState([]);
+  const dispatch = useContext(DispatchContext);
 
   const enterLoading = (index) => {
     setLoadings((prev) => {
@@ -55,6 +57,25 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
   async function changeImage(url) {
     try {
       await api.put("user/picture", { image: url });
+      dispatch({
+        type: "IMAGE_CHANGE",
+        payload: { defaultImage: url },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function deleteImage() {
+    try {
+      await api.put("user/picture", {
+        image: null,
+      });
+      setUser((user) => ({ ...user, image: null }));
+      dispatch({
+        type: "IMAGE_CHANGE",
+        payload: { defaultImage: null },
+      });
     } catch (e) {
       console.error(e);
     }
@@ -96,17 +117,6 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
       } catch (e) {
         console.error(e);
       }
-    }
-  }
-
-  async function deleteImage() {
-    try {
-      await api.put("user/picture", {
-        image: null,
-      });
-      setUser((user) => ({ ...user, image: null }));
-    } catch (e) {
-      console.error(e);
     }
   }
 
