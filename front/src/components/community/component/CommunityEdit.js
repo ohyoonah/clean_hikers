@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Col, DatePicker, Form, Input, Row, Select, Space } from "antd";
+import { Col, DatePicker, Form, Input, Row, Select } from "antd";
 import moment from "moment";
 import { FormOutlined } from "@ant-design/icons";
 import {
@@ -8,7 +8,6 @@ import {
   CommunityCreateBtn,
   AlignBtn,
 } from "../styledComponents/CommunityCreateStyled";
-import { RegisterBtnStyled } from "../../common/button/IconBtnStyled";
 
 import * as api from "../../../api/api";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +23,7 @@ function CommentEdit() {
   const navigate = useNavigate();
   const onFinish = async (e) => {
     await api
-      .post("community/post", {
+      .put(`community/posts`, {
         user_id: 99,
         title: title,
         description: description,

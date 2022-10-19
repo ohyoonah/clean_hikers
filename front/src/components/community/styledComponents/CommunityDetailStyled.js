@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import "antd/dist/antd.css";
-import { Card, Layout } from "antd";
+import { Card, Col, Comment, Layout } from "antd";
+import CommentList from "../component/CommentList";
 
 const CommunityDetailAlign = styled.div`
-  padding: 5rem 8% 5% 8%;
   width: 1130px;
   max-width: 80%;
   .community-detail-main h1,
@@ -15,5 +15,12 @@ const CommunityDetailAlign = styled.div`
     margin: 2rem 0;
   }
 `;
-const CommunityDetailStyled = styled.div``;
-export { CommunityDetailAlign, CommunityDetailStyled };
+const CommunityCommentList = styled(Comment)`
+  width: 100%;
+`;
+const DetailCol = styled(Col)`
+  padding: 5rem 8% 5% 8%;
+  width: 80%;
+  max-width: 1130px;
+`;
+export { CommunityDetailAlign, CommunityCommentList, DetailCol };

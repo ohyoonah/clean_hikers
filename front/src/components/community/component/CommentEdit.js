@@ -16,7 +16,7 @@ function CommentEdit({ onChange, onSubmit, submitting, value }) {
           onClick={onSubmit}
           type="primary"
         >
-          Add Comment
+          등록
         </Button>
       </Form.Item>
     </>

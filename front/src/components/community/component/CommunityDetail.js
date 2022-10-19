@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   CommunityDetailAlign,
-  CommunityDetailStyled,
+  DetailCol,
 } from "../styledComponents/CommunityDetailStyled";
 
 import { EnvironmentOutlined } from "@ant-design/icons";
@@ -19,8 +19,7 @@ import moment from "moment";
 function CommunityDetail() {
   const [datas, setDatas] = useState("");
   const [location, setLocation] = useState({});
-  const [id, setId] = useState("");
-  const [nickname, setNickName] = useState("");
+  const [currentUserData, setCurrentUserData] = useState("");
   const { no } = useParams();
   const navigate = useNavigate();
 
@@ -28,9 +27,8 @@ function CommunityDetail() {
     async function getUserData() {
       try {
         const { data: currentUser } = await api.get("user/user-page");
-        setId(currentUser.id);
-        setNickName(currentUser.nickname);
-        console.log(nickname, id);
+        setCurrentUserData(currentUser);
+        console.log("현재유저 : ", currentUserData.nickname);
       } catch (e) {
         console.error(e);
       }
@@ -71,40 +69,40 @@ function CommunityDetail() {
   }, [no]);
   return (
     <>
-      <CommunityDetailAlign>
-        {id === datas.user_id && (
-          <Col>
-            <Button
-              onClick={() => {
-                handleDelete();
-              }}
-            >
-              삭제
-            </Button>
-            <Button onClick={() => {}}>수정</Button>
-          </Col>
-        )}
+      <Row justify="center">
+        <DetailCol>
+          {currentUserData.id === datas.user_id && (
+            <Col>
+              <Button
+                onClick={() => {
+                  handleDelete();
+                }}
+              >
+                삭제
+              </Button>
+              <Button onClick={() => {}}>수정</Button>
+            </Col>
+          )}
 
-        <Row>
-          <Col span={14}>
-            <div className="community-detail-main">
-              <h1>{datas.title}</h1>
-              <p>{postTime}</p>
-              <b>
-                {<Avatar size="small" icon={<UserOutlined />} />}
-                {datas.nickname}
-              </b>
-              <p>
-                {<EnvironmentOutlined />} {location.name} | {location.address}
-              </p>
-              <p className="community-detail-discription">
-                {datas.description}
-              </p>
-            </div>
-          </Col>
-          <Col span={7} push={2}>
-            <Row>
-              <CommunityDetailStyled>
+          <Row>
+            <Col span={10}>
+              <div className="community-detail-main">
+                <h1>{datas.title}</h1>
+                <p>{postTime}</p>
+                <b>
+                  {<Avatar size="small" icon={<UserOutlined />} />}
+                  {datas.nickname}
+                </b>
+                <p>
+                  {<EnvironmentOutlined />} {location.name} | {location.address}
+                </p>
+                <p className="community-detail-discription">
+                  {datas.description}
+                </p>
+              </div>
+            </Col>
+            <Col span={14} push={2}>
+              <Row>
                 <Card
                   style={{
                     width: 360,
@@ -149,13 +147,13 @@ function CommunityDetail() {
                     }
                   />
                 </Card>
-              </CommunityDetailStyled>
-            </Row>
-            <NonIconBlueBtn text={"참여신청"}></NonIconBlueBtn>
-          </Col>
-        </Row>
-        <CommentList />
-      </CommunityDetailAlign>
+              </Row>
+              <NonIconBlueBtn text={"참여신청"}></NonIconBlueBtn>
+            </Col>
+          </Row>
+          <CommentList currentUserData={currentUserData} datas={datas} />
+        </DetailCol>
+      </Row>
     </>
   );
 }
