@@ -48,6 +48,8 @@ export const LogoImage = styled.img`
 
 export const ProfileIcon = styled.img`
   width: 45px;
+  height: 45px;
+  object-fit: cover;
   padding-bottom: 4px;
   border-radius: 100px;
 `;
