@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { theme } from "../common/styles/palette";
-import { Upload } from "antd";
 
 export const ProfileBlock = styled.div`
   height: 100%;
@@ -9,23 +8,7 @@ export const ProfileBlock = styled.div`
     margin: 2rem 0;
   }
   img {
-    width: 100%;
-    height: 100%;
     object-fit: fill;
-  }
-  .ant-upload {
-    border-radius: 50%;
-    overflow: hidden;
-    img {
-      opacity: 0.8;
-    }
-  }
-  .delete {
-    color: ${theme.mainBlue};
-    background: none;
-    border: none;
-    font-size: 0.8rem;
-    cursor: pointer;
   }
   .textBlcok {
     font-size: 1rem;
@@ -46,28 +29,53 @@ export const ProfileBlock = styled.div`
     left: -70px;
     font-weight: 700;
   }
-  .ant-form-item label {
-    margin: 0;
-  }
   .ant-input-group {
     display: flex;
   }
   .submitButton {
     background: ${theme.primary};
+    color: white;
     border: none;
   }
   .smallButton {
     margin-top: 3rem;
     margin-bottom: 5rem;
   }
-  .error {
-    color: red;
-  }
 `;
 
-export const UploadBlock = styled(Upload)`
-  overflow: hidden;
-  img {
-    height: 100%;
+export const ImageBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  .ant-avatar {
+    opacity: 0.7;
+    margin: 0 auto;
+    margin-bottom: 0.5rem;
+    position: relative;
+    border: 1px dotted ${theme.black};
+  }
+  .delete {
+    color: ${theme.mainBlue};
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  input[type="file"] {
+    display: none;
+  }
+  label {
+    position: relative;
+  }
+  .uploadButton {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    border-radius: 50%;
+    z-index: 1;
+    cursor: pointer;
+    &:hover {
+      background: #00000040;
+    }
   }
 `;

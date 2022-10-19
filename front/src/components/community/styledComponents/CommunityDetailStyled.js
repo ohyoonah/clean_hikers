@@ -4,6 +4,8 @@ import { Card, Layout } from "antd";
 
 const CommunityDetailAlign = styled.div`
   padding: 5rem 8% 5% 8%;
+  width: 1130px;
+  max-width: 80%;
   .community-detail-main h1,
   b,
   p {

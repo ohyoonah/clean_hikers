@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import "antd/dist/antd.css";
 import { theme } from "../../common/styles/palette";
-import { Card } from "antd";
+import { Card, Col } from "antd";
 
 const CommunityNavStyled = styled(Card)`
-  width: 100%;
   justify-content: space-between;
   .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
     color: #89a550;
@@ -33,4 +32,9 @@ const CommunityNavStyled = styled(Card)`
   }
 `;
 
-export default CommunityNavStyled;
+const CommunityNavCol = styled(Col)`
+  width: 1130px;
+  max-width: 80%;
+`;
+
+export { CommunityNavCol, CommunityNavStyled };
