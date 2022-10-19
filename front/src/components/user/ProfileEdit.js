@@ -23,11 +23,11 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
       file.type === "image/jpg" ||
       file.type === "image/jpeg" ||
       file.type === "image/png";
-    const isLt2M = file.size / 1024 / 1024 < 2;
+    const isLtSize = file.size / 1024 / 1024 < 0.5;
     if (!isJpgOrPng) {
       errorMessage("JPG/PNG 파일만 업로드 가능합니다");
-    } else if (!isLt2M) {
-      errorMessage("2MB 이하의 파일만 업로드 가능합니다");
+    } else if (!isLtSize) {
+      errorMessage("500KB 이하의 파일만 업로드 가능합니다");
     } else {
       if (reader !== undefined && file !== undefined) {
         reader.onloadend = () => {
@@ -61,6 +61,9 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
         await api.put("user/nickname", {
           nickname: user.nickname,
         });
+        await api.put(`community/users/${user.id}?nickname=${user.nickname}`, {
+          nickname: user.nickname,
+        });
       } catch (e) {
         console.error(e);
       }
@@ -87,10 +90,10 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
 
   async function deleteImage() {
     try {
-      setUser((user) => ({ ...user, image: null }));
       await api.put("user/picture", {
         image: null,
       });
+      setUser((user) => ({ ...user, image: null }));
     } catch (e) {
       console.error(e);
     }
