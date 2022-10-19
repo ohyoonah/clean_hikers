@@ -12,6 +12,10 @@ export const ProfileBlock = styled.div`
     object-fit: fill;
   }
 
+  .ant-avatar {
+    border: 1px solid #cacaca;
+  }
+
   .textBlcok {
     margin: 1.5rem 0;
     font-size: 1rem;
@@ -40,6 +44,7 @@ export const ProfileBlock = styled.div`
   }
 
   .submitButton {
+    width: 70px;
     background: ${theme.primary};
     color: white;
     border: none;
@@ -58,8 +63,8 @@ export const ImageBlock = styled.div`
     position: relative;
     margin: 0 auto;
     margin-bottom: 0.5rem;
-    opacity: 0.7;
-    border: 1px dotted ${theme.black};
+    opacity: 0.6;
+    background: #ececec;
   }
 
   .delete {
@@ -88,7 +93,7 @@ export const ImageBlock = styled.div`
     cursor: pointer;
 
     &:hover {
-      background: #00000040;
+      background: #0000001f;
     }
   }
 `;

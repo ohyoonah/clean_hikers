@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { errorMessage } from "../common/form/Message";
 import * as api from "../../api/api";
@@ -11,6 +11,22 @@ import { PlusOutlined } from "@ant-design/icons";
 
 function ProfileEdit({ setIsEdit, user, setUser }) {
   const [form] = Form.useForm();
+  const [loadings, setLoadings] = useState([]);
+
+  const enterLoading = (index) => {
+    setLoadings((prev) => {
+      const newLoadings = [...prev];
+      newLoadings[index] = true;
+      return newLoadings;
+    });
+    setTimeout(() => {
+      setLoadings((prev) => {
+        const newLoadings = [...prev];
+        newLoadings[index] = false;
+        return newLoadings;
+      });
+    }, 800);
+  };
 
   function onImageChange(e) {
     e.preventDefault();
@@ -57,6 +73,7 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
         await api.put(`community/users/${user.id}?nickname=${user.nickname}`, {
           nickname: user.nickname,
         });
+        enterLoading(0);
       } catch (e) {
         console.error(e);
       }
@@ -75,6 +92,7 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
         await api.put("user/password", {
           password: user.password,
         });
+        enterLoading(1);
       } catch (e) {
         console.error(e);
       }
@@ -133,8 +151,12 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
                 setUser((prev) => ({ ...prev, nickname: e.target.value }));
               }}
             />
-            <Button className="submitButton" onClick={changeNickname}>
-              저장
+            <Button
+              className="submitButton"
+              onClick={changeNickname}
+              loading={loadings[0]}
+            >
+              {loadings[0] ? "" : "저장"}
             </Button>
           </Input.Group>
         </Form.Item>
@@ -146,8 +168,12 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
                 setUser((prev) => ({ ...prev, password: e.target.value }));
               }}
             />
-            <Button className="submitButton" onClick={changePassword}>
-              저장
+            <Button
+              className="submitButton"
+              onClick={changePassword}
+              loading={loadings[1]}
+            >
+              {loadings[1] ? "" : "저장"}
             </Button>
           </Input.Group>
         </Form.Item>
