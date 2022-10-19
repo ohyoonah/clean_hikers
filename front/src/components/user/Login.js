@@ -1,17 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { DispatchContext } from "../../App";
-import * as api from "../../api/api";
 import { ROUTES } from "../../enum/routes";
 import { validateEmail, validatePassword } from "../../util/formValidation";
+import { errorMessage } from "../common/form/Message";
+import * as api from "../../api/api";
+
+import Loading from "../common/loading/Loading";
 
 import { PageBlock, FormBlock, TitleBlock } from "./FormStyle";
 import { InputBlock, ButtonBlock } from "../common/form/FormStyled";
 
 import { Form } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import "antd/dist/antd.css";
-import Loading from "../common/loading/Loading";
 
 function Login() {
   const navigate = useNavigate();
@@ -19,10 +20,16 @@ function Login() {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
-    error: "",
   });
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
 
   function onChange(e) {
     const { name, value } = e.currentTarget;
@@ -33,7 +40,6 @@ function Login() {
   }
 
   async function onFinish() {
-    setIsLoading(true);
     try {
       const res = await api.post("user/login", {
         ...formValue,
@@ -45,11 +51,10 @@ function Login() {
         type: "LOGIN_SUCCESS",
         payload: user,
       });
-      setIsLoading(false);
       navigate(ROUTES.HOME);
     } catch (e) {
       console.log("로그인 실패", e.response.data);
-      setFormValue({ ...formValue, error: e.response.data });
+      errorMessage(e.response.data);
     }
   }
 
@@ -62,7 +67,6 @@ function Login() {
           <h2>Sign In</h2>
           <span>로그인을 위해 이메일과 비밀번호를 입력해 주세요</span>
         </TitleBlock>
-        <span className="error">{formValue.error}</span>
         <Form.Item name="email" rules={[{ validator: validateEmail }]}>
           <InputBlock
             prefix={<UserOutlined className="site-form-item-icon" />}

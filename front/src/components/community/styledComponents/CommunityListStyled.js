@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import "antd/dist/antd.css";
+import { theme, Pagination } from "antd";
 
 const RecruitBlueBtnAlign = styled.div`
   padding: 20px;
@@ -26,17 +27,4 @@ const CommunityListAlign = styled.div`
   text-align: center;
 `;
 
-const CommunityItemStyled = styled.div`
-  color: black;
-  .writer-user-name {
-    display: flex;
-    justify-content: end;
-  }
-`;
-
-export {
-  RecruitBlueBtnAlign,
-  CommunityPagenationStyled,
-  CommunityListAlign,
-  CommunityItemStyled,
-};
+export { RecruitBlueBtnAlign, CommunityPagenationStyled, CommunityListAlign };

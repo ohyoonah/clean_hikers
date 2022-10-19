@@ -1,11 +1,13 @@
-import {
-  NonIconBlueBtnStyled,
-  NonIconGreenBtnStyled,
-} from "./NonIconBtnStyled";
+import { NonIconBlueBtnStyled, NonIconGreenBtnStyled } from "./NonIconBtnStyled";
 
-function NonIconBlueBtn({ text }) {
+function NonIconBlueBtn({ text, htmlType, onClick }) {
   return (
-    <NonIconBlueBtnStyled type="primary" size="large">
+    <NonIconBlueBtnStyled
+      htmlType={htmlType}
+      onClick={onClick}
+      type="primary"
+      size="large"
+    >
       {text}
     </NonIconBlueBtnStyled>
   );
