@@ -27,7 +27,7 @@ function Login() {
 
   useEffect(() => {
     setIsLoading(true);
-    setTimeout(() => {
+    setTimeout(function () {
       setIsLoading(false);
     }, 500);
   }, []);
@@ -53,9 +53,12 @@ function Login() {
       });
       navigate(ROUTES.HOME);
 
-      setTimeout(async () => {
+      setTimeout(function () {
         notificationMessage("top");
-        await dispatch({ type: "LOGOUT" });
+        setTimeout(function () {
+          dispatch({ type: "LOGOUT" });
+          sessionStorage.removeItem("userToken");
+        }, 5 * 60 * 1000);
       }, JWT_EXPIRY_TIME - 5 * 60 * 1000);
     } catch (e) {
       console.log("로그인 실패", e.response.data);
