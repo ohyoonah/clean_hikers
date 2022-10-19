@@ -3,7 +3,7 @@ import { CommentModel } from "./commentSchema.js";
 
 class Post {
     static async create({ newPost }) {
-        const createdNewPost = await await PostModel.create(newPost);
+        const createdNewPost = await PostModel.create(newPost);
         return createdNewPost;
     }
 
@@ -34,7 +34,6 @@ class Post {
 
     static async findByPostId({ post_id }) {
         const post = await PostModel.find({ post_id });
-        console.log(post);
         return post;
     }
 

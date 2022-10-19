@@ -155,25 +155,6 @@ class postService {
 
                 return allPostsList;
             }
-            // const station = send.station;
-            // const posts = await Post.findByStation({ station });
-            // const page = Number(send.page || 1);
-            // const perPage = Number(send.perPage || 5);
-
-            // const total = posts.length;
-
-            // const postsList = posts.sort((a, b) => {
-            //     if (a.createdAt > b.createdAt) {
-            //         return -1;
-            //     }
-            // });
-            // const totalPage = Math.ceil(total / perPage);
-            // const allPostsList = postsList.slice(
-            //     perPage * (page - 1),
-            //     perPage * page
-            // );
-
-            // return allPostsList;
         }
     }
 
@@ -246,6 +227,22 @@ class postService {
         }
 
         return post;
+    }
+
+    static async changeNicknamePost({ posts, toUpdate }) {
+        const newPosts = posts;
+        const newToUpdate = toUpdate;
+        // function update(item) {
+        //     const post_id = item.post_id;
+        //     const updatedPost = postService.setPost({ post_id, toUpdate });
+        //     // console.log("updatedPost", updatedPost);
+        // }
+        // newPosts.forEach(update);
+        newPosts.forEach((item) => {
+            const post_id = item.post_id;
+            const updatedPost = postService.setPost({ post_id, toUpdate });
+        });
+        return newPosts;
     }
 
     static async deletePost({ post_id }) {
