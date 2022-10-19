@@ -11,7 +11,7 @@ import { EnvironmentOutlined } from "@ant-design/icons";
 
 import moment from "moment";
 
-function UserPostItem({ post, user }) {
+function UserPostItem({ post }) {
   const postTime = moment(post.createdAt).fromNow();
 
   return (
@@ -33,7 +33,7 @@ function UserPostItem({ post, user }) {
             <Col span={2} push={4}>
               <p>{postTime}</p>
             </Col>
-            <p className="writer-user-name">{user.nickname}</p>
+            <p className="writer-user-name">{post.nickname}</p>
           </Row>
         </Card>
       </Link>

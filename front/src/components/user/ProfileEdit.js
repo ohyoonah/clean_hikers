@@ -54,6 +54,9 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
         await api.put("user/nickname", {
           nickname: user.nickname,
         });
+        await api.put(`community/users/${user.id}?nickname=${user.nickname}`, {
+          nickname: user.nickname,
+        });
       } catch (e) {
         console.error(e);
       }
