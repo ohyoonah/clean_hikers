@@ -13,24 +13,10 @@ import { NonIconBlueBtnStyled } from "../common/button/NonIconBtnStyled";
 
 const { Option } = SelectWrapper;
 
-const REGION_ARR = [
-  "서울",
-  "경기",
-  "인천",
-  "강원",
-  "충북",
-  "충남",
-  "경북",
-  "경남",
-  "전북",
-  "전남",
-  "부산",
-  "제주",
-];
-
 const COUNT_ARR = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-function MainSelection() {
+function MainSelection({ mountains }) {
+  console.log(mountains);
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const userState = useContext(UserStateContext);
@@ -50,10 +36,10 @@ function MainSelection() {
 
   return (
     <FormWrapper form={form} onFinish={onFinish}>
-      <Form.Item name="region">
-        <SelectWrapper bordered={false} placeholder="지역">
-          {REGION_ARR.map((region) => {
-            return <Option key={region}>{region}</Option>;
+      <Form.Item name="mountain">
+        <SelectWrapper bordered={false} placeholder="산">
+          {mountains.map((mountain) => {
+            return <Option key={mountain.name}>{mountain.name}</Option>;
           })}
         </SelectWrapper>
       </Form.Item>

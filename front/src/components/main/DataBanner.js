@@ -2,30 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Col, Row } from "antd";
 import { Highlight, TextWrapper, Head, Description } from "./DataBannerStyled";
 import MapChart from "./MapChart";
-import * as api from "../../api/api";
-import Loading from "../common/loading/Loading";
-
-function DataBanner() {
+function DataBanner({ data }) {
   const [current, setCurrent] = useState(3);
 
-  const [data, setData] = useState([]);
-
-  const [isLoading, setIsLoading] = useState(true);
-
-  async function fetchData() {
-    const res = await api.get("main/data");
-    console.log(res.data);
-    setData(res.data);
-    setIsLoading(false);
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  return isLoading ? (
-    <Loading />
-  ) : (
+  return (
     <TextWrapper gutter={60}>
       <Col>
         <MapChart data={data} current={current} setCurrent={setCurrent} />
