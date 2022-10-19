@@ -10,6 +10,7 @@ import {
 import { RegisterBtnStyled } from "../../common/button/IconBtnStyled";
 
 import * as api from "../../../api/api";
+import { useLocation } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -19,6 +20,11 @@ function CommunityCreate() {
   const [discription, setDiscription] = useState("");
   const [date, setDate] = useState("");
   const [state, setState] = useState("");
+  const location = useLocation();
+
+  if (location.state) {
+    console.log(location.state);
+  }
 
   const onFormLayoutChange = ({ size }) => {
     setComponentSize(size);
