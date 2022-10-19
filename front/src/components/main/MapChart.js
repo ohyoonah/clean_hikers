@@ -1,20 +1,19 @@
 import React, { useMemo, useState } from "react";
-import { StyledMarker, ClickedMarker, SliderStyled } from "./MapStyled";
+import { StyledMarker, GeographyStyled, SliderStyled } from "./MapStyled";
 import { Tooltip } from "antd";
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  Marker,
-} from "react-simple-maps";
+import { ComposableMap, Geographies, Marker } from "react-simple-maps";
 import { geoCentroid } from "d3-geo";
 import { scaleLinear } from "d3-scale";
-import { theme } from "../common/styles/palette";
 
-function MapChart({ data, current, setCurrent }) {
+function MapChart({ data, setCurrent }) {
   const [filteredData, setFilteredData] = useState(data);
 
-  const popScale = useMemo(() => scaleLinear().domain([0, 89]).range([0, 40]));
+  const popScale = useMemo(() => scaleLinear().domain([15, 89]).range([8, 25]));
+
+  const marks = {
+    0: "0",
+    80: "80(톤)",
+  };
 
   function getColor(trashVolume) {
     if (trashVolume >= 60) return "#3b7b2d";
@@ -46,43 +45,22 @@ function MapChart({ data, current, setCurrent }) {
   }
 
   return (
-    <div style={{ width: "100%" }}>
+    <div>
       <ComposableMap
         data-tip=""
         projection="geoAzimuthalEqualArea"
         projectionConfig={{ scale: 6500, rotate: [-127.6, -36, -11] }}
         width={400}
         height={600}
-        style={{ height: "820px" }}
+        style={{
+          height: "820px",
+        }}
       >
         <Geographies geography={"/korea-geojson.json"}>
           {({ geographies }) => (
             <>
               {geographies.map((geo) => (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  style={{
-                    default: {
-                      fill: "#e2e4e7",
-                      outline: "none",
-                      stroke: "#FFFFFF",
-                      strokeWidth: 0.3,
-                    },
-                    hover: {
-                      fill: "#e2e4e7",
-                      outline: "none",
-                      stroke: "#FFFFFF",
-                      strokeWidth: 0.3,
-                    },
-                    pressed: {
-                      fill: "#e2e4e7",
-                      outline: "none",
-                      stroke: "#FFFFFF",
-                      strokeWidth: 0.3,
-                    },
-                  }}
-                />
+                <GeographyStyled key={geo.rsmKey} geography={geo} />
               ))}
               {geographies.map((geo) => {
                 let REGION_NAME = geo.properties.CTP_KOR_NM;
@@ -107,40 +85,38 @@ function MapChart({ data, current, setCurrent }) {
             </>
           )}
         </Geographies>
-        {filteredData.map((elem) => {
-          if (elem.id != current)
-            return (
-              <StyledMarker
-                key={elem.id}
-                coordinates={[elem.longitude, elem.latitude]}
-                onClick={() => {
-                  setCurrent(elem.id);
-                }}
-                color={getColor(elem.trash)}
-              >
-                <Tooltip
-                  title={`${elem.name}, 
+        {filteredData.map((elem) => (
+          <StyledMarker
+            key={elem.id}
+            coordinates={[elem.longitude, elem.latitude]}
+            onClick={() => {
+              setCurrent(elem.id);
+            }}
+            color={getColor(elem.trash)}
+          >
+            <Tooltip
+              title={`${elem.name}, 
                 ${elem.trash}톤`}
-                >
-                  <circle r={popScale(elem.trash)} />
-                </Tooltip>
-              </StyledMarker>
-            );
-        })}
-        <ClickedMarker
+            >
+              <circle r={popScale(elem.trash)} />
+            </Tooltip>
+          </StyledMarker>
+        ))}
+        {/* <ClickedMarker
           key="unique"
           coordinates={[data[current]["longitude"], data[current]["latitude"]]}
         >
           <circle r={popScale(data[current].trash)} />
-        </ClickedMarker>
+        </ClickedMarker> */}
       </ComposableMap>
       <SliderStyled
-        step={20}
-        tooltip={{ formatter: null }}
+        // step={20}
         onChange={onSliderChange}
         defaultValue={0}
         min={0}
         max={80}
+        marks={marks}
+        included={false}
       />
     </div>
   );
