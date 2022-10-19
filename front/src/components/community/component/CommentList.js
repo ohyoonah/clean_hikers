@@ -1,29 +1,66 @@
 import { Avatar, Comment, List, Tooltip } from "antd";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { CommunityCommentList } from "../styledComponents/CommunityDetailStyled";
 import CommentDetail from "./CommentDetail";
 import CommentEdit from "./CommentEdit";
+import * as api from "../../../api/api";
 
-function CommentList() {
+function CommentList({ currentUserData, datas }) {
   const [comments, setComments] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [value, setValue] = useState("");
+  const [commentNum, setCommentNum] = useState(0);
+
+  useEffect(() => {
+    async function getCommentData() {
+      console.log(datas);
+      try {
+        await api.get(`community/posts/comments`, `${datas.post_id}`);
+      } catch (res) {
+        console.log(res);
+      }
+    }
+    getCommentData();
+  }, []);
+
+  async function getCommentData() {
+    try {
+      await api.post(`community/posts/comment`, {
+        comment_id: commentNum,
+        user_id: currentUserData.user_id,
+        post_id: datas.user_id,
+        title: "3333",
+        description: "test",
+        nickname: currentUserData.nickname,
+      });
+    } catch (res) {
+      console.log(res);
+    }
+  }
+
   const handleSubmit = () => {
     if (!value) return;
     setSubmitting(true);
+
     setTimeout(() => {
+      getCommentData();
       setSubmitting(false);
+
       setValue("");
       setComments([
         ...comments,
         {
-          author: "Han Solo",
-          avatar: "https://joeschmoe.io/api/v1/random",
+          author: currentUserData.nickname,
+          avatar: currentUserData.defaultImage,
           content: <p>{value}</p>,
           datetime: moment("2016-11-22").fromNow(),
         },
       ]);
-    }, 1000);
+    }, 500);
+
+    console.log(comments);
+    setCommentNum(commentNum + 1);
   };
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -31,10 +68,8 @@ function CommentList() {
   return (
     <>
       {comments.length > 0 && <CommentDetail comments={comments} />}
-      <Comment
-        avatar={
-          <Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />
-        }
+      <CommunityCommentList
+        avatar={<Avatar src={comments.avatar} alt="user Image" />}
         content={
           <CommentEdit
             onChange={handleChange}
@@ -46,26 +81,6 @@ function CommentList() {
       />
     </>
   );
-
-  // return (
-  //   <List
-  //     className="comment-list"
-  //     header={`${data.length} replies`}
-  //     itemLayout="horizontal"
-  //     dataSource={data}
-  //     renderItem={(item) => (
-  //       <li>
-  //         <Comment
-  //           actions={item.actions}
-  //           author={item.author}
-  //           avatar={item.avatar}
-  //           content={item.content}
-  //           datetime={item.datetime}
-  //         />
-  //       </li>
-  //     )}
-  //   />
-  // );
 }
 
 export default CommentList;

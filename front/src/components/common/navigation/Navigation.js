@@ -16,7 +16,6 @@ function Navigation() {
 
   const userState = useContext(UserStateContext);
   const dispatch = useContext(DispatchContext);
-
   const isLogin = !!userState.user;
 
   const items = [
@@ -37,7 +36,12 @@ function Navigation() {
       key: ROUTES.USER.LOGIN,
     },
     isLogin && {
-      label: <ProfileIcon src="/profilecircle.svg" width="45px" />,
+      label: userState.user.defaultImage ? (
+        <ProfileIcon src={userState.user.defaultImage} />
+      ) : (
+        <ProfileIcon src="/profilecircle.svg" />
+      ),
+
       key: "sub menu",
       children: [
         {

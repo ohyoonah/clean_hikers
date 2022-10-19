@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, DatePicker, Form, Input, Row, Select } from "antd";
+import { DatePicker, Form, Input, Row, Select } from "antd";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { FormOutlined } from "@ant-design/icons";
 import {
   CommunityFormSecond,
-  AllContentAlign,
   CommunityCreateBtn,
 } from "../styledComponents/CommunityCreateStyled";
 import { RegisterBtnStyled } from "../../common/button/IconBtnStyled";
 import * as api from "../../../api/api";
 import { CommunityNavCol } from "../styledComponents/CommunityNavStyled";
-import { HttpStatusCode } from "../../../enum/httpStautsCode";
+import { useLocation } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -61,6 +60,7 @@ function CommunityCreate() {
     console.log("Success", { ...e, createAt });
     return navigate(-1);
   };
+
   async function fetchData() {
     const res = await api.get("community/location");
     console.log(res.data);
