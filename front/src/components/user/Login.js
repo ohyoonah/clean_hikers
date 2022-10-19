@@ -47,9 +47,11 @@ function Login() {
       const user = res.data;
       const jwtToken = user.jwt;
       sessionStorage.setItem("userToken", jwtToken);
+
+      const userInfo = await api.get("user/user-page");
       await dispatch({
         type: "LOGIN_SUCCESS",
-        payload: user,
+        payload: userInfo.data,
       });
       navigate(ROUTES.HOME);
     } catch (e) {

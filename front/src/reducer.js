@@ -10,6 +10,12 @@ export function loginReducer(userState, action) {
         ...userState,
         user: null,
       };
+    case "IMAGE_CHANGE":
+      return {
+        ...userState,
+        user: action.payload,
+      };
+
     default:
       return userState;
   }

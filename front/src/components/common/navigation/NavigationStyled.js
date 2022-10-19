@@ -49,6 +49,7 @@ export const LogoImage = styled.img`
 export const ProfileIcon = styled.img`
   width: 45px;
   padding-bottom: 4px;
+  border-radius: 100px;
 `;
 
 export { Layout };
