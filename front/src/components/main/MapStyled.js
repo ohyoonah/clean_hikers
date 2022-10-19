@@ -4,12 +4,6 @@ import { theme } from "../common/styles/palette";
 import { Slider } from "antd";
 
 export const SliderStyled = styled(Slider)`
-  // position: absolute;
-  // width: 600px;
-  // height: 20px;
-  // z-index: 12;
-  // bottom: 100px;
-
   & > .ant-slider-rail {
     background: linear-gradient(
       to right,
@@ -36,20 +30,6 @@ export const GeographyStyled = styled(Geography)`
   outline: none;
   stroke: #fff;
   strokewidth: 0.3;
-  //   },
-  //   hover: {
-  //     fill: "#e2e4e7",
-  //     outline: "none",
-  //     stroke: "#FFFFFF",
-  //     strokeWidth: 0.3,
-  //   },
-  //   pressed: {
-  //     fill: "#e2e4e7",
-  //     outline: "none",
-  //     stroke: "#FFFFFF",
-  //     strokeWidth: 0.3,
-  //   },
-  // }}
 `;
 
 export const StyledMarker = styled(Marker)`

@@ -53,6 +53,7 @@ function MapChart({ data, setCurrent }) {
         width={400}
         height={600}
         style={{
+          margin: "50px 0",
           height: "820px",
         }}
       >
