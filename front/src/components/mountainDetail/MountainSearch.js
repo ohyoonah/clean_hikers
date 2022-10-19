@@ -1,7 +1,7 @@
 /*검색창*/
 import styled from "styled-components";
 import { Select, Input, Form } from "antd";
-import { NonIconBlueBtn } from "../common/button/NonIconBtn";
+import { NonIconGreenBtn } from "../common/button/NonIconBtn";
 import * as api from "../../api/api";
 
 const { Option } = Select;
@@ -132,7 +132,7 @@ function MountainSearch({
         placeholder="산 이름을 입력해주세요..."
         value={search}
       />
-      <NonIconBlueBtn
+      <NonIconGreenBtn
         htmlType="submit"
         text={"검색"}
         onClick={(e) => {

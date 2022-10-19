@@ -10,26 +10,23 @@ const NonIconBlueBtnStyled = styled(Button)`
 
   /* Color */
   background-color: ${theme.mainBlue};
+
   :hover {
     background-color: ${theme.mainBlue};
-    color: white;
   }
-
-  color: white;
 `;
 
 const NonIconGreenBtnStyled = styled(Button)`
   /* Display & Box Model */
-
   padding: 0px 20px;
   border: ${theme.primary} solid;
   border-radius: 8px;
 
   /* Color */
-  background-color: ${theme.primary};
+  background-color: ${theme.naturalGreen};
+
   :hover {
-    background-color: ${theme.primary};
-    border: ${theme.primary} solid;
+    background-color: ${theme.naturalGreen};
   }
 `;
 
