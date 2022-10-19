@@ -3,13 +3,15 @@ import { Button, Col, DatePicker, Form, Input, Row, Select } from "antd";
 import moment from "moment";
 import { FormOutlined } from "@ant-design/icons";
 import {
-  TitleAlign,
   CommunityFormSecond,
+  AllContentAlign,
+  CommunityCreateBtn,
 } from "../styledComponents/CommunityCreateStyled";
 import { RegisterBtnStyled } from "../../common/button/IconBtnStyled";
 
 import * as api from "../../../api/api";
 import { useNavigate } from "react-router-dom";
+import { CommunityNavCol } from "../styledComponents/CommunityNavStyled";
 
 const { Option } = Select;
 
@@ -53,15 +55,12 @@ function CommunityCreate() {
 
   return (
     <>
-      <Row>
-        <Col span={2}></Col>
-        <Col span={20}>
-          <TitleAlign>
-            <h1>글 작성</h1>
-          </TitleAlign>
+      <Row justify="center">
+        <CommunityNavCol>
+          <h1>글 작성</h1>
           <Form onFinish={onFinish}>
             <RegisterBtnStyled>
-              <Button
+              <CommunityCreateBtn
                 type="primary"
                 icon={<FormOutlined />}
                 className="community-title-button"
@@ -69,7 +68,7 @@ function CommunityCreate() {
                 htmlType="submit"
               >
                 등록하기
-              </Button>
+              </CommunityCreateBtn>
             </RegisterBtnStyled>
 
             <Form.Item
@@ -130,8 +129,7 @@ function CommunityCreate() {
               />
             </Form.Item>
           </Form>
-        </Col>
-        <Col span={2}></Col>
+        </CommunityNavCol>
       </Row>
     </>
   );

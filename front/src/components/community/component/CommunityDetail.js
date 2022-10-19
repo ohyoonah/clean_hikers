@@ -15,7 +15,8 @@ import CommentList from "./CommentList";
 import * as api from "../../../api/api";
 
 function CommunityDetail() {
-  const [datas, setDatas] = useState([]);
+  const [datas, setDatas] = useState("");
+  const [location, setLocation] = useState({});
 
   const { no } = useParams();
   const navigate = useNavigate();
@@ -38,7 +39,13 @@ function CommunityDetail() {
       try {
         await api
           .get(`community/postsDetail/${no}`)
-          .then((res) => (setDatas(res.data[0]), console.log(res.data[0])));
+          .then(
+            (res) => (
+              setDatas(res.data[0]),
+              console.log(res.data[0]),
+              setLocation(res.data[0].location)
+            )
+          );
       } catch (res) {
         console.log(res);
       }
@@ -67,7 +74,7 @@ function CommunityDetail() {
                 {datas.nickname}
               </b>
               <p>
-                {<EnvironmentOutlined />} {datas.location.name}
+                {<EnvironmentOutlined />} {location.name} | {location.address}
               </p>
               <p className="community-detail-discription">
                 {datas.description}
@@ -103,7 +110,7 @@ function CommunityDetail() {
                     title={
                       <p>
                         {<EnvironmentOutlined />}
-                        {datas.location.name} | {datas.location.address}
+                        {location.name} | {location.address}
                       </p>
                     }
                     description={
