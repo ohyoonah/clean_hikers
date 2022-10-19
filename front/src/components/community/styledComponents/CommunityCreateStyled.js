@@ -2,9 +2,8 @@ import { Button } from "antd";
 import styled from "styled-components";
 
 const AllContentAlign = styled.div`
-  width: 100%;
-  width: 1130px;
-  max-width: 80%;
+  width: 80%;
+  max-width: 1130px;
 `;
 const CommunityCreateBtn = styled(Button)`
   .community-title-button {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 
 import { errorMessage } from "../common/form/Message";
 import * as api from "../../api/api";
@@ -7,11 +7,13 @@ import { ProfileBlock, ImageBlock } from "./ProfileStyle";
 import { ButtonBlock } from "../common/form/FormStyled";
 
 import { Form, Input, Button, Avatar } from "antd";
-import { LoadingOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
+import { DispatchContext, UserStateContext } from "../../App";
 
 function ProfileEdit({ setIsEdit, user, setUser }) {
-  const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm();
+  const dispatch = useContext(DispatchContext);
+  const userState = useContext(UserStateContext);
 
   function onImageChange(e) {
     e.preventDefault();
@@ -21,11 +23,11 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
       file.type === "image/jpg" ||
       file.type === "image/jpeg" ||
       file.type === "image/png";
-    const isLt2M = file.size / 1024 / 1024 < 2;
+    const isLtSize = file.size / 1024 / 1024 < 0.5;
     if (!isJpgOrPng) {
       errorMessage("JPG/PNG 파일만 업로드 가능합니다");
-    } else if (!isLt2M) {
-      errorMessage("2MB 이하의 파일만 업로드 가능합니다");
+    } else if (!isLtSize) {
+      errorMessage("500KB 이하의 파일만 업로드 가능합니다");
     } else {
       if (reader !== undefined && file !== undefined) {
         reader.onloadend = () => {
@@ -40,6 +42,10 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
   async function changeImage(url) {
     try {
       await api.put("user/picture", { image: url });
+      dispatch({
+        type: "IMAGE_CHANGE",
+        payload: { ...userState.user, defaultImage: url },
+      });
     } catch (e) {
       console.error(e);
     }
@@ -53,6 +59,9 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
     } else {
       try {
         await api.put("user/nickname", {
+          nickname: user.nickname,
+        });
+        await api.put(`community/users/${user.id}?nickname=${user.nickname}`, {
           nickname: user.nickname,
         });
       } catch (e) {
@@ -81,10 +90,10 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
 
   async function deleteImage() {
     try {
-      setUser((user) => ({ ...user, image: null }));
       await api.put("user/picture", {
         image: null,
       });
+      setUser((user) => ({ ...user, image: null }));
     } catch (e) {
       console.error(e);
     }

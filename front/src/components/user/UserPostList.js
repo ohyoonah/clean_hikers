@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import * as api from "../../api/api";
-
-import {
-  CommunityListAlign,
-  CommunityPagenationStyled,
-} from "../community/styledComponents/CommunityListStyled";
-
-import { Pagination } from "antd";
-import CommunityItem from "../community/component/CommunityItem";
+import UserPostIem from "./UserPostItem";
+import BottomNavigation from "../common/navigation/BottomNavigation";
 
 function UserPostList({ user }) {
   const [userPost, setUserPost] = useState([]);
@@ -28,18 +22,11 @@ function UserPostList({ user }) {
 
   return (
     <>
-      {userPost.map((post, i) => (
-        <CommunityItem key={userPost[i].post_id} post={post} />
-      ))}
-      <CommunityListAlign>
-        <CommunityPagenationStyled>
-          <Pagination
-            size="small"
-            defaultPageSize={5}
-            total={userPost.length}
-          />
-        </CommunityPagenationStyled>
-      </CommunityListAlign>
+      {userPost &&
+        userPost.map((post, i) => (
+          <UserPostIem key={userPost[i].post_id} post={post} user={user} />
+        ))}
+      <BottomNavigation props={userPost.length} />
     </>
   );
 }

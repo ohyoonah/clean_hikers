@@ -1,11 +1,9 @@
 /* 국립공원 리스트 */
-import { useState, useEffect } from "react";
 import styled from "styled-components";
 import MountainDetail from "./MountainDetail.js";
 import { Level } from "../common/level/Level";
 import { Pagination } from "antd";
-// import BottomNavigation from "../common/navigation/BottomNavigation";
-import * as api from "../../api/api";
+import { theme } from "../common/styles/palette";
 
 const PaginationWrapper = styled(Pagination)`
   /* Display & Box Model */
@@ -23,36 +21,57 @@ const PaginationWrapper = styled(Pagination)`
   }
 `;
 
+const Lists = styled.div`
+  z-index: -10;
+  height: 460px;
+  width: 1130px;
+  max-width: 80%;
+  /* border: 1px solid ${theme.naturalGreen}; */
+  border-radius: 10px;
+
+  margin: 0 auto;
+  margin-top: 15px;
+
+  /* background-color: ${theme.naturalGreen}; */
+`;
+
 const Desc = styled.div`
   /* Display & Box Model */
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  width: 1130px;
-  max-width: 80%;
+  grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
+  /* width: 1130px; */
+  /* max-width: 80%; */
   height: 50px;
-  padding: 0px 30px;
-  border-bottom: 1px solid rgb(220, 220, 220);
-  /* border-radius: 10px; */
+  /* padding: 0px 50px; */
+  /* border-bottom: 1px solid rgb(220, 220, 220); */
   margin: 0 auto;
-  margin-bottom: 15px;
+  /* margin-top: 15px; */
+  border-radius: 10px 10px 0px 0px;
+
+  /* Color */
+  background-color: ${theme.naturalGreen};
 
   /* Text */
-  line-height: 70px;
+  line-height: 50px;
   text-align: center;
+  font-size: 20px;
 `;
 
 const List = styled.div`
   /* Display & Box Model */
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  width: 1130px;
-  max-width: 80%;
+  grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
+  /* width: 1130px; */
+  /* max-width: 80%; */
   height: 80px;
-  padding: 0px 30px;
-  border: 1px solid rgb(220, 220, 220);
-  border-radius: 10px;
+  /* padding: 0px 55px; */
+  /* border: 1px solid rgb(220, 220, 220); */
+  border-bottom: 1px solid ${theme.naturalGreen};
+  /* border-radius: 10px; */
   margin: 0 auto;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
+
+  background-color: white;
 
   /* Text */
   line-height: 80px;
@@ -64,10 +83,10 @@ const List = styled.div`
   transition: 0.3s; // 호버 시 테두리색 변경을 위한 코드
 
   :hover {
-    transition-property: border; // 호버 시 테두리색 변경을 위한 코드
+    transition-property: background-color; // 호버 시 테두리색 변경을 위한 코드
     transition: 0.3s; // 호버 시 테두리색 변경을 위한 코드
-    border: 1px solid rgb(0, 130, 30);
-    box-shadow: 1px 1px 2px 0px rgba(150, 150, 150, 0.8);
+    background-color: ${theme.lightGrey};
+    /* box-shadow: 1px 1px 2px 0px rgba(150, 150, 150, 0.8); */
   }
 `;
 
@@ -76,60 +95,44 @@ function MountainList({
   setIsModal,
   detail,
   setDetail,
-  location,
-  difficulty,
-  search,
-  pageNum,
-  setPageNum,
   mountainList,
-  setMountainList,
+  maxPage,
+  setPageNum,
 }) {
-  useEffect(() => {
-    async function getMountainData() {
-      try {
-        await api
-          .get(`mountain/detail`, `?currentPage=${pageNum}`)
-          .then((res) => setMountainList(res.data.mountain));
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    getMountainData();
-  }, [pageNum]);
   return (
     <div>
-      <Desc>
-        <b style={{ textAlign: "start" }}>산이름</b>
-        <b>위치</b>
-        <b>연간 쓰레기 처리량(톤)</b>
-        <b style={{ textAlign: "end" }}>등산 난이도</b>
-      </Desc>
-      {mountainList.map((detail, idx) => {
-        return (
-          <div key={idx}>
-            <List
-              onClick={() => {
-                setIsModal(true);
-                setDetail(detail);
-              }}
-            >
-              <b style={{ textAlign: "start" }}>{detail.name}</b>
-              <div>{detail.address}</div>
-              <div>{Number(detail.trash).toFixed(1)}</div>
-              <div style={{ textAlign: "end", paddingRight: "20px" }}>
-                <Level difficulty={detail.difficulty} />
-              </div>
-            </List>
-          </div>
-        );
-      })}
-
+      <Lists>
+        <Desc>
+          <b>산이름</b>
+          <b>위치</b>
+          <b>연간 쓰레기 처리량(톤)</b>
+          <b>등산 난이도</b>
+        </Desc>
+        {mountainList.map((detail, idx) => {
+          return (
+            <div key={idx}>
+              <List
+                onClick={() => {
+                  setIsModal(true);
+                  setDetail(detail);
+                }}
+              >
+                <b>{detail.name}</b>
+                <div>{detail.address}</div>
+                <div>{Number(detail.trash).toFixed(1)}</div>
+                <div>
+                  <Level difficulty={detail.difficulty} />
+                </div>
+              </List>
+            </div>
+          );
+        })}
+      </Lists>
       <PaginationWrapper
         defaultCurrent={1}
-        total={18}
+        total={maxPage * 5}
         defaultPageSize={5}
         size="small"
-        showSizeChanger={false}
         onChange={(e) => setPageNum(e)}
       />
       {isModal ? (

@@ -10,6 +10,7 @@ import { TabBlock } from "./TabStyle";
 
 function Users() {
   const [user, setUser] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     async function getUserData() {
@@ -17,7 +18,6 @@ function Users() {
         const { data: currentUser, status } = await api.get("user/user-page");
         if (status === HttpStatusCode.Created) {
           const { id, nickname, defaultImage } = currentUser;
-          console.log(id);
           setUser({
             id,
             nickname,
@@ -32,7 +32,6 @@ function Users() {
     getUserData();
   }, []);
 
-  const [isEdit, setIsEdit] = useState(false);
   const items = [
     { label: "프로필", key: "1", children: ChangeProfile() },
     {
