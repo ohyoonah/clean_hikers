@@ -1,10 +1,14 @@
-import { Card, Col, Row } from "antd";
-import React, { useEffect, useState } from "react";
-import CommunityNavStyled from "../styledComponents/CommunityNavStyled";
+import { Card, Col, Row, Select } from "antd";
+import React, { useState } from "react";
+import {
+  CommunityNavStyled,
+  SelectStyled,
+} from "../styledComponents/CommunityNavStyled";
 import CommunityItem from "./CommunityItem";
 import initialState from "./data";
 import * as api from "../../../api/api";
 
+const { Option } = Select;
 const tabList = [
   {
     key: "allPost",
@@ -27,6 +31,12 @@ const tabList = [
 function CommunityNav({ setPosts, posts, setViewPost }) {
   const [activeTabKey1, setActiveTabKey1] = useState("allPost");
   const [tabs, setTabs] = useState(initialState.inputs.state);
+
+  // 데이터 어떻게 받아오실지 몰라서 일단 요렇게 남겨놓아요!
+  const mountainData = [
+    { name: "덕유산", id: "1" },
+    { name: "지리산", id: "2" },
+  ];
 
   const filterItem = posts
     .filter((post) => post.state === tabs)
@@ -70,6 +80,13 @@ function CommunityNav({ setPosts, posts, setViewPost }) {
                 onTab1Change(key);
                 setTabs(key);
               }}
+              tabBarExtraContent={
+                <SelectStyled bordered={false} placeholder="산 전체">
+                  {mountainData.map((mountain) => {
+                    return <Option key={mountain.name}>{mountain.name}</Option>;
+                  })}
+                </SelectStyled>
+              }
             >
               {contentList[activeTabKey1]}
             </Card>

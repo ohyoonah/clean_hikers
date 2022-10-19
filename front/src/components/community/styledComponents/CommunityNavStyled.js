@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import "antd/dist/antd.css";
 import { theme } from "../../common/styles/palette";
-import { Card } from "antd";
+import { Card, Select } from "antd";
 
-const CommunityNavStyled = styled(Card)`
+export const CommunityNavStyled = styled(Card)`
   width: 100%;
   justify-content: space-between;
   .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
@@ -33,4 +33,15 @@ const CommunityNavStyled = styled(Card)`
   }
 `;
 
-export default CommunityNavStyled;
+export const SelectStyled = styled(Select)`
+  /* Display & Box Model */
+  text-align: start;
+
+  /* Text */
+  & .ant-select-selection-item,
+  .ant-select-selection-placeholder {
+    font-weight: 600;
+    font-size: 16px;
+    color: ${theme.deepBlue};
+  }
+`;
