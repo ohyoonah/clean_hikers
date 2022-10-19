@@ -18,7 +18,7 @@ const { MONGO_URI } = process.env;
 console.log(MONGO_URI);
 
 connect(MONGO_URI)
-    .then(() => console.log("MongoDB와 연결에 성공했습니다"))
-    .catch((error) => console.error(error));
+  .then(() => console.log("MongoDB와 연결에 성공했습니다"))
+  .catch((error) => console.error(error));
 
 export { User, Post, Comment, Mountain };

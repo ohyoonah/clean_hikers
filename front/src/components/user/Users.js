@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Profile from "./Profile";
 import ProfileEdit from "./ProfileEdit";
 import UserPostList from "./UserPostList";
+import { HttpStatusCode } from "../../enum/httpStautsCode";
 import * as api from "../../api/api";
 
 import { TabBlock } from "./TabStyle";
@@ -13,16 +14,19 @@ function Users() {
   useEffect(() => {
     async function getUserData() {
       try {
-        await api.get("user/user-page").then((res) =>
+        const { data: currentUser, status } = await api.get("user/user-page");
+        if (status === HttpStatusCode.Created) {
+          const { id, nickname, defaultImage } = currentUser;
+          console.log(id);
           setUser({
-            nickname: res.data.nickname,
-            password: res.data.password,
-            checkPassword: res.data.password,
-            image: "",
-          })
-        );
+            id,
+            nickname,
+            password: "",
+            image: defaultImage,
+          });
+        }
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     }
     getUserData();
@@ -31,7 +35,13 @@ function Users() {
   const [isEdit, setIsEdit] = useState(false);
   const items = [
     { label: "프로필", key: "1", children: ChangeProfile() },
-    { label: "작성글", key: "2", children: <UserPostList /> },
+    {
+      label: "작성글",
+      key: "2",
+      children: (
+        <UserPostList user={user} setUser={setUser} setIsEdit={setIsEdit} />
+      ),
+    },
   ];
 
   function ChangeProfile() {

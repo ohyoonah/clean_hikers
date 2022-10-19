@@ -10,10 +10,15 @@ export function validateEmail(_, value) {
   return Promise.resolve();
 }
 
+export function validateEmailCheck(email) {
+  return email
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+}
+
 export function validateNickName(_, value) {
-  if (!value) {
-    return Promise.reject(new Error("닉네임을 입력해 주세요."));
-  }
   if (/\s/.test(value)) {
     return Promise.reject(new Error("닉네임은 공백을 포함 할 수 없습니다."));
   }

@@ -1,15 +1,25 @@
+import { Button } from "antd";
 import styled from "styled-components";
 
-const TitleAlign = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const AllContentAlign = styled.div`
-  padding: 20px 10%;
+  width: 100%;
+  width: 1130px;
+  max-width: 80%;
 `;
-const CommunityFormSecond = styled.div`
-  display: flex;
-  justify-content: space-between;
+const CommunityCreateBtn = styled(Button)`
+  .community-title-button {
+    background-color: #9ac355;
+    border: #9ac355 solid;
+    border-radius: 8px;
+  }
+  .community-title-button:hover {
+    background-color: #a3cb5d;
+    border: #a3cb5d solid;
+    border-radius: 8px;
+  }
 `;
-export { AllContentAlign, TitleAlign, CommunityFormSecond };
+const AlignBtn = styled.div`
+  text-align: end;
+`;
+const CommunityFormSecond = styled.div``;
+export { AllContentAlign, CommunityCreateBtn, AlignBtn, CommunityFormSecond };

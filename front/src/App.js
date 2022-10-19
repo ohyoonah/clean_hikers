@@ -9,23 +9,30 @@ import CommunityPage from "./pages/CommunityPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import MountainDetailPage from "./pages/MountainDetailPage";
-import MountainSearchPage from "./pages/MountainSearchPage";
 import RegisterPage from "./pages/RegisterPage";
 import UserPage from "./pages/UserPage";
 import Loading from "./components/common/loading/Loading";
 import { loginReducer } from "./reducer";
 import { ROUTES } from "./enum/routes";
 
-import "./App.css";
+import "antd/dist/antd.variable.min.css";
 import "./fonts/font.css";
+import { ConfigProvider } from "antd";
 
 import * as api from "./api/api";
+import { theme } from "./components/common/styles/palette";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
 export const modeContext = createContext(null);
 
 function App() {
+  ConfigProvider.config({
+    theme: {
+      primaryColor: theme.naturalGreen,
+    },
+  });
+
   const [userState, dispatch] = useReducer(loginReducer, {
     user: null,
   });
@@ -76,14 +83,7 @@ function App() {
               <Route path={ROUTES.USER.LOGIN} element={<LoginPage />} />
               <Route path={ROUTES.USER.REGISTER} element={<RegisterPage />} />
               <Route path={ROUTES.USER.USER_PAGE} element={<UserPage />} />
-              <Route
-                path={ROUTES.MOUNTAIN.DETAIL}
-                element={<MountainDetailPage />}
-              />
-              <Route
-                path={ROUTES.MOUNTAIN.SEARCH}
-                element={<MountainSearchPage />}
-              />
+              <Route path={ROUTES.MOUNTAIN.DETAIL} element={<MountainDetailPage />} />
             </Routes>
             <Footer />
           </Router>

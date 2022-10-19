@@ -1,48 +1,31 @@
-import { Button, Card, Col, Pagination, Row } from "antd";
+import { Pagination } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 import { RecruitBlueBtn } from "../../common/button/IconBtn";
-import { EnvironmentOutlined } from "@ant-design/icons";
-import {
-  RecruitBlueBtnAlign,
-  CommunityPagenationStyled,
-  CommunityListAlign,
-  CommunityItemStyled,
-} from "../styledComponents/CommunityListStyled";
+import BottomNavigation from "../../common/navigation/BottomNavigation";
+
+import { RecruitBlueBtnAlign } from "../styledComponents/CommunityListStyled";
 
 import CommunityNav from "./CommunityNav";
+const PaginationWrapper = styled(Pagination)`
+  /* Display & Box Model */
+  display: block;
+  text-align: center;
+  padding-top: 15px;
 
-function CommunityItem({ post }) {
-  return (
-    <>
-      <CommunityItemStyled>
-        <Link to={`/community/communityDetail/${post.no}`}>
-          <Card hoverable>
-            <Row>
-              <Col span={18} push={0}>
-                <Row>
-                  <Button>{post.state}</Button>
-                  <h3> {post.title}</h3>
-                </Row>
-                <p>
-                  지역 : {<EnvironmentOutlined />}
-                  {post.location}
-                </p>
-                <p>{post.discription}</p>
-              </Col>
-              <Col span={2} push={4}>
-                <p className="writer-user-name">{post.userName}</p>
-              </Col>
-            </Row>
-          </Card>
-        </Link>
-      </CommunityItemStyled>
-    </>
-  );
-}
+  .ant-pagination-item-active a {
+    color: #89a550;
+    border: none;
+  }
+  .ant-pagination-item-active {
+    border: none;
+    text-decoration: underline 2px;
+  }
+`;
+function CommunityList({ posts, setPosts }) {
+  const [pageNum, setPageNum] = useState(1);
 
-function CommunityList({ posts, handleRemove, tap, setTap }) {
-  const [viewPost, setViewPost] = useState(false);
   return (
     <div>
       <RecruitBlueBtnAlign>
@@ -50,21 +33,17 @@ function CommunityList({ posts, handleRemove, tap, setTap }) {
           <RecruitBlueBtn />
         </Link>
       </RecruitBlueBtnAlign>
-      <CommunityNav
-        posts={posts}
-        handleRemove={handleRemove}
-        viewPost={viewPost}
-        setViewPost={setViewPost}
-        tap={tap}
-        setTap={setTap}
+      <CommunityNav posts={posts} setPosts={setPosts} />
+      <PaginationWrapper
+        defaultCurrent={1}
+        total={18}
+        defaultPageSize={5}
+        size="small"
+        showSizeChanger={false}
+        onChange={(e) => setPageNum(e)}
       />
-      <CommunityListAlign>
-        <CommunityPagenationStyled>
-          <Pagination size="small" total={50} />
-        </CommunityPagenationStyled>
-      </CommunityListAlign>
     </div>
   );
 }
 
-export { CommunityList, CommunityItem };
+export default CommunityList;
