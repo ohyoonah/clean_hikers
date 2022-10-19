@@ -1,6 +1,6 @@
 import is from "@sindresorhus/is";
 import { Router } from "express";
-import { commentService } from "./communityService.js";
+import { commentService } from "../community/communityService.js";
 import { ErrorMessage } from "../middlewares/errorMiddleware.js";
 
 const commentRouter = Router();
