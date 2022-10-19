@@ -26,7 +26,7 @@ const tabList = [
   },
 ];
 
-function CommunityNav({ setPosts, posts, setViewPost }) {
+function CommunityNav({ setPosts, posts }) {
   const [activeTabKey1, setActiveTabKey1] = useState("allPost");
   const [tabs, setTabs] = useState(initialState.inputs.state);
 
@@ -43,7 +43,6 @@ function CommunityNav({ setPosts, posts, setViewPost }) {
             posts={posts}
             setPosts={setPosts}
             post={post}
-            setViewPost={setViewPost}
           />
         ))}
       </p>

@@ -1,3 +1,4 @@
+import "moment/locale/ko";
 import { Button, Card, Col, Row } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -10,9 +11,7 @@ import moment from "moment";
 
 function CommunityItem({ post }) {
   console.log(post);
-  const postTime = moment(post.createdAt).format("YY.MM.DD  HH:mm:ss");
-  const nowTime = moment(new Date());
-  const listTime = nowTime.diff(postTime, "hours"); // list 상에 보여주는 시간
+  const postTime = moment(post.createdAt).fromNow(); // post 작성 시간
   return (
     <>
       <CommunityItemStyled>

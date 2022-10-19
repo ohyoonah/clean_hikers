@@ -1,3 +1,4 @@
+import "moment/locale/ko";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -13,13 +14,29 @@ import { NonIconBlueBtn } from "../../common/button/NonIconBtn";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import CommentList from "./CommentList";
 import * as api from "../../../api/api";
+import moment from "moment";
 
 function CommunityDetail() {
   const [datas, setDatas] = useState("");
   const [location, setLocation] = useState({});
-
+  const [id, setId] = useState("");
+  const [nickname, setNickName] = useState("");
   const { no } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function getUserData() {
+      try {
+        const { data: currentUser } = await api.get("user/user-page");
+        setId(currentUser.id);
+        setNickName(currentUser.nickname);
+        console.log(nickname, id);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    getUserData();
+  }, []);
 
   const handleDelete = async function () {
     if (window.confirm("해당 게시물을 삭제하시겠습니까?")) {
@@ -28,13 +45,13 @@ function CommunityDetail() {
       return navigate(-1);
     }
   };
+  const postTime = moment(datas.createdAt).fromNow(); // post 작성 시간
   console.log(no);
   // useEffect(() => {
   //   setData(initialState.users[no]);
   // }, []);
 
   useEffect(() => {
-    // setData(initialState.users[no]);
     async function getCommunityDetailDdata() {
       try {
         await api
@@ -55,20 +72,24 @@ function CommunityDetail() {
   return (
     <>
       <CommunityDetailAlign>
-        <Col>
-          <Button
-            onClick={() => {
-              handleDelete();
-            }}
-          >
-            삭제
-          </Button>
-          <Button onClick={() => {}}>수정</Button>
-        </Col>
+        {id === datas.user_id && (
+          <Col>
+            <Button
+              onClick={() => {
+                handleDelete();
+              }}
+            >
+              삭제
+            </Button>
+            <Button onClick={() => {}}>수정</Button>
+          </Col>
+        )}
+
         <Row>
           <Col span={14}>
             <div className="community-detail-main">
               <h1>{datas.title}</h1>
+              <p>{postTime}</p>
               <b>
                 {<Avatar size="small" icon={<UserOutlined />} />}
                 {datas.nickname}
@@ -90,8 +111,12 @@ function CommunityDetail() {
                   }}
                   cover={
                     <>
+                      {console.log(location.latitude)}
                       <Map
-                        center={{ lat: 37.7941467, lng: 128.5426327 }}
+                        center={{
+                          lat: 36.342114,
+                          lng: 127.205563,
+                        }}
                         style={{
                           width: "100%",
                           height: "250px",
@@ -100,7 +125,10 @@ function CommunityDetail() {
                         level={8}
                       >
                         <MapMarker
-                          position={{ lat: 37.7941467, lng: 128.5426327 }}
+                          position={{
+                            lat: 36.342114,
+                            lng: 127.205563,
+                          }}
                         />
                       </Map>
                     </>
