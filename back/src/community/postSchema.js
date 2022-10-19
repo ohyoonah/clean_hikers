@@ -30,7 +30,7 @@ const PostSchema = new Schema(
             default: Date.now,
         },
         location: {
-            type: String,
+            type: Object,
             required: false,
         },
         person: [

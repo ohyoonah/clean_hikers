@@ -3,9 +3,9 @@ import CommunityDetail from "../components/community/component/CommunityDetail";
 
 function CommunityDetailPage() {
   return (
-    <div>
+    <>
       <CommunityDetail />
-    </div>
+    </>
   );
 }
 
