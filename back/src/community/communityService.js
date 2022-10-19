@@ -59,7 +59,7 @@ class postService {
                 const perPage = Number(send.perPage || 5);
 
                 const total = posts.length;
-                console.log(send);
+                // console.log(send);
                 const postsList = posts.sort((a, b) => {
                     if (a.createdAt > b.createdAt) {
                         return -1;
@@ -283,8 +283,7 @@ class commentService {
 
         const createdNewComment = await Comment.create({ newComment });
 
-        const toUpdate = await postService.getAPosts({ post_id });
-
+        const [toUpdate] = await postService.getAPosts({ post_id });
         toUpdate.comment.push(newComment);
 
         const createPostComment = await postService.setPost({
@@ -300,6 +299,12 @@ class commentService {
     static async getComments({ post_id }) {
         const comments = await Comment.findByPostId({ post_id });
         return comments;
+    }
+
+    static async pushComments({ toUpdate, newComment }) {
+        toUpdate.comment.push(newComment);
+        console.log(toUpdate.comment);
+        return toUpdate;
     }
 
     static async setComment({ comment_id, toUpdate }) {
@@ -342,7 +347,7 @@ class commentService {
 
         const post_id = comment.post_id;
 
-        const twoUpdate = await postService.getAPosts({ post_id });
+        const [twoUpdate] = await postService.getAPosts({ post_id });
 
         const newComment = twoUpdate.comment;
 
@@ -356,7 +361,14 @@ class commentService {
 
         twoUpdate.comment = newComment;
 
-        return comment;
+        const createPostComment = await postService.setPost({
+            post_id,
+            toUpdate: twoUpdate,
+        });
+
+        console.log(createPostComment);
+
+        return newComment;
     }
 
     static async deleteComment({ comment_id }) {
@@ -388,7 +400,7 @@ class commentService {
 class personService {
     static async addPerson({ post_id, email }) {
         const post = await postService.getAPosts({ post_id });
-        const toUpdate = post;
+        const [toUpdate] = post;
 
         const people = toUpdate.person;
 
@@ -418,13 +430,18 @@ class personService {
         } else {
             const newPerson = await User.findByEmail({ email });
 
-            const toUpdate = await postService.getAPosts({ post_id });
+            const [toUpdate] = await postService.getAPosts({ post_id });
 
-            if (toUpdate.count == toUpdate.personnel) {
+            if (parseInt(toUpdate.count) === toUpdate.personnel) {
                 const errorMessage = "모집 인원이 마감되었습니다.";
                 return { errorMessage };
             } else {
+                console.log("toUpdate.person = ", toUpdate);
+                console.log("newPerson = ", newPerson);
+                console.log(typeof toUpdate.person);
+
                 toUpdate.person.push(newPerson);
+
                 toUpdate.count = toUpdate.person.length;
 
                 const createPostPerson = await postService.setPost({
@@ -457,7 +474,7 @@ class personService {
     static async getPersons({ post_id }) {
         const post = await postService.getAPosts({ post_id });
 
-        console.log(post);
+        // console.log(post);
 
         const people = post.person;
 
