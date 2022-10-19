@@ -90,6 +90,33 @@ postRouter.put("/posts/:post_id", async function (req, res, next) {
     }
 });
 
+//유저정보 수정시 게시글 수정
+postRouter.put("/users/:id", async function (req, res, next) {
+    try {
+        const user_id = req.params.id;
+        const toUpdate = req.query;
+
+        const posts = await postService.getPosts({ user_id });
+        // console.log(posts);
+        // function update(item) {
+        //     const post_id = item.post_id;
+        //     const updatedPost = postService.setPost({ post_id, toUpdate });
+        //     console.log("updatedPost", updatedPost);
+        // }
+        // posts.forEach(update);
+
+        const newPosts = await postService.changeNicknamePost({
+            posts,
+            toUpdate,
+        });
+
+        ErrorMessage(newPosts);
+        res.status(200).json(newPosts);
+    } catch (error) {
+        next(error);
+    }
+});
+
 // 게시글 삭제
 postRouter.delete("/posts/:post_id", async function (req, res, next) {
     try {
