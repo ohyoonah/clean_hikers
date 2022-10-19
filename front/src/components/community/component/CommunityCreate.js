@@ -1,57 +1,83 @@
-import React, { useState } from "react";
-import { Button, Col, DatePicker, Form, Input, Row, Select, Space } from "antd";
+import React, { useEffect, useState } from "react";
+import { DatePicker, Form, Input, Row, Select } from "antd";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 import { FormOutlined } from "@ant-design/icons";
 import {
-  TitleAlign,
   CommunityFormSecond,
-  AllContentAlign,
+  CommunityCreateBtn,
 } from "../styledComponents/CommunityCreateStyled";
 import { RegisterBtnStyled } from "../../common/button/IconBtnStyled";
-
 import * as api from "../../../api/api";
+import { CommunityNavCol } from "../styledComponents/CommunityNavStyled";
 import { useLocation } from "react-router-dom";
 
 const { Option } = Select;
 
 function CommunityCreate() {
-  const [componentSize, setComponentSize] = useState("default");
   const [title, setTitle] = useState("");
-  const [discription, setDiscription] = useState("");
-  const [date, setDate] = useState("");
+  const [description, setDescription] = useState("");
+  const [visitDate, setVisitDate] = useState("");
   const [state, setState] = useState("");
-  const location = useLocation();
+  const [id, setId] = useState("");
+  const [nickname, setNickName] = useState("");
 
-  if (location.state) {
-    console.log(location.state);
-  }
+  const navigate = useNavigate();
 
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
-  };
+  useEffect(() => {
+    async function getUserData() {
+      try {
+        const { data: currentUser } = await api.get("user/user-page");
+        setId(currentUser.id);
+        setNickName(currentUser.nickname);
+        console.log(nickname, id);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    getUserData();
+  }, []);
 
   const onFinish = async (e) => {
-    await api.post("community/post", {
-      ...e,
-    });
+    await api
+      .post("community/post", {
+        user_id: id,
+        title: title,
+        description: description,
+        date: e.visitDate,
+        nickname: nickname,
+        station: state,
+        location: e.location,
+        personnel: 3,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     const createAt = moment().format("YYYY.MM.DD  HH:mm:ss");
     console.log("Success", { ...e, createAt });
+    return navigate(-1);
   };
 
-  const onChange = (e) => {
-    console.log("Change:", e.target.value);
-  };
+  async function fetchData() {
+    const res = await api.get("community/location");
+    console.log(res.data);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
-      <Row>
-        <Col span={2}></Col>
-        <Col span={20}>
-          <TitleAlign>
-            <h1>글 작성</h1>
-          </TitleAlign>
+      <Row justify="center">
+        <CommunityNavCol>
+          <h1>글 작성</h1>
           <Form onFinish={onFinish}>
             <RegisterBtnStyled>
-              <Button
+              <CommunityCreateBtn
                 type="primary"
                 icon={<FormOutlined />}
                 className="community-title-button"
@@ -59,7 +85,7 @@ function CommunityCreate() {
                 htmlType="submit"
               >
                 등록하기
-              </Button>
+              </CommunityCreateBtn>
             </RegisterBtnStyled>
 
             <Form.Item
@@ -73,7 +99,7 @@ function CommunityCreate() {
               <Form.Item
                 name="visitDate"
                 rules={[{ required: true, message: "날짜를 입력하세요" }]}
-                onChange={(e) => setDate(e.target.value)}
+                onChange={(e) => setVisitDate(e.target.value)}
               >
                 <DatePicker />
               </Form.Item>
@@ -82,18 +108,18 @@ function CommunityCreate() {
                 rules={[{ required: true, message: "제목을 입력하세요" }]}
               >
                 <Select>
-                  <Select.Option value="서울">서울</Select.Option>
-                  <Select.Option value="경기">경기</Select.Option>
-                  <Select.Option value="인천">인천</Select.Option>
-                  <Select.Option value="강원">강원</Select.Option>
-                  <Select.Option value="충북">충북</Select.Option>
-                  <Select.Option value="충남">충남</Select.Option>
-                  <Select.Option value="경북">경북</Select.Option>
-                  <Select.Option value="경남">경남</Select.Option>
-                  <Select.Option value="전북">전북</Select.Option>
-                  <Select.Option value="전남">전남</Select.Option>
-                  <Select.Option value="부산">부산</Select.Option>
-                  <Select.Option value="제주">제주</Select.Option>
+                  <Select.Option value="가야산">가야산</Select.Option>
+                  <Select.Option value="계룡산">계룡산</Select.Option>
+                  <Select.Option value="내장산">내장산</Select.Option>
+                  <Select.Option value="덕유산">덕유산</Select.Option>
+                  <Select.Option value="무등산">무등산</Select.Option>
+                  <Select.Option value="북한산">북한산</Select.Option>
+                  <Select.Option value="설악산">설악산</Select.Option>
+                  <Select.Option value="소백산">소백산</Select.Option>
+                  <Select.Option value="속리산">속리산</Select.Option>
+                  <Select.Option value="오대산">오대산</Select.Option>
+                  <Select.Option value="월악산">월악산</Select.Option>
+                  <Select.Option value="월출산">월출산</Select.Option>
                 </Select>
               </Form.Item>
               <Form.Item
@@ -108,7 +134,7 @@ function CommunityCreate() {
               </Form.Item>
             </CommunityFormSecond>
             <Form.Item
-              name="content"
+              name="description"
               rules={[{ required: true, message: "내용을 입력하세요" }]}
             >
               <Input.TextArea
@@ -116,12 +142,11 @@ function CommunityCreate() {
                 showCount
                 maxLength={1000}
                 size="large"
-                onChange={(e) => setDiscription(e.target.value)}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </Form.Item>
           </Form>
-        </Col>
-        <Col span={2}></Col>
+        </CommunityNavCol>
       </Row>
     </>
   );

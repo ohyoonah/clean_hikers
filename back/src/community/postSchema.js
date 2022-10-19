@@ -30,7 +30,7 @@ const PostSchema = new Schema(
             default: Date.now,
         },
         location: {
-            type: String,
+            type: Object,
             required: false,
         },
         person: [
@@ -40,8 +40,9 @@ const PostSchema = new Schema(
             },
         ],
         count: {
-            type: String,
+            type: Number,
             required: false,
+            default: 0,
         },
         personnel: {
             type: Number,

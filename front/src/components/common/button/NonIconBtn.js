@@ -3,9 +3,9 @@ import { NonIconBlueBtnStyled, NonIconGreenBtnStyled } from "./NonIconBtnStyled"
 function NonIconBlueBtn({ text, htmlType, onClick }) {
   return (
     <NonIconBlueBtnStyled
+      type="primary"
       htmlType={htmlType}
       onClick={onClick}
-      type="primary"
       size="large"
     >
       {text}

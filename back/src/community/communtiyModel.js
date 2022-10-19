@@ -3,7 +3,7 @@ import { CommentModel } from "./commentSchema.js";
 
 class Post {
     static async create({ newPost }) {
-        const createdNewPost = await await PostModel.create(newPost);
+        const createdNewPost = await PostModel.create(newPost);
         return createdNewPost;
     }
 
@@ -19,6 +19,11 @@ class Post {
 
     static async findByStation({ station }) {
         const posts = await PostModel.find({ station: station });
+        return posts;
+    }
+
+    static async findByLocation({ locationDetail }) {
+        const posts = await PostModel.find({ location: locationDetail });
         return posts;
     }
 

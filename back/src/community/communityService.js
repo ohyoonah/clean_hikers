@@ -1,4 +1,4 @@
-import { Post, Comment, User } from "../mongoDB/index.js";
+import { Post, Comment, User, Mountain } from "../mongoDB/index.js";
 import { v4 } from "uuid";
 
 class postService {
@@ -16,6 +16,7 @@ class postService {
         location,
     }) {
         const post_id = v4();
+        const [locationDetail] = await Mountain.findData(location, null, null);
 
         const newPost = {
             post_id,
@@ -29,7 +30,7 @@ class postService {
             station,
             comment,
             count,
-            location,
+            location: locationDetail,
         };
 
         const createdNewPost = await Post.create({ newPost });
@@ -45,32 +46,116 @@ class postService {
     }
 
     static async getAPosts({ post_id }) {
-        const posts = await Post.findOne({ post_id });
-
+        const posts = await Post.findByPostId({ post_id });
+        // console.log(post_id);
         return posts;
     }
 
     static async getAllPosts(send) {
-        const station = send.station;
-        const posts = await Post.findByStation({ station });
+        if (send.station == undefined) {
+            if (send.location == undefined) {
+                const posts = await Post.findAll();
+                const page = Number(send.page || 1);
+                const perPage = Number(send.perPage || 5);
 
-        const page = Number(send.page || 1);
-        const perPage = Number(send.perPage || 5);
+                const total = posts.length;
+                // console.log(send);
+                const postsList = posts.sort((a, b) => {
+                    if (a.createdAt > b.createdAt) {
+                        return -1;
+                    }
+                });
+                const totalPage = Math.ceil(total / perPage);
+                const allPostsList = postsList.slice(
+                    perPage * (page - 1),
+                    perPage * page
+                );
 
-        const total = posts.length;
+                return allPostsList;
+            } else {
+                const location = send.location;
 
-        const postsList = posts.sort((a, b) => {
-            if (a.createdAt > b.createdAt) {
-                return -1;
+                const [locationDetail] = await Mountain.findData(
+                    location,
+                    null,
+                    null
+                );
+
+                const posts = await Post.findByLocation({ locationDetail });
+                const page = Number(send.page || 1);
+                const perPage = Number(send.perPage || 5);
+
+                const total = posts.length;
+
+                const postsList = posts.sort((a, b) => {
+                    if (a.createdAt > b.createdAt) {
+                        return -1;
+                    }
+                });
+                const totalPage = Math.ceil(total / perPage);
+                const allPostsList = postsList.slice(
+                    perPage * (page - 1),
+                    perPage * page
+                );
+
+                return allPostsList;
             }
-        });
-        const totalPage = Math.ceil(total / perPage);
-        const perPostsList = postsList.slice(
-            perPage * (page - 1),
-            perPage * page
-        );
-        console.log(totalPage);
-        return perPostsList;
+        } else {
+            if (send.location == undefined) {
+                const station = send.station;
+                const posts = await Post.findByStation({ station });
+                // const posts = await Post.findAll();
+                const page = Number(send.page || 1);
+                const perPage = Number(send.perPage || 5);
+
+                const total = posts.length;
+                // console.log(send);
+                const postsList = posts.sort((a, b) => {
+                    if (a.createdAt > b.createdAt) {
+                        return -1;
+                    }
+                });
+                const totalPage = Math.ceil(total / perPage);
+                const allPostsList = postsList.slice(
+                    perPage * (page - 1),
+                    perPage * page
+                );
+
+                return allPostsList;
+            } else {
+                const location = send.location;
+
+                const [locationDetail] = await Mountain.findData(
+                    location,
+                    null,
+                    null
+                );
+
+                const station = send.station;
+
+                const posts = await Post.findByLocation({ locationDetail });
+                const stationPosts = posts.filter(
+                    (posts) => posts.station == station
+                );
+                const page = Number(send.page || 1);
+                const perPage = Number(send.perPage || 5);
+
+                const total = stationPosts.length;
+
+                const postsList = stationPosts.sort((a, b) => {
+                    if (a.createdAt > b.createdAt) {
+                        return -1;
+                    }
+                });
+                const totalPage = Math.ceil(total / perPage);
+                const allPostsList = postsList.slice(
+                    perPage * (page - 1),
+                    perPage * page
+                );
+
+                return allPostsList;
+            }
+        }
     }
 
     static async setPost({ post_id, toUpdate }) {
@@ -144,6 +229,22 @@ class postService {
         return post;
     }
 
+    static async changeNicknamePost({ posts, toUpdate }) {
+        const newPosts = posts;
+        const newToUpdate = toUpdate;
+        // function update(item) {
+        //     const post_id = item.post_id;
+        //     const updatedPost = postService.setPost({ post_id, toUpdate });
+        //     // console.log("updatedPost", updatedPost);
+        // }
+        // newPosts.forEach(update);
+        newPosts.forEach((item) => {
+            const post_id = item.post_id;
+            const updatedPost = postService.setPost({ post_id, toUpdate });
+        });
+        return newPosts;
+    }
+
     static async deletePost({ post_id }) {
         let posts = await Post.findByPostId({ post_id });
 
@@ -179,8 +280,7 @@ class commentService {
 
         const createdNewComment = await Comment.create({ newComment });
 
-        const toUpdate = await postService.getAPosts({ post_id });
-
+        const [toUpdate] = await postService.getAPosts({ post_id });
         toUpdate.comment.push(newComment);
 
         const createPostComment = await postService.setPost({
@@ -196,6 +296,12 @@ class commentService {
     static async getComments({ post_id }) {
         const comments = await Comment.findByPostId({ post_id });
         return comments;
+    }
+
+    static async pushComments({ toUpdate, newComment }) {
+        toUpdate.comment.push(newComment);
+        console.log(toUpdate.comment);
+        return toUpdate;
     }
 
     static async setComment({ comment_id, toUpdate }) {
@@ -238,7 +344,7 @@ class commentService {
 
         const post_id = comment.post_id;
 
-        const twoUpdate = await postService.getAPosts({ post_id });
+        const [twoUpdate] = await postService.getAPosts({ post_id });
 
         const newComment = twoUpdate.comment;
 
@@ -252,7 +358,14 @@ class commentService {
 
         twoUpdate.comment = newComment;
 
-        return comment;
+        const createPostComment = await postService.setPost({
+            post_id,
+            toUpdate: twoUpdate,
+        });
+
+        console.log(createPostComment);
+
+        return newComment;
     }
 
     static async deleteComment({ comment_id }) {
@@ -284,7 +397,7 @@ class commentService {
 class personService {
     static async addPerson({ post_id, email }) {
         const post = await postService.getAPosts({ post_id });
-        const toUpdate = post;
+        const [toUpdate] = post;
 
         const people = toUpdate.person;
 
@@ -314,13 +427,18 @@ class personService {
         } else {
             const newPerson = await User.findByEmail({ email });
 
-            const toUpdate = await postService.getAPosts({ post_id });
+            const [toUpdate] = await postService.getAPosts({ post_id });
 
-            if (toUpdate.count == toUpdate.personnel) {
+            if (parseInt(toUpdate.count) === toUpdate.personnel) {
                 const errorMessage = "모집 인원이 마감되었습니다.";
                 return { errorMessage };
             } else {
+                console.log("toUpdate.person = ", toUpdate);
+                console.log("newPerson = ", newPerson);
+                console.log(typeof toUpdate.person);
+
                 toUpdate.person.push(newPerson);
+
                 toUpdate.count = toUpdate.person.length;
 
                 const createPostPerson = await postService.setPost({
@@ -353,7 +471,7 @@ class personService {
     static async getPersons({ post_id }) {
         const post = await postService.getAPosts({ post_id });
 
-        console.log(post);
+        // console.log(post);
 
         const people = post.person;
 
@@ -361,4 +479,41 @@ class personService {
     }
 }
 
-export { postService, commentService, personService };
+class locationService {
+    // static async addLocation({ query }) {
+    //     const mountainName = query.mountain || null;
+    //     const mountainLocation = query.location || null;
+    //     const mountainDifficulty = query.level || null;
+    //     console.log(mountainName, mountainLocation, mountainDifficulty);
+    //     const Location = await Mountain.findData(
+    //         mountainName,
+    //         mountainLocation,
+    //         mountainDifficulty
+    //     );
+
+    //     const toUpdate = await postService.getAPosts({ post_id });
+
+    //     toUpdate.comment.push(newComment);
+
+    //     const createPostComment = await postService.setPost({
+    //         post_id,
+    //         toUpdate,
+    //     });
+
+    //     createdNewComment.errorMessage = null;
+
+    //     return createdNewComment;
+    // }
+
+    static async getData() {
+        const data = await Mountain.findData();
+        // console.log("data", data);
+        return data;
+    }
+
+    static async detailLocation() {
+        const data = await Mountain.findData();
+    }
+}
+
+export { postService, commentService, personService, locationService };
