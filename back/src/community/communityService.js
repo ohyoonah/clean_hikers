@@ -347,7 +347,7 @@ class commentService {
 
         const post_id = comment.post_id;
 
-        const twoUpdate = await postService.getAPosts({ post_id });
+        const [twoUpdate] = await postService.getAPosts({ post_id });
 
         const newComment = twoUpdate.comment;
 
@@ -361,7 +361,14 @@ class commentService {
 
         twoUpdate.comment = newComment;
 
-        return comment;
+        const createPostComment = await postService.setPost({
+            post_id,
+            toUpdate: twoUpdate,
+        });
+
+        console.log(createPostComment);
+
+        return newComment;
     }
 
     static async deleteComment({ comment_id }) {
@@ -393,7 +400,7 @@ class commentService {
 class personService {
     static async addPerson({ post_id, email }) {
         const post = await postService.getAPosts({ post_id });
-        const toUpdate = post;
+        const [toUpdate] = post;
 
         const people = toUpdate.person;
 
@@ -423,13 +430,18 @@ class personService {
         } else {
             const newPerson = await User.findByEmail({ email });
 
-            const toUpdate = await postService.getAPosts({ post_id });
+            const [toUpdate] = await postService.getAPosts({ post_id });
 
-            if (toUpdate.count == toUpdate.personnel) {
+            if (parseInt(toUpdate.count) === toUpdate.personnel) {
                 const errorMessage = "모집 인원이 마감되었습니다.";
                 return { errorMessage };
             } else {
+                console.log("toUpdate.person = ", toUpdate);
+                console.log("newPerson = ", newPerson);
+                console.log(typeof toUpdate.person);
+
                 toUpdate.person.push(newPerson);
+
                 toUpdate.count = toUpdate.person.length;
 
                 const createPostPerson = await postService.setPost({
