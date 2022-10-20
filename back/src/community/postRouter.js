@@ -23,10 +23,9 @@ postRouter.post("/post", async function (req, res, next) {
     }
 });
 
-//해당 유저의 게시글 조회
+//해당 유저의 게시글 조회 (페이지네이션 적용)
 postRouter.get("/posts/:userId", async function (req, res, next) {
     try {
-        console.log(req.params);
         const user_id = req.params.userId;
         const pagination = req.query;
         const posts = await postService.getUserPosts({
@@ -34,7 +33,6 @@ postRouter.get("/posts/:userId", async function (req, res, next) {
             pagination,
         });
 
-        console.log(posts);
         ErrorMessage(posts);
         res.status(200).send(posts);
     } catch (error) {
@@ -68,9 +66,9 @@ postRouter.get("/postlist", async function (req, res, next) {
 postRouter.get("/postsDetail/:postId", async function (req, res, next) {
     try {
         const post_id = req.params.postId;
-        // console.log(req);
+
         const posts = await postService.getAPosts({ post_id });
-        console.log(posts);
+
         res.status(200).send(posts);
     } catch (error) {
         next(error);
@@ -81,7 +79,7 @@ postRouter.get("/postsDetail/:postId", async function (req, res, next) {
 postRouter.put("/posts/:postId", async function (req, res, next) {
     try {
         const post_id = req.params.postId;
-        // const commentInPost = await commentService.s
+
         const toUpdate = req.body;
         const updatedPost = await postService.setPost({
             post_id,
@@ -102,13 +100,6 @@ postRouter.put("/users/:id", async function (req, res, next) {
         const toUpdate = req.query;
 
         const posts = await postService.getPosts({ user_id });
-        // console.log(posts);
-        // function update(item) {
-        //     const post_id = item.post_id;
-        //     const updatedPost = postService.setPost({ post_id, toUpdate });
-        //     console.log("updatedPost", updatedPost);
-        // }
-        // posts.forEach(update);
 
         const newPosts = await postService.changeNicknamePost({
             posts,
