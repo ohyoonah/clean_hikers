@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 
-import { errorMessage } from "../common/form/Message";
+import { DispatchContext } from "../../App";
+import { errorMessage } from "../common/message/Message";
 import * as api from "../../api/api";
 
 import { ProfileBlock, ImageBlock } from "./ProfileStyle";
@@ -8,12 +9,27 @@ import { ButtonBlock } from "../common/form/FormStyled";
 
 import { Form, Input, Button, Avatar } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { DispatchContext, UserStateContext } from "../../App";
 
 function ProfileEdit({ setIsEdit, user, setUser }) {
-  const [form] = Form.useForm();
   const dispatch = useContext(DispatchContext);
-  const userState = useContext(UserStateContext);
+
+  const [form] = Form.useForm();
+  const [loadings, setLoadings] = useState([]);
+
+  const enterLoading = (index) => {
+    setLoadings((prev) => {
+      const newLoadings = [...prev];
+      newLoadings[index] = true;
+      return newLoadings;
+    });
+    setTimeout(() => {
+      setLoadings((prev) => {
+        const newLoadings = [...prev];
+        newLoadings[index] = false;
+        return newLoadings;
+      });
+    }, 800);
+  };
 
   function onImageChange(e) {
     e.preventDefault();
@@ -44,7 +60,22 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
       await api.put("user/picture", { image: url });
       dispatch({
         type: "IMAGE_CHANGE",
-        payload: { ...userState.user, defaultImage: url },
+        payload: { defaultImage: url },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function deleteImage() {
+    try {
+      setUser((user) => ({ ...user, image: null }));
+      await api.put("user/picture", {
+        image: null,
+      });
+      dispatch({
+        type: "IMAGE_CHANGE",
+        payload: { defaultImage: null },
       });
     } catch (e) {
       console.error(e);
@@ -64,6 +95,7 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
         await api.put(`community/users/${user.id}?nickname=${user.nickname}`, {
           nickname: user.nickname,
         });
+        enterLoading(0);
       } catch (e) {
         console.error(e);
       }
@@ -82,20 +114,10 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
         await api.put("user/password", {
           password: user.password,
         });
+        enterLoading(1);
       } catch (e) {
         console.error(e);
       }
-    }
-  }
-
-  async function deleteImage() {
-    try {
-      await api.put("user/picture", {
-        image: null,
-      });
-      setUser((user) => ({ ...user, image: null }));
-    } catch (e) {
-      console.error(e);
     }
   }
 
@@ -140,8 +162,12 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
                 setUser((prev) => ({ ...prev, nickname: e.target.value }));
               }}
             />
-            <Button className="submitButton" onClick={changeNickname}>
-              저장
+            <Button
+              className="submitButton"
+              onClick={changeNickname}
+              loading={loadings[0]}
+            >
+              {loadings[0] ? "" : "저장"}
             </Button>
           </Input.Group>
         </Form.Item>
@@ -153,8 +179,12 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
                 setUser((prev) => ({ ...prev, password: e.target.value }));
               }}
             />
-            <Button className="submitButton" onClick={changePassword}>
-              저장
+            <Button
+              className="submitButton"
+              onClick={changePassword}
+              loading={loadings[1]}
+            >
+              {loadings[1] ? "" : "저장"}
             </Button>
           </Input.Group>
         </Form.Item>

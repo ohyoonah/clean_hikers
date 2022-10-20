@@ -15,7 +15,7 @@ function Profile({ setIsEdit, user }) {
       {image ? (
         <Avatar size={100} icon={<UserOutlined />} src={image} alt="avatar" />
       ) : (
-        <Avatar size={100} icon={<UserOutlined />} />
+        <Avatar size={100} src="/profilecircle.svg" />
       )}
       <div className="textBlcok">
         <label className="label">닉네임</label>
