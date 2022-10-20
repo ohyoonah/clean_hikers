@@ -103,15 +103,8 @@ function MapChart({ data, setCurrent }) {
             </Tooltip>
           </StyledMarker>
         ))}
-        {/* <ClickedMarker
-          key="unique"
-          coordinates={[data[current]["longitude"], data[current]["latitude"]]}
-        >
-          <circle r={popScale(data[current].trash)} />
-        </ClickedMarker> */}
       </ComposableMap>
       <SliderStyled
-        // step={20}
         onChange={onSliderChange}
         defaultValue={0}
         min={0}
