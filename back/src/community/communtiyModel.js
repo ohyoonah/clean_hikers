@@ -1,5 +1,5 @@
 import { PostModel } from "./postSchema.js";
-import { CommentModel } from "./commentSchema.js";
+import { CommentModel } from "../community_comment/commentSchema.js";
 
 class Post {
     static async create({ newPost }) {

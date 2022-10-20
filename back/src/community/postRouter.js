@@ -27,8 +27,8 @@ postRouter.post("/post", async function (req, res, next) {
 postRouter.get("/posts/:user_id", async function (req, res, next) {
     try {
         const user_id = req.params.user_id;
-        // console.log(req.params);
-        const posts = await postService.getPosts({ user_id });
+        const pagination = req.query;
+        const posts = await postService.getPosts({ user_id, pagination });
 
         ErrorMessage(posts);
         res.status(200).send(posts);
@@ -52,7 +52,6 @@ postRouter.get("/posts/:user_id", async function (req, res, next) {
 postRouter.get("/postlist", async function (req, res, next) {
     try {
         const send = req.query;
-
         const postList = await postService.getAllPosts(send);
         res.status(200).send(postList);
     } catch (error) {
