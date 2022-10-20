@@ -102,16 +102,7 @@ function Register() {
             중복확인
           </ButtonBlock>
         </EmailBlock>
-        <span className="informationText">
-          비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
-        </span>
-        <Form.Item
-          name="nickname"
-          rules={[
-            { required: true, message: "닉네임을 입력해 주세요." },
-            { validator: validateNickName },
-          ]}
-        >
+        <Form.Item name="nickname" rules={[{ validator: validateNickName }]}>
           <InputBlock
             prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="Nickname"
@@ -155,7 +146,9 @@ function Register() {
             onChange={onChange}
           />
         </Form.Item>
-        <ButtonBlock htmlType="submit">회원가입</ButtonBlock>
+        <ButtonBlock htmlType="submit" className="registerButton">
+          회원가입
+        </ButtonBlock>
       </FormBlock>
     </PageBlock>
   );
