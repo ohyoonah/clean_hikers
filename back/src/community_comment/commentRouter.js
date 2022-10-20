@@ -24,9 +24,9 @@ commentRouter.post("/posts/comment", async function (req, res, next) {
 });
 
 //댓글 조회
-commentRouter.get("/posts/comments/:post_id", async function (req, res, next) {
+commentRouter.get("/posts/comments/:postId", async function (req, res, next) {
     try {
-        const post_id = req.params.post_id;
+        const post_id = req.params.postId;
         const comments = await commentService.getComments({ post_id });
 
         ErrorMessage(comments);
@@ -38,10 +38,10 @@ commentRouter.get("/posts/comments/:post_id", async function (req, res, next) {
 
 //댓글 수정
 commentRouter.put(
-    "/posts/comments/:comment_id",
+    "/posts/comments/:commentId",
     async function (req, res, next) {
         try {
-            const comment_id = req.params.comment_id;
+            const comment_id = req.params.commentId;
 
             const toUpdate = req.body;
 
@@ -60,10 +60,10 @@ commentRouter.put(
 
 // 댓글 삭제
 commentRouter.delete(
-    "/posts/comments/:comment_id",
+    "/posts/comments/:commentId",
     async function (req, res, next) {
         try {
-            const comment_id = req.params.comment_id;
+            const comment_id = req.params.commentId;
             const comments = await commentService.deleteComment({ comment_id });
 
             ErrorMessage(comments);

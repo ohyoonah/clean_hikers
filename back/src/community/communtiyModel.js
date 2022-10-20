@@ -33,7 +33,8 @@ class Post {
     }
 
     static async findByPostId({ post_id }) {
-        const post = await PostModel.find({ post_id });
+        const [post] = await PostModel.find({ post_id });
+
         return post;
     }
 

@@ -23,12 +23,13 @@ postRouter.post("/post", async function (req, res, next) {
     }
 });
 
-//게시글 조회
-postRouter.get("/posts/:user_id", async function (req, res, next) {
+//해당 유저의 게시글 조회
+postRouter.get("/posts/:userId", async function (req, res, next) {
     try {
-        const user_id = req.params.user_id;
+        console.log(req.params);
+        const user_id = req.params.userId;
         const pagination = req.query;
-        const posts = await postService.getPosts({
+        const posts = await postService.getUserPosts({
             user_id,
             pagination,
         });
@@ -62,10 +63,11 @@ postRouter.get("/postlist", async function (req, res, next) {
         next(error);
     }
 });
+
 //해당 게시글 조회
-postRouter.get("/postsDetail/:post_id", async function (req, res, next) {
+postRouter.get("/postsDetail/:postId", async function (req, res, next) {
     try {
-        const post_id = req.params.post_id;
+        const post_id = req.params.postId;
         // console.log(req);
         const posts = await postService.getAPosts({ post_id });
         console.log(posts);
@@ -76,9 +78,9 @@ postRouter.get("/postsDetail/:post_id", async function (req, res, next) {
 });
 
 //게시글 수정
-postRouter.put("/posts/:post_id", async function (req, res, next) {
+postRouter.put("/posts/:postId", async function (req, res, next) {
     try {
-        const post_id = req.params.post_id;
+        const post_id = req.params.postId;
         // const commentInPost = await commentService.s
         const toUpdate = req.body;
         const updatedPost = await postService.setPost({
@@ -121,9 +123,9 @@ postRouter.put("/users/:id", async function (req, res, next) {
 });
 
 // 게시글 삭제
-postRouter.delete("/posts/:post_id", async function (req, res, next) {
+postRouter.delete("/posts/:postId", async function (req, res, next) {
     try {
-        const post_id = req.params.post_id;
+        const post_id = req.params.postId;
         const posts = await postService.deletePost({ post_id });
 
         ErrorMessage(posts);

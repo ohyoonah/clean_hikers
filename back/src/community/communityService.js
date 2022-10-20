@@ -40,7 +40,12 @@ class postService {
         return createdNewPost;
     }
 
-    static async getPosts({ user_id, pagination }) {
+    static async getPosts({ user_id }) {
+        const posts = await Post.findByUserId({ user_id });
+        return posts;
+    }
+
+    static async getUserPosts({ user_id, pagination }) {
         const posts = await Post.findByUserId({ user_id });
         const page = Number(pagination.page || 1);
         const perPage = Number(pagination.perPage || 5);
@@ -63,7 +68,7 @@ class postService {
 
     static async getAPosts({ post_id }) {
         const posts = await Post.findByPostId({ post_id });
-        // console.log(post_id);
+
         return posts;
     }
 
@@ -75,7 +80,7 @@ class postService {
                 const perPage = Number(send.perPage || 5);
 
                 const total = posts.length;
-                // console.log(send);
+
                 const postsList = posts.sort((a, b) => {
                     if (a.createdAt > b.createdAt) {
                         return -1;
@@ -120,12 +125,12 @@ class postService {
             if (send.location == undefined) {
                 const station = send.station;
                 const posts = await Post.findByStation({ station });
-                // const posts = await Post.findAll();
+
                 const page = Number(send.page || 1);
                 const perPage = Number(send.perPage || 5);
 
                 const total = posts.length;
-                // console.log(send);
+
                 const postsList = posts.sort((a, b) => {
                     if (a.createdAt > b.createdAt) {
                         return -1;
@@ -183,63 +188,83 @@ class postService {
         }
 
         if (toUpdate.title) {
-            const fieldToUpdate = "title";
-            const newValue = toUpdate.title;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "title",
+                newValue: toUpdate.title,
+            });
         }
 
         if (toUpdate.description) {
-            const fieldToUpdate = "description";
-            const newValue = toUpdate.description;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "description",
+                newValue: toUpdate.description,
+            });
         }
 
         if (toUpdate.nickname) {
-            const fieldToUpdate = "nickname";
-            const newValue = toUpdate.nickname;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "nickname",
+                newValue: toUpdate.nickname,
+            });
         }
 
         if (toUpdate.date) {
-            const fieldToUpdate = "date";
-            const newValue = toUpdate.date;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "date",
+                newValue: toUpdate.date,
+            });
         }
 
         if (toUpdate.person) {
-            const fieldToUpdate = "person";
-            const newValue = toUpdate.person;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "person",
+                newValue: toUpdate.person,
+            });
         }
 
         if (toUpdate.personnel) {
-            const fieldToUpdate = "personnel";
-            const newValue = toUpdate.personnel;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "personnel",
+                newValue: toUpdate.personnel,
+            });
         }
 
         if (toUpdate.station) {
-            const fieldToUpdate = "station";
-            const newValue = toUpdate.station;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "station",
+                newValue: toUpdate.station,
+            });
         }
 
         if (toUpdate.comment) {
-            const fieldToUpdate = "comment";
-            const newValue = toUpdate.comment;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "comment",
+                newValue: toUpdate.comment,
+            });
         }
 
         if (toUpdate.count) {
-            const fieldToUpdate = "count";
-            const newValue = toUpdate.count;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "count",
+                newValue: toUpdate.count,
+            });
         }
 
         if (toUpdate.location) {
-            const fieldToUpdate = "location";
-            const newValue = toUpdate.location;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "location",
+                newValue: toUpdate.location,
+            });
         }
 
         return post;
@@ -248,12 +273,7 @@ class postService {
     static async changeNicknamePost({ posts, toUpdate }) {
         const newPosts = posts;
         const newToUpdate = toUpdate;
-        // function update(item) {
-        //     const post_id = item.post_id;
-        //     const updatedPost = postService.setPost({ post_id, toUpdate });
-        //     // console.log("updatedPost", updatedPost);
-        // }
-        // newPosts.forEach(update);
+
         newPosts.forEach((item) => {
             const post_id = item.post_id;
             const updatedPost = postService.setPost({ post_id, toUpdate });
@@ -316,7 +336,7 @@ class commentService {
 
     static async pushComments({ toUpdate, newComment }) {
         toUpdate.comment.push(newComment);
-        console.log(toUpdate.comment);
+
         return toUpdate;
     }
 
@@ -329,32 +349,26 @@ class commentService {
         }
 
         if (toUpdate.nickname) {
-            const fieldToUpdate = "nickname";
-            const newValue = toUpdate.nickname;
             comment = await Comment.update({
                 comment_id,
-                fieldToUpdate,
-                newValue,
+                fieldToUpdate: "nickname",
+                newValue: toUpdate.nickname,
             });
         }
 
         if (toUpdate.title) {
-            const fieldToUpdate = "title";
-            const newValue = toUpdate.title;
             comment = await Comment.update({
                 comment_id,
-                fieldToUpdate,
-                newValue,
+                fieldToUpdate: "title",
+                newValue: toUpdate.title,
             });
         }
 
         if (toUpdate.description) {
-            const fieldToUpdate = "description";
-            const newValue = toUpdate.description;
             comment = await Comment.update({
                 comment_id,
-                fieldToUpdate,
-                newValue,
+                fieldToUpdate: "description",
+                newValue: toUpdate.description,
             });
         }
 
@@ -394,18 +408,18 @@ class commentService {
             return { errorMessage };
         }
         comments = await Comment.deleteByCommentId({ comment_id });
-        // console.log("삭제된 댓글", comment_id);
+
         const newComments = await Comment.findByPostId({ post_id });
-        // console.log("댓글 리스트", newComments);
+
         const twoUpdate = await postService.getAPosts({ post_id });
 
         twoUpdate.comment = newComments;
-        // console.log("새로 출력되야 할", twoUpdate);
+
         const createPostComment = await postService.setPost({
             post_id,
             toUpdate: twoUpdate,
         });
-        // console.log("출력된", createPostComment);
+
         return newComments;
     }
 }
@@ -487,8 +501,6 @@ class personService {
     static async getPersons({ post_id }) {
         const post = await postService.getAPosts({ post_id });
 
-        // console.log(post);
-
         const people = post.person;
 
         return people;
@@ -496,34 +508,9 @@ class personService {
 }
 
 class locationService {
-    // static async addLocation({ query }) {
-    //     const mountainName = query.mountain || null;
-    //     const mountainLocation = query.location || null;
-    //     const mountainDifficulty = query.level || null;
-    //     console.log(mountainName, mountainLocation, mountainDifficulty);
-    //     const Location = await Mountain.findData(
-    //         mountainName,
-    //         mountainLocation,
-    //         mountainDifficulty
-    //     );
-
-    //     const toUpdate = await postService.getAPosts({ post_id });
-
-    //     toUpdate.comment.push(newComment);
-
-    //     const createPostComment = await postService.setPost({
-    //         post_id,
-    //         toUpdate,
-    //     });
-
-    //     createdNewComment.errorMessage = null;
-
-    //     return createdNewComment;
-    // }
-
     static async getData() {
         const data = await Mountain.findData();
-        // console.log("data", data);
+
         return data;
     }
 
