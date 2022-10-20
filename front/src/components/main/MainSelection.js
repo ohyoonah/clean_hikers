@@ -16,7 +16,6 @@ const { Option } = SelectWrapper;
 const COUNT_ARR = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 function MainSelection({ mountains }) {
-  console.log(mountains);
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const userState = useContext(UserStateContext);
