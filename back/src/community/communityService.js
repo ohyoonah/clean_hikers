@@ -58,7 +58,7 @@ class postService {
             perPage * page
         );
 
-        return allPostsList;
+        return { allPostsList, totalPage };
     }
 
     static async getAPosts({ post_id }) {
