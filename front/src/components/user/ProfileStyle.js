@@ -53,6 +53,15 @@ export const ProfileBlock = styled.div`
   .smallButton {
     margin: 3rem auto;
   }
+
+  .userDelete {
+    background: none;
+    border: none;
+    color: gray;
+    text-decoration: underline;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
 `;
 
 export const ImageBlock = styled.div`
