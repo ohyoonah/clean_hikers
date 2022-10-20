@@ -53,10 +53,11 @@ class postService {
         const total = posts.length;
 
         const postsList = posts.sort((a, b) => {
-            if (a.creatdeAt > b.createdAt) {
+            if (a.createdAt > b.createdAt) {
                 return -1;
             }
         });
+        console.log(postsList);
         const totalPage = Math.ceil(total / perPage);
         const allPostsList = postsList.slice(
             perPage * (page - 1),
@@ -80,7 +81,7 @@ class postService {
                 const perPage = Number(send.perPage || 5);
 
                 const total = posts.length;
-
+                console.log("posts ===", posts);
                 const postsList = posts.sort((a, b) => {
                     if (a.createdAt > b.createdAt) {
                         return -1;
@@ -382,7 +383,7 @@ class commentService {
 
         const post_id = comment.post_id;
 
-        const [twoUpdate] = await postService.getAPosts({ post_id });
+        const twoUpdate = await postService.getAPosts({ post_id });
 
         const newComment = twoUpdate.comment;
 
@@ -400,8 +401,6 @@ class commentService {
             post_id,
             toUpdate: twoUpdate,
         });
-
-        console.log(createPostComment);
 
         return newComment;
     }
@@ -510,17 +509,13 @@ class personService {
     static async getPersons({ post_id }) {
         const post = await postService.getAPosts({ post_id });
 
-        const people = post.person;
-
-        return people;
+        return post.person;
     }
 }
 
 class locationService {
     static async getData() {
-        const data = await Mountain.findData();
-
-        return data;
+        return await Mountain.findData();
     }
 
     static async detailLocation() {
