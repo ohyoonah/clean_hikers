@@ -2,7 +2,9 @@ import "moment/locale/ko";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  ButtonRow,
   CommunityDetailAlign,
+  CreateRow,
   DetailCol,
 } from "../styledComponents/CommunityDetailStyled";
 
@@ -69,7 +71,7 @@ function CommunityDetail() {
   }, [no]);
   return (
     <>
-      <Row justify="center">
+      <CreateRow justify="center">
         <DetailCol>
           {currentUserData.id === datas.user_id && (
             <Col>
@@ -102,7 +104,7 @@ function CommunityDetail() {
               </div>
             </Col>
             <Col span={14} push={2}>
-              <Row>
+              <Row justify="end">
                 <Card
                   style={{
                     width: 360,
@@ -148,12 +150,14 @@ function CommunityDetail() {
                   />
                 </Card>
               </Row>
-              <NonIconBlueBtn text={"참여신청"}></NonIconBlueBtn>
+              <ButtonRow justify="end">
+                <NonIconBlueBtn text={"참여신청"}></NonIconBlueBtn>
+              </ButtonRow>
             </Col>
           </Row>
           <CommentList currentUserData={currentUserData} datas={datas} />
         </DetailCol>
-      </Row>
+      </CreateRow>
     </>
   );
 }

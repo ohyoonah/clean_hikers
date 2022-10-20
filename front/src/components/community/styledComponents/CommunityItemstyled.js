@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import "antd/dist/antd.css";
-import { Button } from "antd";
+import { Button, Col } from "antd";
 import { theme } from "../../common/styles/palette";
 
 const CommunityItemStyled = styled.div`
@@ -25,4 +25,10 @@ const StateButton = styled(Button)`
   }
 `;
 
-export { CommunityItemStyled, StateButton };
+const ItemCol = styled(Col)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+export { CommunityItemStyled, StateButton, ItemCol };
