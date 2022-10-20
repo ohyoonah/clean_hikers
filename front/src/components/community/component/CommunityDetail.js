@@ -1,5 +1,5 @@
 import "moment/locale/ko";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ButtonRow,
@@ -17,17 +17,29 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 import CommentList from "./CommentList";
 import * as api from "../../../api/api";
 import moment from "moment";
-import { ROUTES } from "../../../enum/routes";
 
-function CommunityDetail({ no }) {
+function CommunityDetail({}) {
+  const mapRef = useRef();
+  const navigate = useNavigate();
   const [datas, setDatas] = useState("");
   const [location, setLocation] = useState({});
   const [currentUserData, setCurrentUserData] = useState("");
-  const navigate = useNavigate();
+  const { no } = useParams();
+
+  const [style, setStyle] = useState({
+    width: "100%",
+    height: "250px",
+    margin: "0px auto",
+  });
 
   const [latitude, setLatitude] = useState(35.86125);
   const [longitude, setLongitude] = useState(127.746131);
   const [personnel, setPersonnel] = useState(0);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map) map.relayout();
+  }, [style]);
 
   useEffect(() => {
     async function getUserData() {
@@ -76,9 +88,7 @@ function CommunityDetail({ no }) {
       try {
         await api
           .get(`community/postsDetail/${no}`)
-          .then(
-            (res) => (setDatas(res.data[0]), setLocation(res.data[0].location))
-          );
+          .then((res) => (setDatas(res.data), setLocation(res.data.location)));
       } catch (res) {
         console.log(res);
       }
@@ -96,7 +106,7 @@ function CommunityDetail({ no }) {
     async function getPersonnelData() {
       try {
         await api
-          .get(`community/posts/${datas.post}/peopleㅣ`)
+          .get(`community/posts/${datas.post}/people`)
           .then((res) => console.log("확인", res));
       } catch (e) {
         console.error("error", e);
@@ -154,12 +164,9 @@ function CommunityDetail({ no }) {
                           lat: latitude,
                           lng: longitude,
                         }}
-                        style={{
-                          width: "100%",
-                          height: "250px",
-                          margin: "0px auto",
-                        }}
+                        style={style}
                         level={8}
+                        ref={mapRef}
                       >
                         <MapMarker
                           position={{
