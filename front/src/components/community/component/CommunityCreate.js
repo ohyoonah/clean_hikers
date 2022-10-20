@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, DatePicker, Form, Input, Row, Select } from "antd";
+import { Button, Col, Form, Input, Select } from "antd";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { FormOutlined } from "@ant-design/icons";
@@ -13,7 +13,6 @@ import {
 } from "../styledComponents/CommunityCreateStyled";
 import * as api from "../../../api/api";
 import { CommunityNavCol } from "../styledComponents/CommunityNavStyled";
-import { useLocation } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -21,7 +20,7 @@ function CommunityCreate() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [visitDate, setVisitDate] = useState("");
-  const [state, setState] = useState("");
+  const [state, setState] = useState(""); // 클린후기, 모집중 같은 머리말
   const [id, setId] = useState("");
   const [nickname, setNickName] = useState("");
 
@@ -51,7 +50,7 @@ function CommunityCreate() {
         nickname: nickname,
         station: state,
         location: e.location,
-        personnel: 3,
+        personnel: e.personnel,
       })
       .then(function (response) {
         console.log(response);
@@ -103,7 +102,7 @@ function CommunityCreate() {
               />
             </Form.Item>
             <SecondRow>
-              <Col span={8}>
+              <Col span={6}>
                 <Form.Item
                   name="visitDate"
                   rules={[{ required: true, message: "날짜를 입력하세요" }]}
@@ -112,7 +111,7 @@ function CommunityCreate() {
                   <CommunityDatePicker />
                 </Form.Item>
               </Col>
-              <Col span={8}>
+              <Col span={6}>
                 <Form.Item
                   name="location"
                   rules={[{ required: true, message: "제목을 입력하세요" }]}
@@ -133,7 +132,7 @@ function CommunityCreate() {
                   </Select>
                 </Form.Item>
               </Col>
-              <Col span={8}>
+              <Col span={6}>
                 <Form.Item
                   name="state"
                   rules={[{ required: true, message: "제목을 입력하세요" }]}
@@ -142,6 +141,24 @@ function CommunityCreate() {
                     <Option value="클린후기">클린후기</Option>
                     <Option value="모집중">모집중</Option>
                     {/* <Option value="모집완료">모집완료</Option> */}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item
+                  name="personnel"
+                  rules={[{ required: true, message: "제목을 입력하세요" }]}
+                >
+                  <Select>
+                    <Select.Option value="2">2명</Select.Option>
+                    <Select.Option value="3">3명</Select.Option>
+                    <Select.Option value="4">4명</Select.Option>
+                    <Select.Option value="5">5명</Select.Option>
+                    <Select.Option value="6">6명</Select.Option>
+                    <Select.Option value="7">7명</Select.Option>
+                    <Select.Option value="8">8명</Select.Option>
+                    <Select.Option value="9">9명</Select.Option>
+                    <Select.Option value="10">10명</Select.Option>
                   </Select>
                 </Form.Item>
               </Col>

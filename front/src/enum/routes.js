@@ -4,6 +4,7 @@ export const ROUTES = {
     ROOT: "/community",
     COMMUNITY_CREATE: "/community/communityCreate",
     COMMUNITY_DETAIL: "/community/communityDetail/:no",
+    COMMUNITY_EDIT: `/community/communityDetail/communityEdit/:no`,
   },
   USER: {
     LOGIN: "/login",

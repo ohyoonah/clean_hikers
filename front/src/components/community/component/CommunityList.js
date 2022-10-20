@@ -27,9 +27,13 @@ const PaginationWrapper = styled(Pagination)`
     text-decoration: underline 2px;
   }
 `;
-function CommunityList({ posts, setPosts, currentUserData }) {
-  const [pageNum, setPageNum] = useState(1);
-
+function CommunityList({
+  posts,
+  setPosts,
+  currentUserData,
+  setPageNum,
+  pageNum,
+}) {
   return (
     <div>
       <CommunityListCol>
@@ -40,7 +44,7 @@ function CommunityList({ posts, setPosts, currentUserData }) {
             </Link>
           </RecruitBlueBtnAlign>
         )}
-        <CommunityNav posts={posts} setPosts={setPosts} />
+        <CommunityNav posts={posts} setPosts={setPosts} pageNum={pageNum} />
         <PaginationWrapper
           defaultCurrent={1}
           total={18}
@@ -49,6 +53,7 @@ function CommunityList({ posts, setPosts, currentUserData }) {
           showSizeChanger={false}
           onChange={(e) => setPageNum(e)}
         />
+        {console.log(pageNum)}
       </CommunityListCol>
     </div>
   );

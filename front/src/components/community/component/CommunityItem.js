@@ -11,7 +11,6 @@ import {
 import moment from "moment";
 
 function CommunityItem({ post }) {
-  console.log(post);
   const postTime = moment(post.createdAt).fromNow(); // post 작성 시간
   return (
     <>
@@ -28,7 +27,7 @@ function CommunityItem({ post }) {
                   지역 : {<EnvironmentOutlined />}
                   {post.location.name} | {post.location.address}
                 </p>
-                <p>{post.description}</p>
+                {/* <p>{post.description}</p> */}
               </Col>
               <ItemCol>
                 <p>{postTime}</p>

@@ -4,6 +4,7 @@ import * as api from "../api/api";
 function CommunityPage() {
   const [posts, setPosts] = useState([]);
   const [currentUserData, setCurrentUserData] = useState("");
+  const [pageNum, setPageNum] = useState(1);
 
   useEffect(() => {
     async function getUserData() {
@@ -19,16 +20,25 @@ function CommunityPage() {
   }, []);
 
   useEffect(() => {
-    api
-      .get("community/postlist")
-      .then((res) => (setPosts(res.data), console.log(res)));
-  }, []);
+    async function getCommunityData() {
+      try {
+        await api
+          .get(`community/postlist`, `?page=${pageNum}&perPage=${5}`)
+          .then((res) => (setPosts(res.data), console.log(res)));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    getCommunityData();
+  }, [pageNum]);
 
   return (
     <>
       <CommunityList
         posts={posts}
         setPosts={setPosts}
+        setPageNum={setPageNum}
+        pageNum={pageNum}
         currentUserData={currentUserData}
       />
     </>
