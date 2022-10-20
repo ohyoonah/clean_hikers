@@ -20,14 +20,15 @@ function CommunityItem({ post }) {
             <Row>
               <Col span={21}>
                 <Row>
-                  <StateButton>{post.station}</StateButton>
+                  <StateButton station={post.station}>
+                    {post.station}
+                  </StateButton>
                   <h3> {post.title}</h3>
                 </Row>
                 <p>
                   지역 : {<EnvironmentOutlined />}
                   {post.location.name} | {post.location.address}
                 </p>
-                {/* <p>{post.description}</p> */}
               </Col>
               <ItemCol>
                 <p>{postTime}</p>
