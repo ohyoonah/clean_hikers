@@ -1,6 +1,5 @@
 /* 상단 쓰레기가 많은 산 출력부*/
 import { useState, useEffect } from "react";
-import MountainDetail from "./MountainDetail.js";
 import styled from "styled-components";
 import * as api from "../../api/api";
 
@@ -107,15 +106,13 @@ const H3 = styled.h3`
   font-weight: 700;
 `;
 
-function MountainCard({ isModal, setIsModal, detail, setDetail }) {
+function MountainCard({ setIsModal, setDetail }) {
   const [cardList, setCardList] = useState([]);
 
   useEffect(() => {
     async function getMountainData() {
       try {
-        await api
-          .get("mountain/most-garbage")
-          .then((res) => (setCardList(res.data), console.log(res.data)));
+        await api.get("mountain/most-garbage").then((res) => setCardList(res.data));
       } catch (e) {
         console.log(e);
       }

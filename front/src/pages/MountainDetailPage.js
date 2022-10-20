@@ -9,7 +9,13 @@ import styled from "styled-components";
 import * as api from "../api/api";
 
 const Box = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 80px;
+`;
+
+const H1 = styled.h1`
+  /* Text */
+  font-weight: 700;
+  text-align: center;
 `;
 
 const Bottom = styled.div`
@@ -19,7 +25,6 @@ const Bottom = styled.div`
   grid-column-gap: 30px;
   width: 1130px;
   max-width: 80%;
-  /* border: 1px solid red; */
   margin: 0 auto;
   margin-top: 30px;
 `;
@@ -54,13 +59,8 @@ function MountainDetailPage() {
 
   return (
     <Box>
-      <MountainCard
-        isModal={isModal}
-        setIsModal={setIsModal}
-        detail={detail}
-        setDetail={setDetail}
-      />
-
+      <MountainCard setIsModal={setIsModal} setDetail={setDetail} />
+      <H1>궁금하신 산을 검색해보세요</H1>
       <Bottom>
         <MountainList
           isModal={isModal}
@@ -79,12 +79,7 @@ function MountainDetailPage() {
           search={search}
           setSearch={setSearch}
         />
-        <MountainMap
-          isModal={isModal}
-          setIsModal={setIsModal}
-          detail={detail}
-          setDetail={setDetail}
-        />
+        <MountainMap setIsModal={setIsModal} setDetail={setDetail} />
       </Bottom>
       {isModal ? (
         <MountainDetail isModal={isModal} setIsModal={setIsModal} detail={detail} />

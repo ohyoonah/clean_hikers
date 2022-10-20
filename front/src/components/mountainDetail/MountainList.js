@@ -1,33 +1,24 @@
 /* 국립공원 리스트 */
 import styled from "styled-components";
-import MountainDetail from "./MountainDetail.js";
 import { Level } from "../common/level/Level";
 import { Pagination } from "antd";
 import { theme } from "../common/styles/palette";
 import MountainSearch from "./MountainSearch.js";
 
-const H2 = styled.h2`
-  /* Display & Box Model */
-  margin-bottom: 10px;
-  /* Text */
-  font-weight: 700;
-  text-align: center;
-`;
-
 const Lists = styled.div`
-  /* height: 500px; */
+  height: 460px;
   /* width: 1130px;
   max-width: 80%; */
   border-radius: 10px;
   margin: 0 auto;
-  margin-top: 15px;
+  margin-top: 20px;
 `;
 
 const Desc = styled.div`
   /* Display & Box Model */
   display: grid;
   grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
-  height: 50px;
+  height: 40px;
   margin: 0 auto;
   border-radius: 10px 10px 0px 0px;
 
@@ -36,7 +27,7 @@ const Desc = styled.div`
   color: white;
 
   /* Text */
-  line-height: 50px;
+  line-height: 40px;
   text-align: center;
   font-size: 18px;
 `;
@@ -45,7 +36,7 @@ const List = styled.div`
   /* Display & Box Model */
   display: grid;
   grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
-  height: 80px;
+  height: 85px;
   border-bottom: 1px solid ${theme.naturalGreen};
   margin: 0 auto;
   background-color: white;
@@ -62,7 +53,7 @@ const List = styled.div`
   :hover {
     transition-property: background-color; // 호버 시 테두리색 변경을 위한 코드
     transition: 0.3s; // 호버 시 테두리색 변경을 위한 코드
-    background-color: ${theme.lightGrey};
+    background-color: rgba(137, 165, 80, 0.4);
     /* box-shadow: 1px 1px 2px 0px rgba(150, 150, 150, 0.8); */
   }
 `;
@@ -70,9 +61,9 @@ const List = styled.div`
 const PaginationWrapper = styled(Pagination)`
   /* Display & Box Model */
   display: block;
-  height: fit-content;
+  height: 65px;
   text-align: center;
-  /* line-height: 30px; */
+  line-height: 95px;
 
   .ant-pagination-item-active a {
     color: #89a550;
@@ -101,7 +92,6 @@ function MountainList({
 }) {
   return (
     <div>
-      <H2>궁금하신 산을 검색해보세요</H2>
       <MountainSearch
         location={location}
         setLocation={setLocation}

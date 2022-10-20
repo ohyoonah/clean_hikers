@@ -6,11 +6,14 @@ import styled from "styled-components";
 const Div = styled.div`
   z-index: 0;
 `;
+const MapWrapper = styled(Map)`
+  border-radius: 10px;
+`;
 const MountainNameMap = styled.div`
   text-align: center;
 `;
 
-function MountainMap({ isModal, setIsModal, detail, setDetail }) {
+function MountainMap({ setIsModal, setDetail }) {
   const [data, setData] = useState([]);
 
   const EventMarkerContainer = ({ position, content, detail }) => {
@@ -21,10 +24,7 @@ function MountainMap({ isModal, setIsModal, detail, setDetail }) {
         position={position} // 마커를 표시할 위치
         // @ts-ignore
         onClick={(marker) => (
-          map.panTo(marker.getPosition()),
-          setIsModal(true),
-          setDetail(detail),
-          console.log(detail)
+          map.panTo(marker.getPosition()), setIsModal(true), setDetail(detail)
         )}
         onMouseOver={() => setIsVisible(true)}
         onMouseOut={() => setIsVisible(false)}
@@ -47,7 +47,7 @@ function MountainMap({ isModal, setIsModal, detail, setDetail }) {
 
   return (
     <Div>
-      <Map
+      <MapWrapper
         center={{ lat: 35.87, lng: 127.7107656 }}
         style={{ width: "400px", height: "600px", margin: "0px auto" }}
         level={13}
@@ -65,7 +65,7 @@ function MountainMap({ isModal, setIsModal, detail, setDetail }) {
             </div>
           );
         })}
-      </Map>
+      </MapWrapper>
     </Div>
   );
 }

@@ -66,7 +66,7 @@ const H1 = styled.h1`
   text-align: center;
 `;
 
-function MountainDetailPage({ mountainName, setIsModal, detail }) {
+function MountainDetailPage({ setIsModal, detail }) {
   useEffect(() => {
     document.body.style.cssText = `
       position: fixed;
@@ -110,7 +110,7 @@ function MountainDetailPage({ mountainName, setIsModal, detail }) {
   ];
 
   return (
-    <ModalBackground>
+    <ModalBackground onClick={() => setIsModal(false)}>
       <Modal onClick={(e) => e.stopPropagation()}>
         <Detail>
           <Row justify="end">
