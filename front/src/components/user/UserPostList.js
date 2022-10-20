@@ -4,6 +4,14 @@ import * as api from "../../api/api";
 import UserPostIem from "./UserPostItem";
 import BottomNavigation from "../common/navigation/BottomNavigation";
 
+import {
+  CommunityItemStyled,
+  StateButton,
+} from "../community/styledComponents/CommunityItemStyled";
+
+import { Card, Col, Row } from "antd";
+import { EnvironmentOutlined } from "@ant-design/icons";
+
 function UserPostList({ user }) {
   const [userPost, setUserPost] = useState([]);
   const [page, setPage] = useState(1);
