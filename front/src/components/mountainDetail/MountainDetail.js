@@ -16,6 +16,7 @@ const Modal = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 50%;
+  z-index: 1;
 
   /* Display & Box Model */
   box-shadow: 2px 3px 8px 0px rgb(150, 150, 150);

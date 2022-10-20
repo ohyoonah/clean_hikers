@@ -10,12 +10,11 @@ const Main = styled(Form)`
   /* Display & Box Model */
   display: grid;
   justify-content: center;
-  grid-template-columns: 150px 150px 3fr 120px;
+  grid-template-columns: 1fr 1fr 2fr 1fr;
   grid-column-gap: 15px;
-  width: 1130px;
-  max-width: 80%;
-  padding: 15px;
-  border-radius: 20px;
+
+  padding: 10px;
+  border-radius: 15px;
   margin: 0 auto;
 
   /* Color */

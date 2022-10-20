@@ -4,73 +4,50 @@ import MountainDetail from "./MountainDetail.js";
 import { Level } from "../common/level/Level";
 import { Pagination } from "antd";
 import { theme } from "../common/styles/palette";
+import MountainSearch from "./MountainSearch.js";
 
-const PaginationWrapper = styled(Pagination)`
+const H2 = styled.h2`
   /* Display & Box Model */
-  display: block;
+  margin-bottom: 10px;
+  /* Text */
+  font-weight: 700;
   text-align: center;
-  padding-top: 15px;
-
-  .ant-pagination-item-active a {
-    color: #89a550;
-    border: none;
-  }
-  .ant-pagination-item-active {
-    border: none;
-    text-decoration: underline 2px;
-  }
 `;
 
 const Lists = styled.div`
-  z-index: -10;
-  height: 460px;
-  width: 1130px;
-  max-width: 80%;
-  /* border: 1px solid ${theme.naturalGreen}; */
+  /* height: 500px; */
+  /* width: 1130px;
+  max-width: 80%; */
   border-radius: 10px;
-
   margin: 0 auto;
   margin-top: 15px;
-
-  /* background-color: ${theme.naturalGreen}; */
 `;
 
 const Desc = styled.div`
   /* Display & Box Model */
   display: grid;
   grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
-  /* width: 1130px; */
-  /* max-width: 80%; */
   height: 50px;
-  /* padding: 0px 50px; */
-  /* border-bottom: 1px solid rgb(220, 220, 220); */
   margin: 0 auto;
-  /* margin-top: 15px; */
   border-radius: 10px 10px 0px 0px;
 
   /* Color */
   background-color: ${theme.naturalGreen};
+  color: white;
 
   /* Text */
   line-height: 50px;
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
 `;
 
 const List = styled.div`
   /* Display & Box Model */
   display: grid;
   grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
-  /* width: 1130px; */
-  /* max-width: 80%; */
   height: 80px;
-  /* padding: 0px 55px; */
-  /* border: 1px solid rgb(220, 220, 220); */
   border-bottom: 1px solid ${theme.naturalGreen};
-  /* border-radius: 10px; */
   margin: 0 auto;
-  /* margin-bottom: 15px; */
-
   background-color: white;
 
   /* Text */
@@ -90,17 +67,51 @@ const List = styled.div`
   }
 `;
 
+const PaginationWrapper = styled(Pagination)`
+  /* Display & Box Model */
+  display: block;
+  height: fit-content;
+  text-align: center;
+  /* line-height: 30px; */
+
+  .ant-pagination-item-active a {
+    color: #89a550;
+    border: none;
+  }
+  .ant-pagination-item-active {
+    border: none;
+    text-decoration: underline 2px;
+  }
+`;
+
 function MountainList({
-  isModal,
   setIsModal,
-  detail,
   setDetail,
   mountainList,
   maxPage,
   setPageNum,
+  location,
+  setLocation,
+  difficulty,
+  setDifficulty,
+  search,
+  setSearch,
+  setMountainList,
+  pageNum,
 }) {
   return (
     <div>
+      <H2>궁금하신 산을 검색해보세요</H2>
+      <MountainSearch
+        location={location}
+        setLocation={setLocation}
+        difficulty={difficulty}
+        setDifficulty={setDifficulty}
+        search={search}
+        setSearch={setSearch}
+        setMountainList={setMountainList}
+        pageNum={pageNum}
+      />
       <Lists>
         <Desc>
           <b>산이름</b>
@@ -135,11 +146,6 @@ function MountainList({
         size="small"
         onChange={(e) => setPageNum(e)}
       />
-      {isModal ? (
-        <MountainDetail isModal={isModal} setIsModal={setIsModal} detail={detail} />
-      ) : (
-        <></>
-      )}
     </div>
   );
 }

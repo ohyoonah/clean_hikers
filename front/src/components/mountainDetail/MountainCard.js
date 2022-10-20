@@ -11,7 +11,7 @@ const Main = styled.div`
   height: fit-content;
   padding-bottom: 30px;
   border: 0px solid black;
-  margin: 0 auto;
+  margin: 50px auto;
   text-align: center;
 `;
 
@@ -144,7 +144,6 @@ function MountainCard({ isModal, setIsModal, detail, setDetail }) {
     <Main>
       <H1>가장 쓰레기가 많은 산들이에요</H1>
       <Display>{ShowCardList}</Display>
-      {isModal ? <MountainDetail setIsModal={setIsModal} detail={detail} /> : <></>}
     </Main>
   );
 }

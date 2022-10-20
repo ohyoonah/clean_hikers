@@ -6,7 +6,7 @@ import { EnvironmentOutlined } from "@ant-design/icons";
 import {
   CommunityItemStyled,
   StateButton,
-} from "../styledComponents/CommunityItemstyled";
+} from "../styledComponents/CommunityItemStyled";
 import moment from "moment";
 
 function CommunityItem({ post }) {
