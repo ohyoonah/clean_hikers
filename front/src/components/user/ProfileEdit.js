@@ -147,9 +147,9 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
             src={user.image}
           />
           {user.image && (
-            <button type="button" className="delete" onClick={deleteImage}>
-              기본이미지로 변경
-            </button>
+            <div className="delete">
+              <span onClick={deleteImage}>기본이미지로 변경</span>
+            </div>
           )}
         </ImageBlock>
 

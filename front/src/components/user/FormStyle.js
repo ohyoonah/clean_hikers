@@ -5,7 +5,7 @@ import { Form } from "antd";
 export const PageBlock = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 92vh;
   background: url("/backgroundImage.png") no-repeat center;
   background-size: cover;
 `;
@@ -48,7 +48,7 @@ export const FormBlock = styled(Form)`
     margin-left: 0.5rem;
 
     &:hover {
-      color: #9e9ee7;
+      color: #a4a4c5;
     }
   }
 

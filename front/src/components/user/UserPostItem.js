@@ -18,7 +18,9 @@ function UserPostItem({ post }) {
         <Card className="card">
           <section>
             <div className="title">
-              <StateButton station={post.station}>{post.station}</StateButton>
+              <StateButton className="tag" station={post.station}>
+                {post.station}
+              </StateButton>
               <h3>{post.title}</h3>
             </div>
             <p className="location">

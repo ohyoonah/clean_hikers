@@ -8,6 +8,10 @@ export const UserPostBlock = styled.div`
     }
   }
 
+  .tag {
+    width: 85px;
+  }
+
   .title {
     display: flex;
     h3 {

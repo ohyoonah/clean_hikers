@@ -2,10 +2,12 @@ import styled from "styled-components";
 import { theme } from "../common/styles/palette";
 
 export const ProfileBlock = styled.div`
+  height: 60vh;
   text-align: center;
 
   h2 {
-    margin: 2rem 0;
+    margin: 3rem 0;
+    font-weight: 700;
   }
 
   img {
@@ -48,6 +50,9 @@ export const ProfileBlock = styled.div`
     background: ${theme.primary};
     color: white;
     border: none;
+    &:hover {
+      box-shadow: 0px 0px 6px ${theme.primary};
+    }
   }
 
   .smallButton {
@@ -81,7 +86,12 @@ export const ImageBlock = styled.div`
     color: ${theme.mainBlue};
     border: none;
     font-size: 0.8rem;
-    cursor: pointer;
+    span {
+      cursor: pointer;
+      &:hover {
+        color: #a4a4c5;
+      }
+    }
   }
 
   input[type="file"] {
@@ -104,7 +114,8 @@ export const ImageBlock = styled.div`
     cursor: pointer;
 
     &:hover {
-      background: #0000001f;
+      background: #8f8e8e1f;
+      transition: linear 0.3s;
     }
   }
 `;
