@@ -1,8 +1,10 @@
 import "moment/locale/ko";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
+  ButtonRow,
   CommunityDetailAlign,
+  CreateRow,
   DetailCol,
 } from "../styledComponents/CommunityDetailStyled";
 
@@ -15,13 +17,17 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 import CommentList from "./CommentList";
 import * as api from "../../../api/api";
 import moment from "moment";
+import { ROUTES } from "../../../enum/routes";
 
-function CommunityDetail() {
+function CommunityDetail({ no }) {
   const [datas, setDatas] = useState("");
   const [location, setLocation] = useState({});
   const [currentUserData, setCurrentUserData] = useState("");
-  const { no } = useParams();
   const navigate = useNavigate();
+
+  const [latitude, setLatitude] = useState(35.86125);
+  const [longitude, setLongitude] = useState(127.746131);
+  const [personnel, setPersonnel] = useState(0);
 
   useEffect(() => {
     async function getUserData() {
@@ -43,33 +49,65 @@ function CommunityDetail() {
       return navigate(-1);
     }
   };
+
+  //게시글(모임)에 참석하기
+  const handleApply = async function () {
+    if (window.confirm("참여신청하시겠습니까?")) {
+      console.log(currentUserData);
+      try {
+        await api
+          .post(`community/posts/${no}/user`, {
+            post_id: no,
+            email: currentUserData.email,
+          })
+          .then((res) => (setPersonnel(personnel + 1), console.log(res.data)));
+
+        alert("참여신청이 완료되었습니다.");
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
   const postTime = moment(datas.createdAt).fromNow(); // post 작성 시간
-  console.log(no);
-  // useEffect(() => {
-  //   setData(initialState.users[no]);
-  // }, []);
 
   useEffect(() => {
-    async function getCommunityDetailDdata() {
+    async function getCommunityDetaildata() {
       try {
         await api
           .get(`community/postsDetail/${no}`)
           .then(
-            (res) => (
-              setDatas(res.data[0]),
-              console.log(res.data[0]),
-              setLocation(res.data[0].location)
-            )
+            (res) => (setDatas(res.data[0]), setLocation(res.data[0].location))
           );
       } catch (res) {
         console.log(res);
       }
     }
-    getCommunityDetailDdata();
+    getCommunityDetaildata();
   }, [no]);
+
+  useEffect(() => {
+    setLatitude(location.latitude);
+    setLongitude(location.longitude);
+  }, [location]);
+
+  //인원수 불러오기
+  useEffect(() => {
+    async function getPersonnelData() {
+      try {
+        await api
+          .get(`community/posts/${datas.post}/peopleㅣ`)
+          .then((res) => console.log("확인", res));
+      } catch (e) {
+        console.error("error", e);
+      }
+    }
+    getPersonnelData();
+  }, []);
+
   return (
     <>
-      <Row justify="center">
+      <CreateRow justify="center">
         <DetailCol>
           {currentUserData.id === datas.user_id && (
             <Col>
@@ -80,7 +118,9 @@ function CommunityDetail() {
               >
                 삭제
               </Button>
-              <Button onClick={() => {}}>수정</Button>
+              <Link to={`/community/communityDetail/communityEdit/${no}`}>
+                <Button>수정</Button>
+              </Link>
             </Col>
           )}
 
@@ -102,18 +142,17 @@ function CommunityDetail() {
               </div>
             </Col>
             <Col span={14} push={2}>
-              <Row>
+              <Row justify="end">
                 <Card
                   style={{
                     width: 360,
                   }}
                   cover={
                     <>
-                      {console.log(location.latitude)}
                       <Map
                         center={{
-                          lat: 36.342114,
-                          lng: 127.205563,
+                          lat: latitude,
+                          lng: longitude,
                         }}
                         style={{
                           width: "100%",
@@ -124,8 +163,8 @@ function CommunityDetail() {
                       >
                         <MapMarker
                           position={{
-                            lat: 36.342114,
-                            lng: 127.205563,
+                            lat: latitude,
+                            lng: longitude,
                           }}
                         />
                       </Map>
@@ -142,18 +181,26 @@ function CommunityDetail() {
                     description={
                       <p>
                         {datas.visitDate} <br />
-                        {datas.personnel} 명 모집됨
+                        모집인원 : {datas.personnel} <br />
+                        신청인원 : {personnel}
                       </p>
                     }
                   />
                 </Card>
               </Row>
-              <NonIconBlueBtn text={"참여신청"}></NonIconBlueBtn>
+              <ButtonRow justify="end">
+                {currentUserData && (
+                  <NonIconBlueBtn
+                    onClick={() => handleApply()}
+                    text={"참여신청"}
+                  ></NonIconBlueBtn>
+                )}
+              </ButtonRow>
             </Col>
           </Row>
           <CommentList currentUserData={currentUserData} datas={datas} />
         </DetailCol>
-      </Row>
+      </CreateRow>
     </>
   );
 }
