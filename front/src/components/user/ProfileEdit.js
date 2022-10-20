@@ -1,19 +1,16 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 
-import { ROUTES } from "../../enum/routes";
 import { DispatchContext } from "../../App";
-import { errorMessage, ConfirmMessage } from "../common/message/Message";
+import { errorMessage } from "../common/message/Message";
 import * as api from "../../api/api";
 
 import { ProfileBlock, ImageBlock } from "./ProfileStyle";
 import { ButtonBlock } from "../common/form/FormStyled";
 
-import { Form, Input, Button, Avatar, Popconfirm } from "antd";
+import { Form, Input, Button, Avatar } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 function ProfileEdit({ setIsEdit, user, setUser }) {
-  const navigate = useNavigate();
   const dispatch = useContext(DispatchContext);
 
   const [form] = Form.useForm();
@@ -72,10 +69,10 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
 
   async function deleteImage() {
     try {
+      setUser((user) => ({ ...user, image: null }));
       await api.put("user/picture", {
         image: null,
       });
-      setUser((user) => ({ ...user, image: null }));
       dispatch({
         type: "IMAGE_CHANGE",
         payload: { defaultImage: null },
@@ -121,24 +118,6 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
       } catch (e) {
         console.error(e);
       }
-    }
-  }
-
-  async function deleteUser() {
-    try {
-      if (
-        window.confirm(
-          "탈퇴 처리가 되면 다시 복구할 수 없습니다. 정말 탈퇴 하시겠습니까?"
-        )
-      ) {
-        await api.delete("user");
-        await dispatch({ type: "LOGOUT" });
-        sessionStorage.removeItem("userToken");
-        alert("탈퇴가 완료되었습니다.");
-        return navigate(ROUTES.HOME);
-      }
-    } catch (e) {
-      console.error(e);
     }
   }
 
@@ -212,9 +191,6 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
         <ButtonBlock className="smallButton" onClick={onFinish}>
           확인
         </ButtonBlock>
-        <button type="button" className="userDelete" onClick={deleteUser}>
-          탈퇴하기
-        </button>
       </Form>
     </ProfileBlock>
   );
