@@ -3,6 +3,7 @@ import { Row, Col } from "antd";
 import { theme } from "../common/styles/palette";
 
 export const BannerWrapper = styled(Row)`
+  width: 100%;
   padding: 20x 10%;
   padding-bottom: 100px;
   align-items: center;
