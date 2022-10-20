@@ -7,7 +7,7 @@ class userService{
     static async addUser({ email,nickname,password}){
         const user = await User.findByEmail({email})
         console.log(user)
-        if(user) {
+        if(user && user.deleted == false) {
             throw new Error('이미 존재하는 id 입니다')
         }
 
@@ -37,7 +37,11 @@ class userService{
             throw new Error('비밀번호가 틀렸습니다')
         }
         //따로 선언을 안했는데 .env파일이 들어가는 이유
-        
+        if(userEmail.deleted == true){
+            
+                throw new Error('탈퇴한 유저입니다')
+            
+        }
         const secretKey = process.env.JWT_SECRET_KEY 
         
         const result = jwt.sign({
@@ -60,6 +64,9 @@ class userService{
             const currentUser = await User.findByID(userID)
             if(!currentUser){
                 throw new Error('해당 유저는 존재하지 않습니다2')
+            }
+            if (currentUser.deleted == true){
+                throw new Error('해당 유저는 탈퇴한 유저입니다.')
             }
             return currentUser
         }catch(error){
@@ -119,6 +126,30 @@ class userService{
                 throw new Error('해당 유저는 존재하지 않습니다')
             }
             return createImage
+        }
+        catch(error){
+            throw error
+        }
+    }
+
+    static async deleteThisUser(id){
+        try{
+            const checkAlreadyDeleted = await User.findByID(id)
+            if (checkAlreadyDeleted.deleted == true){
+                return {
+                    "message" : "이미 탈퇴한 유저입니다"
+                }
+            }
+            else{
+            const  deleteUser = await User.findByIDandDeleteUser(id)
+            if(!deleteUser){
+                throw new Error('해당 유저는 존재하지 않습니다')
+            }
+            
+            const result = {}
+            result["data"] = deleteUser
+            result["message"] = "해당 유저의 삭제가 완료되었습니다"
+            return result}
         }
         catch(error){
             throw error

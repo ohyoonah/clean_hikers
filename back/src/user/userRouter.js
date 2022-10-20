@@ -90,4 +90,17 @@ userRouter.put('/picture',loginRequired,async function(req,res,next){
         next(error)
     }
 })
+
+
+userRouter.delete('/', loginRequired, async function(req,res,next){
+    try{
+        const id = req.loginedUser.id
+        const currentUser = await userService.deleteThisUser(id)
+
+        res.status(201).json(currentUser)
+    }
+    catch(error){
+        next(error)
+    }
+})
 export  {userRouter} 
