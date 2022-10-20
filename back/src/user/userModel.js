@@ -10,9 +10,14 @@ class   User {
     }
 
     static async findByEmail({email}){
-        const findUser = await UserModel.findOne({email : email})
-        console.log("findUser 결과",findUser)
-        return findUser
+        const findUser = await UserModel.find({email : email})
+        for(var i =0; i< findUser.length;i++){
+            if (findUser[i].deleted == false){
+                const result = findUser[i]
+                return result
+            }
+        }
+        
     }
 
     static async findByID(id){
@@ -57,6 +62,17 @@ class   User {
         const changedImage = await UserModel.findOneAndUpdate(filter, update)
         console.log('image changed' , changedImage.defaultImage)
         return changedImage
+    }
+
+    static async findByIDandDeleteUser(id){
+        const filter = {
+            id : id
+        }
+        const deleted = {
+            deleted : true
+        }
+        const deletedUser = await UserModel.findOneAndUpdate(filter,deleted)
+        return deletedUser
     }
 }
 
