@@ -15,6 +15,10 @@ const NonIconBlueBtnStyled = styled(Button)`
   :hover {
     background-color: ${theme.mainBlue};
   }
+
+  :focus {
+    background-color: ${theme.mainBlue};
+  }
 `;
 
 const NonIconGreenBtnStyled = styled(Button)`
