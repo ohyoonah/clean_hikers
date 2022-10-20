@@ -2,10 +2,11 @@ import { Row, Col } from "antd";
 import styled from "styled-components";
 
 export const FooterWrapper = styled(Row)`
+  position: relative;
   padding: 50px 65px;
   width: 100%;
   background-color: #1d242b;
-  z-index: -100;
+  z-index: -1;
 `;
 
 export const LogoWrapper = styled(Row)`
@@ -29,7 +30,7 @@ export const Title = styled(Row)`
 `;
 
 export const Text = styled(Row)`
-  /* z-index: -2; */
+  z-index: 0;
   color: #d9dbe1;
 
   & > a {
