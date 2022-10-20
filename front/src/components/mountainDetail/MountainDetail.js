@@ -4,7 +4,7 @@ import styled from "styled-components";
 import React from "react";
 import { useEffect } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import { Button, Row, Tabs } from "antd";
+import { Button, Row } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { NonIconGreenBtn } from "../common/button/NonIconBtn";
 import { Level } from "../common/level/Level";
@@ -41,6 +41,7 @@ const ModalBackground = styled.div`
 const Detail = styled.div`
   /* Text */
   text-align: left;
+  margin-bottom: 30px;
 `;
 
 const ClosedBtn = styled(Button)`
@@ -80,35 +81,6 @@ function MountainDetailPage({ setIsModal, detail }) {
     };
   }, []);
 
-  const items = [
-    {
-      label: "위치",
-      key: "0",
-      children: (
-        <Map
-          center={{ lat: detail.latitude, lng: detail.longitude }}
-          style={{ width: "100%", height: "250px", margin: "0px auto" }}
-          level={8}
-        >
-          <MapMarker position={{ lat: detail.latitude, lng: detail.longitude }} />
-        </Map>
-      ),
-    },
-    {
-      label: "등산로",
-      key: "1",
-      children: (
-        <Map
-          center={{ lat: detail.latitude, lng: detail.longitude }}
-          style={{ width: "100%", height: "250px", margin: "0px auto" }}
-          level={7}
-        >
-          <MapMarker position={{ lat: detail.latitude, lng: detail.longitude }} />
-        </Map>
-      ),
-    },
-  ];
-
   return (
     <ModalBackground onClick={() => setIsModal(false)}>
       <Modal onClick={(e) => e.stopPropagation()}>
@@ -129,7 +101,13 @@ function MountainDetailPage({ setIsModal, detail }) {
           <br />
           <b>연간 쓰레기 처리량 </b> {Number(detail.trash).toFixed(1)}톤
         </Detail>
-        <Tabs items={items} centered />
+        <Map
+          center={{ lat: detail.latitude, lng: detail.longitude }}
+          style={{ width: "100%", height: "250px", margin: "0px auto" }}
+          level={8}
+        >
+          <MapMarker position={{ lat: detail.latitude, lng: detail.longitude }} />
+        </Map>
         <Row justify="center" style={{ paddingTop: "30px" }}>
           <NonIconGreenBtn text={"함께하기"} />
         </Row>

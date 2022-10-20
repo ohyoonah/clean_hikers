@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import MountainSearch from "../components/mountainDetail/MountainSearch.js";
 import MountainList from "../components/mountainDetail/MountainList.js";
 import MountainCard from "../components/mountainDetail/MountainCard.js";
 import MountainMap from "../components/mountainDetail/MountainMap.js";
