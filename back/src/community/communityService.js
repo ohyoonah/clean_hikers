@@ -325,7 +325,7 @@ class commentService {
 
         const createdNewComment = await Comment.create({ newComment });
 
-        const [toUpdate] = await postService.getAPosts({ post_id });
+        const toUpdate = await postService.getAPosts({ post_id });
         toUpdate.comment.push(newComment);
 
         const createPostComment = await postService.setPost({
@@ -508,8 +508,8 @@ class personService {
 
     static async getPersons({ post_id }) {
         const post = await postService.getAPosts({ post_id });
-
-        return post.person;
+        const people = post.person;
+        return people;
     }
 }
 
