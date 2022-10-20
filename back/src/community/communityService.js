@@ -53,10 +53,11 @@ class postService {
         const total = posts.length;
 
         const postsList = posts.sort((a, b) => {
-            if (a.creatdeAt > b.createdAt) {
+            if (a.createdAt > b.createdAt) {
                 return -1;
             }
         });
+        console.log(postsList);
         const totalPage = Math.ceil(total / perPage);
         const allPostsList = postsList.slice(
             perPage * (page - 1),
@@ -80,7 +81,7 @@ class postService {
                 const perPage = Number(send.perPage || 5);
 
                 const total = posts.length;
-
+                console.log("posts ===", posts);
                 const postsList = posts.sort((a, b) => {
                     if (a.createdAt > b.createdAt) {
                         return -1;
@@ -259,6 +260,14 @@ class postService {
             });
         }
 
+        if (toUpdate.count == 0) {
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "count",
+                newValue: toUpdate.count,
+            });
+        }
+
         if (toUpdate.location) {
             post = await Post.update({
                 post_id,
@@ -374,13 +383,13 @@ class commentService {
 
         const post_id = comment.post_id;
 
-        const [twoUpdate] = await postService.getAPosts({ post_id });
+        const twoUpdate = await postService.getAPosts({ post_id });
 
         const newComment = twoUpdate.comment;
 
-        let beingcomment = newComment.find((item) => {
-            return item.comment_id == comment_id;
-        });
+        let beingcomment = newComment.find(
+            (item) => item.comment_id == comment_id
+        );
 
         const idx = newComment.indexOf(beingcomment);
 
@@ -400,13 +409,14 @@ class commentService {
 
     static async deleteComment({ comment_id }) {
         let comments = await Comment.findByCommentId({ comment_id });
-        console.log("삭제할 댓글", comments);
-        const post_id = comments.post_id;
 
         if (!comments) {
             const errorMessage = "내역이 없습니다. 다시 한 번 확인해 주세요.";
             return { errorMessage };
         }
+
+        const post_id = comments.post_id;
+
         comments = await Comment.deleteByCommentId({ comment_id });
 
         const newComments = await Comment.findByPostId({ post_id });
@@ -426,18 +436,16 @@ class commentService {
 
 class personService {
     static async addPerson({ post_id, email }) {
-        const post = await postService.getAPosts({ post_id });
-        const [toUpdate] = post;
+        const posts = await postService.getAPosts({ post_id });
+
+        const toUpdate = posts;
 
         const people = toUpdate.person;
 
-        let beingPerson = people.find((item) => {
-            return item.email == email;
-        });
+        let beingPerson = people.find((item) => item.email == email);
 
         if (beingPerson !== undefined) {
             const idx = people.indexOf(beingPerson);
-
             people.splice(idx, 1);
 
             toUpdate.person = people;
@@ -446,27 +454,29 @@ class personService {
 
             if (toUpdate.station == "모집완료") {
                 toUpdate.station = "모집중";
+                const deletedBeingPerson = await postService.setPost({
+                    post_id,
+                    toUpdate,
+                });
+
+                return deletedBeingPerson;
+            } else {
+                const deletedBeingPerson = await postService.setPost({
+                    post_id,
+                    toUpdate,
+                });
+
+                return deletedBeingPerson;
             }
-
-            const deletedBeingPerson = await postService.setPost({
-                post_id,
-                toUpdate,
-            });
-
-            return deletedBeingPerson;
         } else {
             const newPerson = await User.findByEmail({ email });
 
-            const [toUpdate] = await postService.getAPosts({ post_id });
+            const toUpdate = await postService.getAPosts({ post_id });
 
             if (parseInt(toUpdate.count) === toUpdate.personnel) {
                 const errorMessage = "모집 인원이 마감되었습니다.";
                 return { errorMessage };
             } else {
-                console.log("toUpdate.person = ", toUpdate);
-                console.log("newPerson = ", newPerson);
-                console.log(typeof toUpdate.person);
-
                 toUpdate.person.push(newPerson);
 
                 toUpdate.count = toUpdate.person.length;
@@ -501,17 +511,13 @@ class personService {
     static async getPersons({ post_id }) {
         const post = await postService.getAPosts({ post_id });
 
-        const people = post.person;
-
-        return people;
+        return post.person;
     }
 }
 
 class locationService {
     static async getData() {
-        const data = await Mountain.findData();
-
-        return data;
+        return await Mountain.findData();
     }
 
     static async detailLocation() {
