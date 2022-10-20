@@ -24,6 +24,8 @@ function CommunityDetail({}) {
   const [datas, setDatas] = useState("");
   const [location, setLocation] = useState({});
   const [currentUserData, setCurrentUserData] = useState("");
+  const [textState, setTextState] = useState("참여신청");
+
   const { no } = useParams();
 
   const [style, setStyle] = useState({
@@ -64,17 +66,21 @@ function CommunityDetail({}) {
 
   //게시글(모임)에 참석하기
   const handleApply = async function () {
-    if (window.confirm("참여신청하시겠습니까?")) {
-      console.log(currentUserData);
+    if (window.confirm(`${textState} 하시겠습니까?`)) {
+      console.log("현재유저데이터 : ", currentUserData);
       try {
         await api
           .post(`community/posts/${no}/user`, {
             post_id: no,
             email: currentUserData.email,
           })
-          .then((res) => (setPersonnel(personnel + 1), console.log(res.data)));
-
-        alert("참여신청이 완료되었습니다.");
+          .then(
+            (res) => (
+              setPersonnel(res.data.count),
+              console.log("전달받은 데이터 : ", res.data.count)
+            )
+          );
+        alert(`${textState} 완료되었습니다.`);
       } catch (e) {
         console.log(e);
       }
@@ -106,14 +112,19 @@ function CommunityDetail({}) {
     async function getPersonnelData() {
       try {
         await api
-          .get(`community/posts/${datas.post}/people`)
-          .then((res) => console.log("확인", res));
+          .get(`community/posts/${no}/people`)
+          .then(
+            (res) => (
+              setPersonnel(res.data.length),
+              console.log("확인", res.data.length)
+            )
+          );
       } catch (e) {
         console.error("error", e);
       }
     }
     getPersonnelData();
-  }, []);
+  }, [no]);
 
   return (
     <>
@@ -128,9 +139,9 @@ function CommunityDetail({}) {
               >
                 삭제
               </Button>
-              <Link to={`/community/communityDetail/communityEdit/${no}`}>
+              {/* <Link to={`/community/communityDetail/communityEdit/${no}`}>
                 <Button>수정</Button>
-              </Link>
+              </Link> */}
             </Col>
           )}
 
@@ -196,10 +207,15 @@ function CommunityDetail({}) {
                 </Card>
               </Row>
               <ButtonRow justify="end">
-                {currentUserData && (
+                {currentUserData && textState === "참여신청" ? (
                   <NonIconBlueBtn
-                    onClick={() => handleApply()}
-                    text={"참여신청"}
+                    onClick={() => (handleApply(), setTextState("참여취소"))}
+                    text={textState}
+                  ></NonIconBlueBtn>
+                ) : (
+                  <NonIconBlueBtn
+                    onClick={() => (handleApply(), setTextState("참여신청"))}
+                    text={textState}
                   ></NonIconBlueBtn>
                 )}
               </ButtonRow>

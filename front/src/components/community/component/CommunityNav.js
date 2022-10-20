@@ -80,13 +80,13 @@ function CommunityNav({ setPosts, posts }) {
               onTab1Change(key);
               setTabs(key);
             }}
-            tabBarExtraContent={
-              <SelectStyled bordered={false} placeholder="산 전체">
-                {mountainData.map((mountain) => {
-                  return <Option key={mountain.name}>{mountain.name}</Option>;
-                })}
-              </SelectStyled>
-            }
+            // tabBarExtraContent={
+            //   <SelectStyled bordered={false} placeholder="산 전체">
+            //     {mountainData.map((mountain) => {
+            //       return <Option key={mountain.name}>{mountain.name}</Option>;
+            //     })}
+            //   </SelectStyled>
+            // }
           >
             {contentList[activeTabKey1]}
           </CommunityNavStyled>
