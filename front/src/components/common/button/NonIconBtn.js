@@ -13,9 +13,14 @@ function NonIconBlueBtn({ text, htmlType, onClick }) {
   );
 }
 
-function NonIconGreenBtn({ text }) {
+function NonIconGreenBtn({ text, htmlType, onClick }) {
   return (
-    <NonIconGreenBtnStyled type="primary" size="large">
+    <NonIconGreenBtnStyled
+      type="primary"
+      htmlType={htmlType}
+      onClick={onClick}
+      size="large"
+    >
       {text}
     </NonIconGreenBtnStyled>
   );

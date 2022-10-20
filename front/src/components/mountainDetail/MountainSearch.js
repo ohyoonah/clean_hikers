@@ -10,12 +10,11 @@ const Main = styled(Form)`
   /* Display & Box Model */
   display: grid;
   justify-content: center;
-  grid-template-columns: 150px 150px 3fr 120px;
+  grid-template-columns: 1fr 1fr 2fr 1fr;
   grid-column-gap: 15px;
-  width: 1130px;
-  max-width: 80%;
-  padding: 15px;
-  border-radius: 20px;
+
+  padding: 10px;
+  border-radius: 15px;
   margin: 0 auto;
 
   /* Color */
@@ -28,7 +27,7 @@ const Main = styled(Form)`
 const InputWrapper = styled(Input)`
   /* Display & Box Model */
   height: 40px;
-  padding: 0px 20px;
+  padding: 0px 15px;
   border: 0px;
   border-radius: 10px;
 
@@ -102,7 +101,8 @@ function MountainSearch({
       <SelectWrapper
         className="locationSelect"
         bordered={false}
-        defaultValue="전체"
+        // defaultValue="전체"
+        placeholder="지역"
         onChange={(e) => setLocation(e)}
       >
         {regions.map((area, idx) => (
@@ -116,7 +116,8 @@ function MountainSearch({
       <SelectWrapper
         className="difficultySelect"
         bordered={false}
-        defaultValue="전체"
+        // defaultValue="전체"
+        placeholder="난이도"
         onChange={(e) => setDifficulty(e)}
       >
         <Option value="">전체</Option>

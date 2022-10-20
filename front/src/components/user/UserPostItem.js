@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import {
   CommunityItemStyled,
   StateButton,
-} from "../community/styledComponents/CommunityItemstyled";
+} from "../community/styledComponents/CommunityItemStyled";
 
 import { Card, Col, Row } from "antd";
 import { EnvironmentOutlined } from "@ant-design/icons";

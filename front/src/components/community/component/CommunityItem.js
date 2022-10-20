@@ -7,7 +7,7 @@ import {
   CommunityItemStyled,
   StateButton,
   ItemCol,
-} from "../styledComponents/CommunityItemstyled";
+} from "../styledComponents/CommunityItemStyled";
 import moment from "moment";
 
 function CommunityItem({ post }) {
