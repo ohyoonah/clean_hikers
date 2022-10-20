@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MainBanner from "../components/main/MainBanner";
 import DataBanner from "../components/main/DataBanner";
+import PromoBanner from "../components/main/PromoBanner";
 import Loading from "../components/common/loading/Loading";
 
 import * as api from "../api/api";
@@ -27,6 +28,7 @@ function MainPage() {
     <div>
       <MainBanner mountains={data} />
       <DataBanner data={data} />
+      <PromoBanner />
     </div>
   );
 }

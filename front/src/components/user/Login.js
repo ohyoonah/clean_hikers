@@ -54,6 +54,7 @@ function Login() {
         type: "LOGIN_SUCCESS",
         payload: userInfo.data,
       });
+
       navigate(ROUTES.HOME);
 
       setTimeout(function () {

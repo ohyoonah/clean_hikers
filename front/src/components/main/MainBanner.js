@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import MainSelection from "./MainSelection";
 import { Box, Title, Description } from "./MainBannerStyled";
 
 function MainBanner({ mountains }) {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      delay: 300,
+    });
+  });
   return (
     <Box>
-      <div>
+      <div data-aos="fade">
         <Title>
           다같이 줍자<br></br>#클린하이킹
         </Title>
-        <Description>클린 하이커스는 ~한 서비스입니다.</Description>
+        <Description>나와 지구를 살리는 등산 커뮤니티</Description>
         <MainSelection mountains={mountains} />
       </div>
     </Box>

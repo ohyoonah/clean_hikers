@@ -1,13 +1,31 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import MountainSearch from "../components/mountainDetail/MountainSearch.js";
 import MountainList from "../components/mountainDetail/MountainList.js";
 import MountainCard from "../components/mountainDetail/MountainCard.js";
+import MountainMap from "../components/mountainDetail/MountainMap.js";
+import MountainDetail from "../components/mountainDetail/MountainDetail.js";
 import styled from "styled-components";
 import * as api from "../api/api";
 
 const Box = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 80px;
+`;
+
+const H1 = styled.h1`
+  /* Text */
+  font-weight: 700;
+  text-align: center;
+`;
+
+const Bottom = styled.div`
+  /* Display */
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-column-gap: 30px;
+  width: 1130px;
+  max-width: 80%;
+  margin: 0 auto;
+  margin-top: 30px;
 `;
 
 function MountainDetailPage() {
@@ -40,31 +58,33 @@ function MountainDetailPage() {
 
   return (
     <Box>
-      <MountainCard
-        isModal={isModal}
-        setIsModal={setIsModal}
-        detail={detail}
-        setDetail={setDetail}
-      />
-      <MountainSearch
-        location={location}
-        setLocation={setLocation}
-        difficulty={difficulty}
-        setDifficulty={setDifficulty}
-        search={search}
-        setSearch={setSearch}
-        setMountainList={setMountainList}
-        pageNum={pageNum}
-      />
-      <MountainList
-        isModal={isModal}
-        setIsModal={setIsModal}
-        detail={detail}
-        setDetail={setDetail}
-        mountainList={mountainList}
-        maxPage={maxPage}
-        setPageNum={setPageNum}
-      />
+      <MountainCard setIsModal={setIsModal} setDetail={setDetail} />
+      <H1>궁금한 산을 검색해보세요</H1>
+      <Bottom>
+        <MountainList
+          isModal={isModal}
+          setIsModal={setIsModal}
+          detail={detail}
+          setDetail={setDetail}
+          mountainList={mountainList}
+          setMountainList={setMountainList}
+          maxPage={maxPage}
+          pageNum={pageNum}
+          setPageNum={setPageNum}
+          location={location}
+          setLocation={setLocation}
+          difficulty={difficulty}
+          setDifficulty={setDifficulty}
+          search={search}
+          setSearch={setSearch}
+        />
+        <MountainMap setIsModal={setIsModal} setDetail={setDetail} />
+      </Bottom>
+      {isModal ? (
+        <MountainDetail isModal={isModal} setIsModal={setIsModal} detail={detail} />
+      ) : (
+        <></>
+      )}
     </Box>
   );
 }
