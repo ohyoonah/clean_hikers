@@ -11,10 +11,13 @@ const CommunityItemStyled = styled.div`
   }
 `;
 
-// const StateButton = styled.div`
 const StateButton = styled(Button)`
-  border: 0.1px ${theme.primary} solid;
-  background-color: ${theme.primary};
+  background-color: ${({ station }) =>
+    station === "모집중"
+      ? theme.primary
+      : station === "클린후기"
+      ? theme.mainBlue
+      : "gray"};
   color: white;
   font-weight: 700;
   margin-right: 5px;
