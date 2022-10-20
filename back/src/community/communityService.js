@@ -40,9 +40,25 @@ class postService {
         return createdNewPost;
     }
 
-    static async getPosts({ user_id }) {
+    static async getPosts({ user_id, pagination }) {
         const posts = await Post.findByUserId({ user_id });
-        return posts;
+        const page = Number(pagination.page || 1);
+        const perPage = Number(pagination.perPage || 5);
+
+        const total = posts.length;
+
+        const postsList = posts.sort((a, b) => {
+            if (a.creatdeAt > b.createdAt) {
+                return -1;
+            }
+        });
+        const totalPage = Math.ceil(total / perPage);
+        const allPostsList = postsList.slice(
+            perPage * (page - 1),
+            perPage * page
+        );
+
+        return allPostsList;
     }
 
     static async getAPosts({ post_id }) {
