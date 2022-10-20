@@ -402,8 +402,6 @@ class commentService {
             toUpdate: twoUpdate,
         });
 
-        console.log(createPostComment);
-
         return newComment;
     }
 
