@@ -5,6 +5,7 @@ export const FooterWrapper = styled(Row)`
   padding: 50px 65px;
   width: 100%;
   background-color: #1d242b;
+  z-index: -100;
 `;
 
 export const LogoWrapper = styled(Row)`
@@ -28,7 +29,7 @@ export const Title = styled(Row)`
 `;
 
 export const Text = styled(Row)`
-  z-index: 0;
+  /* z-index: -2; */
   color: #d9dbe1;
 
   & > a {

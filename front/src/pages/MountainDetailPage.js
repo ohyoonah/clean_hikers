@@ -9,6 +9,7 @@ import * as api from "../api/api";
 
 const Box = styled.div`
   margin-bottom: 80px;
+  height: 100%;
 `;
 
 const H1 = styled.h1`

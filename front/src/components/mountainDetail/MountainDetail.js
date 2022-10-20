@@ -16,7 +16,7 @@ const Modal = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 50%;
-  z-index: 1;
+  z-index: 100;
 
   /* Display & Box Model */
   box-shadow: 2px 3px 8px 0px rgb(150, 150, 150);
@@ -32,9 +32,12 @@ const Modal = styled.div`
 `;
 
 const ModalBackground = styled.div`
-  position: absolute;
-  inset: 0;
+  position: fixed;
+  top: 0%;
+  left: 0%;
   background-color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: 100%;
   /* backdrop-filter: blur(1px); */
 `;
 
