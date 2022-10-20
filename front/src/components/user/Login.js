@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { DispatchContext } from "../../App";
 import { ROUTES } from "../../enum/routes";
 import { validateEmail, validatePassword } from "../../util/formValidation";
-import { errorMessage, notificationMessage } from "../common/form/Message";
+import { errorMessage, notificationMessage } from "../common/message/Message";
 import * as api from "../../api/api";
 
 import Loading from "../common/loading/Loading";
@@ -47,9 +47,12 @@ function Login() {
       });
       const jwtToken = data.jwt;
       sessionStorage.setItem("userToken", jwtToken);
+
+      const userInfo = await api.get("user/user-page");
+
       await dispatch({
         type: "LOGIN_SUCCESS",
-        payload: data,
+        payload: userInfo.data,
       });
       navigate(ROUTES.HOME);
 

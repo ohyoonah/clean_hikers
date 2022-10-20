@@ -1,16 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Profile from "./Profile";
 import ProfileEdit from "./ProfileEdit";
 import UserPostList from "./UserPostList";
 import { HttpStatusCode } from "../../enum/httpStautsCode";
+import { ROUTES } from "../../enum/routes";
+import { UserStateContext } from "../../App";
 import * as api from "../../api/api";
 
 import { TabBlock } from "./TabStyle";
 
 function Users() {
+  const navigate = useNavigate();
+  const userState = useContext(UserStateContext);
+
   const [user, setUser] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
+
+  const isLogin = !!userState.user;
+
+  useEffect(() => {
+    if (isLogin) {
+      return;
+    } else {
+      navigate(ROUTES.USER.LOGIN);
+    }
+  }, [isLogin, navigate]);
 
   useEffect(() => {
     async function getUserData() {
