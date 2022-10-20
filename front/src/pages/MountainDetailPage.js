@@ -59,7 +59,7 @@ function MountainDetailPage() {
   return (
     <Box>
       <MountainCard setIsModal={setIsModal} setDetail={setDetail} />
-      <H1>궁금하신 산을 검색해보세요</H1>
+      <H1>궁금한 산을 검색해보세요</H1>
       <Bottom>
         <MountainList
           isModal={isModal}

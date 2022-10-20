@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Map, MapMarker, useMap } from "react-kakao-maps-sdk";
+import { Map, MapMarker, CustomOverlayMap, useMap } from "react-kakao-maps-sdk";
 import * as api from "../../api/api";
 import styled from "styled-components";
 
@@ -9,30 +9,21 @@ const Div = styled.div`
 const MapWrapper = styled(Map)`
   border-radius: 10px;
 `;
-const MountainNameMap = styled.div`
-  text-align: center;
+
+const MountainNameMarker = styled.div`
+  border: 3px solid #0091ea;
+  border-radius: 5px;
+  padding: 0px 5px;
+
+  background-color: white;
+
+  font-weight: 600;
+  font-size: 16px;
 `;
 
 function MountainMap({ setIsModal, setDetail }) {
   const [data, setData] = useState([]);
-
-  const EventMarkerContainer = ({ position, content, detail }) => {
-    const map = useMap();
-    const [isVisible, setIsVisible] = useState(false);
-    return (
-      <MapMarker
-        position={position} // 마커를 표시할 위치
-        // @ts-ignore
-        onClick={(marker) => (
-          map.panTo(marker.getPosition()), setIsModal(true), setDetail(detail)
-        )}
-        onMouseOver={() => setIsVisible(true)}
-        onMouseOut={() => setIsVisible(false)}
-      >
-        {isVisible && content}
-      </MapMarker>
-    );
-  };
+  const [isMouseOver, setIsMouseOver] = useState(null);
 
   useEffect(() => {
     async function getAllData() {
@@ -45,6 +36,36 @@ function MountainMap({ setIsModal, setDetail }) {
     getAllData();
   }, []);
 
+  const EventMarkerContainer = ({ value, index }) => {
+    const map = useMap();
+
+    return (
+      <div>
+        <MapMarker
+          position={{ lat: value.latitude, lng: value.longitude }}
+          onClick={(marker) => (
+            map.panTo(marker.getPosition()), setIsModal(true), setDetail(value)
+          )}
+          onMouseOver={() => setIsMouseOver(index)}
+          onMouseOut={() => {
+            if (isMouseOver == index) setIsMouseOver(null);
+          }}
+        />
+        {isMouseOver == index && (
+          <CustomOverlayMap
+            position={{
+              lat: value.latitude,
+              lng: value.longitude,
+            }}
+            yAnchor={2.3}
+          >
+            <MountainNameMarker>{value.name}</MountainNameMarker>
+          </CustomOverlayMap>
+        )}
+      </div>
+    );
+  };
+
   return (
     <Div>
       <MapWrapper
@@ -55,13 +76,7 @@ function MountainMap({ setIsModal, setDetail }) {
         {data.map((value, index) => {
           return (
             <div key={index}>
-              <MapMarker position={{ lat: value.latitude, lng: value.longitude }} />
-              <EventMarkerContainer
-                key={`EventMarkerContainer-${value.latitude}-${value.longitude}`}
-                position={{ lat: value.latitude, lng: value.longitude }}
-                content={<MountainNameMap>{value.name}</MountainNameMap>}
-                detail={value}
-              />
+              <EventMarkerContainer value={value} index={index} />
             </div>
           );
         })}
