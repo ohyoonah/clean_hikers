@@ -1,11 +1,12 @@
 import styled from "styled-components";
+import { theme } from "../common/styles/palette";
 import { Form } from "antd";
 
 export const PageBlock = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
-  background: url("./backgroundImage.png") no-repeat center;
+  background: url("/backgroundImage.png") no-repeat center;
   background-size: cover;
 `;
 
@@ -33,11 +34,26 @@ export const FormBlock = styled(Form)`
   .ant-form-item-explain-error {
     width: 60%;
     margin: 0 auto;
+    margin-top: 0.2rem;
+    font-size: 0.83rem;
     text-align: start;
   }
 
   .toRegister {
     margin-bottom: 5rem;
+  }
+
+  .registerLink {
+    color: ${theme.mainBlue};
+    margin-left: 0.5rem;
+
+    &:hover {
+      color: #9e9ee7;
+    }
+  }
+
+  .registerButton {
+    margin-bottom: 3rem;
   }
 `;
 
@@ -46,7 +62,6 @@ export const TitleBlock = styled.div`
   flex-direction: column;
   width: 60%;
   margin: 2rem auto;
-  margin-bottom: 3rem;
 
   h2 {
     font-size: 2rem;
@@ -63,11 +78,9 @@ export const EmailBlock = styled.div`
   justify-content: space-between;
   width: 60%;
   margin: 0 auto;
-  margin-bottom: 0.8rem;
 
   .ant-form-item {
     width: 70%;
-    margin-bottom: 0;
     .registerEmail {
       width: 100%;
     }

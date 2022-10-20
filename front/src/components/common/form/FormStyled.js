@@ -23,6 +23,11 @@ export const ButtonBlock = styled(Button)`
   background: transparent;
   margin: 1rem auto;
   color: ${theme.primary};
+  &:hover {
+    background: ${theme.primary};
+    color: white;
+    border: none;
+  }
   &.smallButton {
     width: 300px;
   }

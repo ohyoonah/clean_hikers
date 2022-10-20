@@ -90,6 +90,8 @@ export const ImageBlock = styled.div`
 
   label {
     position: relative;
+    width: 100px;
+    margin: 0 auto;
   }
 
   .uploadButton {

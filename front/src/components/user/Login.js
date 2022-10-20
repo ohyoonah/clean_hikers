@@ -103,7 +103,9 @@ function Login() {
           </ButtonBlock>
           <div className="toRegister">
             아직 회원이 아니신가요?
-            <Link to={ROUTES.USER.REGISTER}>회원가입</Link>
+            <Link to={ROUTES.USER.REGISTER} className="registerLink">
+              회원가입
+            </Link>
           </div>
         </Form.Item>
       </FormBlock>

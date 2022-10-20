@@ -19,6 +19,9 @@ export function validateEmailCheck(email) {
 }
 
 export function validateNickName(_, value) {
+  if (!value) {
+    return Promise.reject(new Error("닉네임을 입력해 주세요."));
+  }
   if (/\s/.test(value)) {
     return Promise.reject(new Error("닉네임은 공백을 포함 할 수 없습니다."));
   }
