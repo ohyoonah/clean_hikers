@@ -259,6 +259,14 @@ class postService {
             });
         }
 
+        if (toUpdate.count == 0) {
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "count",
+                newValue: toUpdate.count,
+            });
+        }
+
         if (toUpdate.location) {
             post = await Post.update({
                 post_id,
@@ -449,6 +457,7 @@ class personService {
                     post_id,
                     toUpdate,
                 });
+
                 return deletedBeingPerson;
             } else {
                 const deletedBeingPerson = await postService.setPost({
