@@ -383,7 +383,7 @@ class commentService {
 
         const post_id = comment.post_id;
 
-        const [twoUpdate] = await postService.getAPosts({ post_id });
+        const twoUpdate = await postService.getAPosts({ post_id });
 
         const newComment = twoUpdate.comment;
 
