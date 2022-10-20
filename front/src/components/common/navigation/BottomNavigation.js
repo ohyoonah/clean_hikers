@@ -5,12 +5,17 @@ import {
   CommunityPagenationStyled,
 } from "../../community/styledComponents/CommunityListStyled";
 
-function BottomNavigation({ props }) {
+function BottomNavigation({ props, onChangePage }) {
   return (
     <div>
       <CommunityListAlign>
         <CommunityPagenationStyled>
-          <Pagination size="small" total={props} defaultPageSize={5} />
+          <Pagination
+            size="small"
+            total={props}
+            defaultPageSize={5}
+            onChange={(e) => onChangePage(e)}
+          />
         </CommunityPagenationStyled>
       </CommunityListAlign>
     </div>

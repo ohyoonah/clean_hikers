@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { DatePicker, Form, Input, Row, Select } from "antd";
+import { Button, Col, DatePicker, Form, Input, Row, Select } from "antd";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { FormOutlined } from "@ant-design/icons";
 import {
-  CommunityFormSecond,
-  CommunityCreateBtn,
+  SecondRow,
+  CommunityDatePicker,
+  CenterRow,
+  RegisterBtnStyled,
+  CommunityInput,
+  FirstRow,
 } from "../styledComponents/CommunityCreateStyled";
-import { RegisterBtnStyled } from "../../common/button/IconBtnStyled";
 import * as api from "../../../api/api";
 import { CommunityNavCol } from "../styledComponents/CommunityNavStyled";
 import { useLocation } from "react-router-dom";
@@ -72,67 +75,78 @@ function CommunityCreate() {
 
   return (
     <>
-      <Row justify="center">
+      <CenterRow justify="center">
         <CommunityNavCol>
-          <h1>글 작성</h1>
           <Form onFinish={onFinish}>
-            <RegisterBtnStyled>
-              <CommunityCreateBtn
-                type="primary"
-                icon={<FormOutlined />}
-                className="community-title-button"
-                size="large"
-                htmlType="submit"
-              >
-                등록하기
-              </CommunityCreateBtn>
-            </RegisterBtnStyled>
-
+            <FirstRow>
+              <h1>글 작성</h1>
+              <RegisterBtnStyled>
+                <Button
+                  type="primary"
+                  icon={<FormOutlined />}
+                  className="community-title-button"
+                  size="large"
+                  htmlType="submit"
+                >
+                  등록하기
+                </Button>
+              </RegisterBtnStyled>
+            </FirstRow>
             <Form.Item
               name="title"
               rules={[{ required: true, message: "제목을 입력하세요" }]}
               onChange={(e) => setTitle(e.target.value)}
             >
-              <Input placeholder="제목을 입력하세요" className="title" />
+              <CommunityInput
+                placeholder="제목을 입력하세요"
+                className="title"
+              />
             </Form.Item>
-            <CommunityFormSecond>
-              <Form.Item
-                name="visitDate"
-                rules={[{ required: true, message: "날짜를 입력하세요" }]}
-                onChange={(e) => setVisitDate(e.target.value)}
-              >
-                <DatePicker />
-              </Form.Item>
-              <Form.Item
-                name="location"
-                rules={[{ required: true, message: "제목을 입력하세요" }]}
-              >
-                <Select>
-                  <Select.Option value="가야산">가야산</Select.Option>
-                  <Select.Option value="계룡산">계룡산</Select.Option>
-                  <Select.Option value="내장산">내장산</Select.Option>
-                  <Select.Option value="덕유산">덕유산</Select.Option>
-                  <Select.Option value="무등산">무등산</Select.Option>
-                  <Select.Option value="북한산">북한산</Select.Option>
-                  <Select.Option value="설악산">설악산</Select.Option>
-                  <Select.Option value="소백산">소백산</Select.Option>
-                  <Select.Option value="속리산">속리산</Select.Option>
-                  <Select.Option value="오대산">오대산</Select.Option>
-                  <Select.Option value="월악산">월악산</Select.Option>
-                  <Select.Option value="월출산">월출산</Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item
-                name="state"
-                rules={[{ required: true, message: "제목을 입력하세요" }]}
-              >
-                <Select defaultValue="클린후기" onChange={(e) => setState(e)}>
-                  <Option value="클린후기">클린후기</Option>
-                  <Option value="모집중">모집중</Option>
-                  <Option value="모집완료">모집완료</Option>
-                </Select>
-              </Form.Item>
-            </CommunityFormSecond>
+            <SecondRow>
+              <Col span={8}>
+                <Form.Item
+                  name="visitDate"
+                  rules={[{ required: true, message: "날짜를 입력하세요" }]}
+                  onChange={(e) => setVisitDate(e.target.value)}
+                >
+                  <CommunityDatePicker />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  name="location"
+                  rules={[{ required: true, message: "제목을 입력하세요" }]}
+                >
+                  <Select>
+                    <Select.Option value="가야산">가야산</Select.Option>
+                    <Select.Option value="계룡산">계룡산</Select.Option>
+                    <Select.Option value="내장산">내장산</Select.Option>
+                    <Select.Option value="덕유산">덕유산</Select.Option>
+                    <Select.Option value="무등산">무등산</Select.Option>
+                    <Select.Option value="북한산">북한산</Select.Option>
+                    <Select.Option value="설악산">설악산</Select.Option>
+                    <Select.Option value="소백산">소백산</Select.Option>
+                    <Select.Option value="속리산">속리산</Select.Option>
+                    <Select.Option value="오대산">오대산</Select.Option>
+                    <Select.Option value="월악산">월악산</Select.Option>
+                    <Select.Option value="월출산">월출산</Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  name="state"
+                  rules={[{ required: true, message: "제목을 입력하세요" }]}
+                >
+                  <Select onChange={(e) => setState(e)}>
+                    <Option value="클린후기">클린후기</Option>
+                    <Option value="모집중">모집중</Option>
+                    {/* <Option value="모집완료">모집완료</Option> */}
+                  </Select>
+                </Form.Item>
+              </Col>
+            </SecondRow>
+
             <Form.Item
               name="description"
               rules={[{ required: true, message: "내용을 입력하세요" }]}
@@ -147,7 +161,7 @@ function CommunityCreate() {
             </Form.Item>
           </Form>
         </CommunityNavCol>
-      </Row>
+      </CenterRow>
     </>
   );
 }

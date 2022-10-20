@@ -8,7 +8,7 @@ import {
   validateNickName,
 } from "../../util/formValidation";
 import { HttpStatusCode } from "../../enum/httpStautsCode";
-import { successMessage, errorMessage } from "../common/form/Message";
+import { successMessage, errorMessage } from "../common/message/Message";
 import * as api from "../../api/api";
 
 import { PageBlock, FormBlock, TitleBlock, EmailBlock } from "./FormStyle";

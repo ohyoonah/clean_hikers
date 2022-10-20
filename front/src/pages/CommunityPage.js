@@ -3,10 +3,20 @@ import CommunityList from "../components/community/component/CommunityList";
 import * as api from "../api/api";
 function CommunityPage() {
   const [posts, setPosts] = useState([]);
+  const [currentUserData, setCurrentUserData] = useState("");
 
-  // useEffect(() => {
-  //   setPosts(initialState.users);
-  // }, []);
+  useEffect(() => {
+    async function getUserData() {
+      try {
+        const { data: currentUser } = await api.get("user/user-page");
+        setCurrentUserData(currentUser);
+        console.log("현재유저 : ", currentUserData.nickname);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    getUserData();
+  }, []);
 
   useEffect(() => {
     api
@@ -16,7 +26,11 @@ function CommunityPage() {
 
   return (
     <>
-      <CommunityList posts={posts} setPosts={setPosts} />
+      <CommunityList
+        posts={posts}
+        setPosts={setPosts}
+        currentUserData={currentUserData}
+      />
     </>
   );
 }

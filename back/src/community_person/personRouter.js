@@ -1,6 +1,6 @@
 import is from "@sindresorhus/is";
 import { Router } from "express";
-import { personService } from "./communityService.js";
+import { personService } from "../community/communityService.js";
 import { ErrorMessage } from "../middlewares/errorMiddleware.js";
 
 const personRouter = Router();
@@ -24,9 +24,9 @@ personRouter.post("/posts/:post_id/user", async function (req, res, next) {
 });
 
 //모집인원 조회
-personRouter.get("/posts/:post_id/people", async function (req, res, next) {
+personRouter.get("/posts/:postId/people", async function (req, res, next) {
     try {
-        const post_id = req.params.post_id;
+        const post_id = req.params.postId;
 
         const people = await personService.getPersons({ post_id });
 

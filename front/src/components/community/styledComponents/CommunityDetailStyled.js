@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import "antd/dist/antd.css";
-import { Card, Col, Comment, Layout } from "antd";
+import { Card, Col, Comment, Layout, Row } from "antd";
 import CommentList from "../component/CommentList";
 
 const CommunityDetailAlign = styled.div`
@@ -23,4 +23,14 @@ const DetailCol = styled(Col)`
   width: 80%;
   max-width: 1130px;
 `;
-export { CommunityDetailAlign, CommunityCommentList, DetailCol };
+const CreateRow = styled(Row)``;
+const ButtonRow = styled(Row)`
+  padding: 10px;
+`;
+export {
+  CommunityDetailAlign,
+  CommunityCommentList,
+  DetailCol,
+  ButtonRow,
+  CreateRow,
+};
