@@ -1,38 +1,83 @@
-import React, { useState } from "react";
-import { Col, DatePicker, Form, Input, Row, Select } from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Col, Form, Input, Select } from "antd";
 import moment from "moment";
+import { useNavigate, useParams } from "react-router-dom";
 import { FormOutlined } from "@ant-design/icons";
 import {
-  TitleAlign,
-  CommunityFormSecond,
-  CommunityCreateBtn,
-  AlignBtn,
+  SecondRow,
+  CommunityDatePicker,
+  CenterRow,
+  RegisterBtnStyled,
+  CommunityInput,
+  FirstRow,
 } from "../styledComponents/CommunityCreateStyled";
-
 import * as api from "../../../api/api";
-import { useNavigate } from "react-router-dom";
+import { CommunityNavCol } from "../styledComponents/CommunityNavStyled";
 
 const { Option } = Select;
 
-function CommentEdit() {
+const FORM = { title: "", description: "" };
+
+function CommunityEdit() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [visitDate, setVisitDate] = useState("");
-  const [state, setState] = useState("");
+  const [state, setState] = useState(""); // 클린후기, 모집중 같은 머리말
+  const [id, setId] = useState("");
+  const [nickname, setNickName] = useState("");
+  const [datas, setDatas] = useState("");
+  const [location, setLocation] = useState({});
+  const [form] = Form.useForm();
+  const [tempForm, setTempFrom] = useState(FORM);
 
+  // URI 파라미터 들고오기
+  const { no } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function getUserData() {
+      try {
+        const { data: currentUser } = await api.get("user/user-page");
+        setId(currentUser.id);
+        setNickName(currentUser.nickname);
+        console.log(nickname, id);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    getUserData();
+  }, []);
+
+  useEffect(() => {
+    async function getCommunityDetailDdata() {
+      try {
+        await api
+          .get(`community/postsDetail/${no}`)
+          .then(
+            (res) => (
+              setDatas(res.data[0]),
+              console.log(res.data[0]),
+              setLocation(res.data[0].location)
+            )
+          );
+      } catch (res) {
+        console.log(res);
+      }
+    }
+    getCommunityDetailDdata();
+  }, [no]);
+
   const onFinish = async (e) => {
     await api
-      .put(`community/posts`, {
-        user_id: 99,
+      .put(`community/posts/${datas.post_id}`, {
+        user_id: id,
         title: title,
         description: description,
-        date: e.visitDate,
-        nickname: "LIM",
-        header: "LIM",
+        date: visitDate,
+        nickname: nickname,
         station: state,
         location: e.location,
-        personnel: 3,
+        personnel: e.personnel,
       })
       .then(function (response) {
         console.log(response);
@@ -44,73 +89,111 @@ function CommentEdit() {
     console.log("Success", { ...e, createAt });
     return navigate(-1);
   };
+  console.log(datas.title);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      title: datas.title,
+      description: datas.description,
+      visitDate: datas.date,
+      location: datas.location,
+    });
+    console.log("확인", datas);
+  }, [FORM]);
 
   return (
     <>
-      <Row>
-        <Col span={2}></Col>
-        <Col span={20}>
-          <TitleAlign>
-            <h1>글 작성</h1>
-          </TitleAlign>
-          <Form onFinish={onFinish}>
-            <AlignBtn>
-              <CommunityCreateBtn
-                type="primary"
-                icon={<FormOutlined />}
-                className="community-title-button"
-                size="large"
-                htmlType="submit"
-              >
-                등록하기
-              </CommunityCreateBtn>
-            </AlignBtn>
-
+      <CenterRow justify="center">
+        <CommunityNavCol>
+          <Form form={form} onFinish={onFinish} initialValues={tempForm}>
+            <FirstRow>
+              <h1>글 작성</h1>
+              <RegisterBtnStyled>
+                <Button
+                  type="primary"
+                  icon={<FormOutlined />}
+                  className="community-title-button"
+                  size="large"
+                  htmlType="submit"
+                >
+                  등록하기
+                </Button>
+              </RegisterBtnStyled>
+            </FirstRow>
             <Form.Item
               name="title"
               rules={[{ required: true, message: "제목을 입력하세요" }]}
               onChange={(e) => setTitle(e.target.value)}
             >
-              <Input placeholder="제목을 입력하세요" className="title" />
+              <CommunityInput
+                placeholder="제목을 입력하세요"
+                className="title"
+                value={datas.title}
+              />
             </Form.Item>
-            <CommunityFormSecond>
-              <Form.Item
-                name="visitDate"
-                rules={[{ required: true, message: "날짜를 입력하세요" }]}
-                onChange={(e) => setVisitDate(e.target.value)}
-              >
-                <DatePicker />
-              </Form.Item>
-              <Form.Item
-                name="location"
-                rules={[{ required: true, message: "제목을 입력하세요" }]}
-              >
-                <Select>
-                  <Select.Option value="서울">서울</Select.Option>
-                  <Select.Option value="경기">경기</Select.Option>
-                  <Select.Option value="인천">인천</Select.Option>
-                  <Select.Option value="강원">강원</Select.Option>
-                  <Select.Option value="충북">충북</Select.Option>
-                  <Select.Option value="충남">충남</Select.Option>
-                  <Select.Option value="경북">경북</Select.Option>
-                  <Select.Option value="경남">경남</Select.Option>
-                  <Select.Option value="전북">전북</Select.Option>
-                  <Select.Option value="전남">전남</Select.Option>
-                  <Select.Option value="부산">부산</Select.Option>
-                  <Select.Option value="제주">제주</Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item
-                name="state"
-                rules={[{ required: true, message: "제목을 입력하세요" }]}
-              >
-                <Select defaultValue="클린후기" onChange={(e) => setState(e)}>
-                  <Option value="클린후기">클린후기</Option>
-                  <Option value="모집중">모집중</Option>
-                  <Option value="모집완료">모집완료</Option>
-                </Select>
-              </Form.Item>
-            </CommunityFormSecond>
+            <SecondRow>
+              <Col span={6}>
+                <Form.Item
+                  rules={[{ required: true, message: "날짜를 입력하세요" }]}
+                  onChange={(e) => setVisitDate(e.target.value)}
+                >
+                  <CommunityDatePicker name="visitDate" />
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item
+                  name="location"
+                  onChange={(e) => setLocation(e)}
+                  rules={[{ required: true, message: "제목을 입력하세요" }]}
+                >
+                  <Select name="location" onChange={(e) => setLocation(e)}>
+                    <Select.Option value="가야산">가야산</Select.Option>
+                    <Select.Option value="계룡산">계룡산</Select.Option>
+                    <Select.Option value="내장산">내장산</Select.Option>
+                    <Select.Option value="덕유산">덕유산</Select.Option>
+                    <Select.Option value="무등산">무등산</Select.Option>
+                    <Select.Option value="북한산">북한산</Select.Option>
+                    <Select.Option value="설악산">설악산</Select.Option>
+                    <Select.Option value="소백산">소백산</Select.Option>
+                    <Select.Option value="속리산">속리산</Select.Option>
+                    <Select.Option value="오대산">오대산</Select.Option>
+                    <Select.Option value="월악산">월악산</Select.Option>
+                    <Select.Option value="월출산">월출산</Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item
+                  name="state"
+                  rules={[{ required: true, message: "제목을 입력하세요" }]}
+                >
+                  <Select onChange={(e) => setState(e)}>
+                    <Option value="클린후기">클린후기</Option>
+                    <Option value="모집중">모집중</Option>
+                    {/* <Option value="모집완료">모집완료</Option> */}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item
+                  name="personnel"
+                  rules={[{ required: true, message: "제목을 입력하세요" }]}
+                >
+                  <Select>
+                    <Select.Option value="2">2명</Select.Option>
+                    <Select.Option value="3">3명</Select.Option>
+                    <Select.Option value="4">4명</Select.Option>
+                    <Select.Option value="5">5명</Select.Option>
+                    <Select.Option value="6">6명</Select.Option>
+                    <Select.Option value="7">7명</Select.Option>
+                    <Select.Option value="8">8명</Select.Option>
+                    <Select.Option value="9">9명</Select.Option>
+                    <Select.Option value="10">10명</Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+            </SecondRow>
+
             <Form.Item
               name="description"
               rules={[{ required: true, message: "내용을 입력하세요" }]}
@@ -124,11 +207,10 @@ function CommentEdit() {
               />
             </Form.Item>
           </Form>
-        </Col>
-        <Col span={2}></Col>
-      </Row>
+        </CommunityNavCol>
+      </CenterRow>
     </>
   );
 }
 
-export default CommentEdit;
+export default CommunityEdit;

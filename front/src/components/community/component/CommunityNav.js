@@ -1,5 +1,5 @@
 import { Card, Col, Row, Select } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CommunityNavStyled,
   CommunityNavCol,
@@ -7,6 +7,7 @@ import {
 } from "../styledComponents/CommunityNavStyled";
 import CommunityItem from "./CommunityItem";
 import initialState from "./data";
+import * as api from "../../../api/api";
 
 const { Option } = Select;
 const tabList = [
@@ -31,6 +32,8 @@ const tabList = [
 function CommunityNav({ setPosts, posts }) {
   const [activeTabKey1, setActiveTabKey1] = useState("allPost");
   const [tabs, setTabs] = useState(initialState.inputs.state);
+  const [stateNum, setStateNum] = useState(1);
+  const [station, setStation] = useState();
 
   // 데이터 어떻게 받아오실지 몰라서 일단 요렇게 남겨놓아요!
   const mountainData = [

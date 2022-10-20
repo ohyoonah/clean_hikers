@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import "antd/dist/antd.css";
-import { Button } from "antd";
+import { Button, Col } from "antd";
 import { theme } from "../../common/styles/palette";
 
 const CommunityItemStyled = styled.div`
@@ -11,10 +11,13 @@ const CommunityItemStyled = styled.div`
   }
 `;
 
-// const StateButton = styled.div`
 const StateButton = styled(Button)`
-  border: 0.1px ${theme.primary} solid;
-  background-color: ${theme.primary};
+  background-color: ${({ station }) =>
+    station === "모집중"
+      ? theme.primary
+      : station === "클린후기"
+      ? theme.mainBlue
+      : "gray"};
   color: white;
   font-weight: 700;
   margin-right: 5px;
@@ -25,4 +28,10 @@ const StateButton = styled(Button)`
   }
 `;
 
-export { CommunityItemStyled, StateButton };
+const ItemCol = styled(Col)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+export { CommunityItemStyled, StateButton, ItemCol };

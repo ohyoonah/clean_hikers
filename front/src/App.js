@@ -21,6 +21,7 @@ import { ConfigProvider } from "antd";
 
 import * as api from "./api/api";
 import { theme } from "./components/common/styles/palette";
+import CommunityEditPage from "./pages/CommunityEditPage";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -80,10 +81,17 @@ function App() {
                 path={ROUTES.COMMUNITY.COMMUNITY_DETAIL}
                 element={<CommunityDetailPage />}
               />
+              <Route
+                path={ROUTES.COMMUNITY.COMMUNITY_EDIT}
+                element={<CommunityEditPage />}
+              />
               <Route path={ROUTES.USER.LOGIN} element={<LoginPage />} />
               <Route path={ROUTES.USER.REGISTER} element={<RegisterPage />} />
               <Route path={ROUTES.USER.USER_PAGE} element={<UserPage />} />
-              <Route path={ROUTES.MOUNTAIN.DETAIL} element={<MountainDetailPage />} />
+              <Route
+                path={ROUTES.MOUNTAIN.DETAIL}
+                element={<MountainDetailPage />}
+              />
             </Routes>
             <Footer />
           </Router>

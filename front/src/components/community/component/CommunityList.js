@@ -5,7 +5,11 @@ import styled from "styled-components";
 import { RecruitBlueBtn } from "../../common/button/IconBtn";
 import BottomNavigation from "../../common/navigation/BottomNavigation";
 
-import { RecruitBlueBtnAlign } from "../styledComponents/CommunityListStyled";
+import {
+  CommunityListCol,
+  CommunityListRow,
+  RecruitBlueBtnAlign,
+} from "../styledComponents/CommunityListStyled";
 
 import CommunityNav from "./CommunityNav";
 const PaginationWrapper = styled(Pagination)`
@@ -23,25 +27,34 @@ const PaginationWrapper = styled(Pagination)`
     text-decoration: underline 2px;
   }
 `;
-function CommunityList({ posts, setPosts }) {
-  const [pageNum, setPageNum] = useState(1);
-
+function CommunityList({
+  posts,
+  setPosts,
+  currentUserData,
+  setPageNum,
+  pageNum,
+}) {
   return (
     <div>
-      <RecruitBlueBtnAlign>
-        <Link to="communityCreate">
-          <RecruitBlueBtn />
-        </Link>
-      </RecruitBlueBtnAlign>
-      <CommunityNav posts={posts} setPosts={setPosts} />
-      <PaginationWrapper
-        defaultCurrent={1}
-        total={18}
-        defaultPageSize={5}
-        size="small"
-        showSizeChanger={false}
-        onChange={(e) => setPageNum(e)}
-      />
+      <CommunityListCol>
+        {currentUserData.id && (
+          <RecruitBlueBtnAlign>
+            <Link to="communityCreate">
+              <RecruitBlueBtn />
+            </Link>
+          </RecruitBlueBtnAlign>
+        )}
+        <CommunityNav posts={posts} setPosts={setPosts} pageNum={pageNum} />
+        <PaginationWrapper
+          defaultCurrent={1}
+          total={18}
+          defaultPageSize={5}
+          size="small"
+          showSizeChanger={false}
+          onChange={(e) => setPageNum(e)}
+        />
+        {console.log(pageNum)}
+      </CommunityListCol>
     </div>
   );
 }
