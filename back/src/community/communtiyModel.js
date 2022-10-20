@@ -1,5 +1,5 @@
 import { PostModel } from "./postSchema.js";
-import { CommentModel } from "./commentSchema.js";
+import { CommentModel } from "../community_comment/commentSchema.js";
 
 class Post {
     static async create({ newPost }) {
@@ -33,7 +33,8 @@ class Post {
     }
 
     static async findByPostId({ post_id }) {
-        const post = await PostModel.find({ post_id });
+        const [post] = await PostModel.find({ post_id });
+
         return post;
     }
 
