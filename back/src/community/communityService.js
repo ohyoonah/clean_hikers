@@ -57,7 +57,7 @@ class postService {
                 return -1;
             }
         });
-        console.log(postsList);
+        // console.log(postsList);
         const totalPage = Math.ceil(total / perPage);
         const allPostsList = postsList.slice(
             perPage * (page - 1),
@@ -81,7 +81,7 @@ class postService {
                 const perPage = Number(send.perPage || 5);
 
                 const total = posts.length;
-                console.log("posts ===", posts);
+                // console.log("posts ===", posts);
                 const postsList = posts.sort((a, b) => {
                     if (a.createdAt > b.createdAt) {
                         return -1;
@@ -93,7 +93,7 @@ class postService {
                     perPage * page
                 );
 
-                return allPostsList;
+                return { allPostsList, totalPage };
             } else {
                 const location = send.location;
 
@@ -120,7 +120,7 @@ class postService {
                     perPage * page
                 );
 
-                return allPostsList;
+                return { allPostsList, totalPage };
             }
         } else {
             if (send.location == undefined) {
@@ -143,7 +143,7 @@ class postService {
                     perPage * page
                 );
 
-                return allPostsList;
+                return { allPostsList, totalPage };
             } else {
                 const location = send.location;
 
@@ -175,7 +175,7 @@ class postService {
                     perPage * page
                 );
 
-                return allPostsList;
+                return { allPostsList, totalPage };
             }
         }
     }
@@ -511,6 +511,35 @@ class personService {
         const people = post.person;
         return people;
     }
+
+    static async beingPerson({ post_id, email }) {
+        const post = await postService.getAPosts({ post_id });
+
+        const person = post.person;
+        const being = person.map((item) => (item.email = email));
+        if (being.length) {
+            return "1";
+        } else {
+            return "0";
+        }
+    }
+
+    // static async beingPerson({ post_id, email, user_id }) {
+    //     const post = await postService.getAPosts({ post_id });
+
+    //     if (post.user_id == user_id) {
+    //         const errorMessage = "참여하실 수 없습니다.";
+    //         return { errorMessage };
+    //     } else {
+    //         const person = post.person;
+    //         const being = person.map((item) => (item.email = email));
+    //         if (being.length) {
+    //             return "1";
+    //         } else {
+    //             return "0";
+    //         }
+    //     }
+    // }
 }
 
 class locationService {
