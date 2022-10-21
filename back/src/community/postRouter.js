@@ -56,6 +56,7 @@ postRouter.get("/postlist", async function (req, res, next) {
     try {
         const send = req.query;
         const postList = await postService.getAllPosts(send);
+        console.log(postList);
         res.status(200).send(postList);
     } catch (error) {
         next(error);
