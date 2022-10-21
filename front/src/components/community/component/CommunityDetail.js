@@ -139,9 +139,9 @@ function CommunityDetail({}) {
               >
                 삭제
               </Button>
-              {/* <Link to={`/community/communityDetail/communityEdit/${no}`}>
+              <Link to={`/community/communityDetail/communityEdit/${no}`}>
                 <Button>수정</Button>
-              </Link> */}
+              </Link>
             </Col>
           )}
 
