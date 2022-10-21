@@ -516,7 +516,9 @@ class personService {
         const post = await postService.getAPosts({ post_id });
 
         const person = post.person;
-        const being = person.map((item) => (item.email = email));
+
+        const being = person.filter((item) => item.email == email);
+
         if (being.length) {
             return "1";
         } else {
