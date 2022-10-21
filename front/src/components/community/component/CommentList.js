@@ -6,6 +6,7 @@ import CommentDetail from "./CommentDetail";
 import CommentEdit from "./CommentEdit";
 import * as api from "../../../api/api";
 import { useNavigate } from "react-router-dom";
+import { UserOutlined } from "@ant-design/icons";
 
 function CommentList({ currentUserData, datas }) {
   const [comments, setComments] = useState([]);
@@ -82,9 +83,12 @@ function CommentList({ currentUserData, datas }) {
           currentUserId={currentUserId}
         />
       )}
+      {console.log("test", currentUserData)}
       {currentUserData.id && (
         <CommunityCommentList
-          avatar={<Avatar src={comments.avatar} alt="user Image" />}
+          avatar={
+            <Avatar src={currentUserData.defaultImage} alt="user Image" />
+          }
           content={
             <CommentEdit
               onChange={handleChange}

@@ -2,7 +2,7 @@ import { Avatar, Button, List } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import * as api from "../../../api/api";
-
+import { UserOutlined } from "@ant-design/icons";
 function CommentDetail({ comments, handleDelete, currentUserId }) {
   return (
     <List
@@ -11,7 +11,7 @@ function CommentDetail({ comments, handleDelete, currentUserId }) {
       itemLayout="horizontal"
       renderItem={(item) => (
         <>
-          {console.log(currentUserId)}
+          {console.log("item test", item)}
           <List.Item
             extra={
               item.user_id === currentUserId && (
@@ -20,7 +20,7 @@ function CommentDetail({ comments, handleDelete, currentUserId }) {
             }
           >
             <List.Item.Meta
-              avatar={<Avatar src={item.avatar} />}
+              avatar={<Avatar icon={<UserOutlined />} />}
               title={item.nickname}
               description={item.description}
             />
