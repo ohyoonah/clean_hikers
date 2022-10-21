@@ -17,6 +17,7 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 import CommentList from "./CommentList";
 import * as api from "../../../api/api";
 import moment from "moment";
+import { ROUTES } from "../../../enum/routes";
 
 function CommunityDetail({}) {
   const mapRef = useRef();
@@ -37,6 +38,24 @@ function CommunityDetail({}) {
   const [latitude, setLatitude] = useState(35.86125);
   const [longitude, setLongitude] = useState(127.746131);
   const [personnel, setPersonnel] = useState(0);
+
+  const cardDecription = () => {
+    let visitDate = moment(datas.visitDate);
+    visitDate = visitDate.format("YYYY년 MM월 DD일");
+
+    return datas.station == "클린후기" ? (
+      <p>
+        {visitDate} <br />
+        {datas.personnel}명과 함께했어요!
+      </p>
+    ) : (
+      <p>
+        {visitDate} <br />
+        모집인원 : {datas.personnel} <br />
+        신청인원 : {personnel}
+      </p>
+    );
+  };
 
   useEffect(() => {
     const map = mapRef.current;
@@ -196,27 +215,32 @@ function CommunityDetail({}) {
                         {location.name} | {location.address}
                       </p>
                     }
-                    description={
-                      <p>
-                        {datas.visitDate} <br />
-                        모집인원 : {datas.personnel} <br />
-                        신청인원 : {personnel}
-                      </p>
-                    }
+                    description={cardDecription()}
                   />
                 </Card>
               </Row>
               <ButtonRow justify="end">
-                {currentUserData && textState === "참여신청" ? (
+                {currentUserData == "" ? (
                   <NonIconBlueBtn
-                    onClick={() => (handleApply(), setTextState("참여취소"))}
-                    text={textState}
-                  ></NonIconBlueBtn>
+                    text="참여하려면 로그인하세요."
+                    onClick={() => navigate(ROUTES.USER.LOGIN)}
+                  />
                 ) : (
-                  <NonIconBlueBtn
-                    onClick={() => (handleApply(), setTextState("참여신청"))}
-                    text={textState}
-                  ></NonIconBlueBtn>
+                  currentUserData.id != datas.user_id &&
+                  datas.station != "클린후기" &&
+                  (textState === "참여신청" ? (
+                    <NonIconBlueBtn
+                      onClick={() => (handleApply(), setTextState("참여취소"))}
+                      text={textState}
+                    ></NonIconBlueBtn>
+                  ) : personnel == datas.personnel ? (
+                    <Button disabled>모집 완료</Button>
+                  ) : (
+                    <NonIconBlueBtn
+                      onClick={() => (handleApply(), setTextState("참여신청"))}
+                      text={textState}
+                    ></NonIconBlueBtn>
+                  ))
                 )}
               </ButtonRow>
             </Col>
