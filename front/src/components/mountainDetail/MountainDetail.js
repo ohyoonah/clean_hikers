@@ -1,6 +1,6 @@
 // 모달창으로 띄워진 산 상세페이지
 import styled from "styled-components";
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { Button, Row } from "antd";
@@ -9,6 +9,7 @@ import { NonIconGreenBtn } from "../common/button/NonIconBtn";
 import { Level } from "../common/level/Level";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../enum/routes";
+import { UserStateContext, DispatchContext } from "../../App";
 
 const Modal = styled.div`
   /* Positioning */
@@ -72,6 +73,10 @@ const H1 = styled.h1`
 `;
 
 function MountainDetail({ setIsModal, detail }) {
+  const userState = useContext(UserStateContext);
+  const dispatch = useContext(DispatchContext);
+  const isLogin = !!userState.user;
+
   useEffect(() => {
     document.body.style.cssText = `
       position: fixed;
@@ -114,9 +119,14 @@ function MountainDetail({ setIsModal, detail }) {
         </Map>
         <Row justify="center" style={{ paddingTop: "30px" }}>
           <Link to={ROUTES.COMMUNITY.COMMUNITY_CREATE}>
-            <NonIconGreenBtn text={"함께하기"} />
+            <NonIconGreenBtn text={"함께하기"} disabled={!isLogin} />
           </Link>
         </Row>
+        {!isLogin ? (
+          <div style={{ textAlign: "center" }}>로그인이 필요합니다</div>
+        ) : (
+          <></>
+        )}
       </Modal>
     </ModalBackground>
   );
