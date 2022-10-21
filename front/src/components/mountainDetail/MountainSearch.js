@@ -1,8 +1,6 @@
 /*검색창*/
 import styled from "styled-components";
 import { Select, Input, Form } from "antd";
-import { NonIconGreenBtn } from "../common/button/NonIconBtn";
-import * as api from "../../api/api";
 
 const { Option } = Select;
 
@@ -10,7 +8,7 @@ const Main = styled(Form)`
   /* Display & Box Model */
   display: grid;
   justify-content: center;
-  grid-template-columns: 1fr 1fr 2fr 1fr;
+  grid-template-columns: 1fr 1fr 3fr;
   grid-column-gap: 15px;
 
   padding: 10px;
@@ -51,7 +49,7 @@ const SelectWrapper = styled(Select)`
   background-color: white;
 `;
 
-const regions = [
+const locations = [
   { value: "", location: "전체" },
   { value: "서울특별시", location: "서울" },
   { value: "강원도", location: "강원" },
@@ -65,35 +63,18 @@ const regions = [
   { value: "제주시", location: "제주" },
 ];
 
-function MountainSearch({
-  location,
-  setLocation,
-  difficulty,
-  setDifficulty,
-  search,
-  setSearch,
-  setMountainList,
-  pageNum,
-}) {
+const levels = [
+  { value: "", level: "전체" },
+  { value: "상", level: "상" },
+  { value: "중", level: "중" },
+  { value: "하", level: "하" },
+];
+
+function MountainSearch({ setLocation, setDifficulty, search, setSearch }) {
   const onChange = (e) => {
     // 검색 창에 입력된 글자를 받아오는 함수
     setSearch(e.target.value);
   };
-
-  async function getMountainData() {
-    try {
-      await api
-        .get(
-          `mountain/detail`,
-          `?location=${location}&level=${difficulty}&currentPage=${pageNum}&mountain=${search}`
-        )
-        .then((res) =>
-          res.data.maxPage == 0 ? setMountainList([]) : setMountainList(res.data.mountain)
-        );
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
   return (
     <Main>
@@ -101,13 +82,12 @@ function MountainSearch({
       <SelectWrapper
         className="locationSelect"
         bordered={false}
-        // defaultValue="전체"
         placeholder="지역"
         onChange={(e) => setLocation(e)}
       >
-        {regions.map((area, idx) => (
-          <Option value={area.value} key={idx}>
-            {area.location}
+        {locations.map((value, idx) => (
+          <Option value={value.value} key={idx}>
+            {value.location}
           </Option>
         ))}
       </SelectWrapper>
@@ -116,30 +96,22 @@ function MountainSearch({
       <SelectWrapper
         className="difficultySelect"
         bordered={false}
-        // defaultValue="전체"
         placeholder="난이도"
         onChange={(e) => setDifficulty(e)}
       >
-        <Option value="">전체</Option>
-        <Option value="상">상</Option>
-        <Option value="중">중</Option>
-        <Option value="하">하</Option>
-        <Option value="미분류">미분류</Option>
+        {levels.map((value, idx) => (
+          <Option value={value.value} key={idx}>
+            {value.level}
+          </Option>
+        ))}
       </SelectWrapper>
 
+      {/* 검색창 */}
       <InputWrapper
         type="text"
         onChange={onChange}
         placeholder="산 이름을 입력해주세요..."
         value={search}
-      />
-      <NonIconGreenBtn
-        htmlType="submit"
-        text={"검색"}
-        onClick={(e) => {
-          e.preventDefault();
-          getMountainData();
-        }}
       />
     </Main>
   );

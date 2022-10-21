@@ -1,5 +1,4 @@
 // 모달창으로 띄워진 산 상세페이지
-// /* global kakao */
 import styled from "styled-components";
 import React from "react";
 import { useEffect } from "react";
@@ -40,7 +39,6 @@ const ModalBackground = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
   width: 100%;
   height: 100%;
-  /* backdrop-filter: blur(1px); */
 `;
 
 const Detail = styled.div`
@@ -67,12 +65,13 @@ const ClosedBtn = styled(Button)`
 const H1 = styled.h1`
   /* Display & Box Model */
   margin-bottom: 10px;
+
   /* Text */
   font-weight: 700;
   text-align: center;
 `;
 
-function MountainDetailPage({ setIsModal, detail }) {
+function MountainDetail({ setIsModal, detail }) {
   useEffect(() => {
     document.body.style.cssText = `
       position: fixed;
@@ -111,9 +110,7 @@ function MountainDetailPage({ setIsModal, detail }) {
           style={{ width: "100%", height: "250px", margin: "0px auto" }}
           level={8}
         >
-          <MapMarker
-            position={{ lat: detail.latitude, lng: detail.longitude }}
-          />
+          <MapMarker position={{ lat: detail.latitude, lng: detail.longitude }} />
         </Map>
         <Row justify="center" style={{ paddingTop: "30px" }}>
           <Link to={ROUTES.COMMUNITY.COMMUNITY_CREATE}>
@@ -124,4 +121,4 @@ function MountainDetailPage({ setIsModal, detail }) {
     </ModalBackground>
   );
 }
-export default MountainDetailPage;
+export default MountainDetail;

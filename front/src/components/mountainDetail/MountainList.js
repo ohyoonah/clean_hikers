@@ -1,9 +1,11 @@
 /* 국립공원 리스트 */
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Level } from "../common/level/Level";
 import { Pagination } from "antd";
 import { theme } from "../common/styles/palette";
 import MountainSearch from "./MountainSearch.js";
+import * as api from "../../api/api";
 
 const Lists = styled.div`
   height: 460px;
@@ -78,8 +80,7 @@ const PaginationWrapper = styled(Pagination)`
 function MountainList({
   setIsModal,
   setDetail,
-  mountainList,
-  maxPage,
+  pageNum,
   setPageNum,
   location,
   setLocation,
@@ -87,20 +88,37 @@ function MountainList({
   setDifficulty,
   search,
   setSearch,
-  setMountainList,
-  pageNum,
 }) {
+  const [mountainList, setMountainList] = useState([]);
+  const [maxPage, setMaxPage] = useState(0);
+
+  useEffect(() => {
+    async function getMountainData() {
+      try {
+        await api
+          .get(
+            `mountain/detail`,
+            `?location=${location}&level=${difficulty}&currentPage=${pageNum}&mountain=${search}`
+          )
+          .then((res) =>
+            res.data.maxPage === 0
+              ? setMountainList([])
+              : (setMountainList(res.data.mountain), setMaxPage(res.data.maxPage))
+          );
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    getMountainData();
+  }, [pageNum, location, difficulty, search]);
+
   return (
     <div>
       <MountainSearch
-        location={location}
         setLocation={setLocation}
-        difficulty={difficulty}
         setDifficulty={setDifficulty}
         search={search}
         setSearch={setSearch}
-        setMountainList={setMountainList}
-        pageNum={pageNum}
       />
       <Lists>
         <Desc>
