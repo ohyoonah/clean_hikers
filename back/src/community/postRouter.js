@@ -56,7 +56,7 @@ postRouter.get("/postlist", async function (req, res, next) {
     try {
         const send = req.query;
         const postList = await postService.getAllPosts(send);
-        console.log(postList);
+
         res.status(200).send(postList);
     } catch (error) {
         next(error);
@@ -69,8 +69,6 @@ postRouter.get("/postsDetail/:postId", async function (req, res, next) {
         const post_id = req.params.postId;
 
         const posts = await postService.getAPosts({ post_id });
-        console.log(posts);
-        console.log(posts.person);
 
         res.status(200).send(posts);
     } catch (error) {
