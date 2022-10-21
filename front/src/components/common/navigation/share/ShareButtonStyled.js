@@ -6,4 +6,5 @@ export const ShareButton = styled.img`
   object-fit: cover;
   border-radius: 35px;
   margin-right: 10px;
+  cursor: pointer;
 `;
