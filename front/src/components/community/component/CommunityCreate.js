@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Input, Select } from "antd";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FormOutlined } from "@ant-design/icons";
 import {
   SecondRow,
@@ -10,21 +10,45 @@ import {
   RegisterBtnStyled,
   CommunityInput,
   FirstRow,
+  H1,
+  FormItem,
 } from "../styledComponents/CommunityCreateStyled";
 import * as api from "../../../api/api";
 import { CommunityNavCol } from "../styledComponents/CommunityNavStyled";
+import { ROUTES } from "../../../enum/routes";
 
 const { Option } = Select;
 
 function CommunityCreate() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [visitDate, setVisitDate] = useState("");
-  const [state, setState] = useState(""); // 클린후기, 모집중 같은 머리말
-  const [id, setId] = useState("");
-  const [nickname, setNickName] = useState("");
+  const [form] = Form.useForm();
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const [id, setId] = useState("");
+  const [nickname, setNickName] = useState("");
+  const fields = {
+    title: null,
+    visitDate: null,
+    location: null,
+    state: "모집중",
+    personnel: null,
+    description: null,
+  };
+
+  useEffect(() => {
+    if (location.state) {
+      const { mountain, count, date } = location.state;
+      const dateFormat = "YYYY/MM/DD";
+
+      form.setFieldsValue({
+        ...fields,
+        location: mountain,
+        personnel: count,
+        visitDate: date ? moment(date, dateFormat) : null,
+        state: "모집중",
+      });
+    }
+  }, []);
 
   useEffect(() => {
     async function getUserData() {
@@ -40,17 +64,19 @@ function CommunityCreate() {
     getUserData();
   }, []);
 
-  const onFinish = async (e) => {
+  const onFinish = async (value) => {
+    console.log(value);
+
     await api
       .post("community/post", {
         user_id: id,
-        title: title,
-        description: description,
-        date: e.visitDate,
+        title: value.title,
+        description: value.description,
+        date: value.visitDate,
         nickname: nickname,
-        station: state,
-        location: e.location,
-        personnel: e.personnel,
+        station: value.state,
+        location: value.location,
+        personnel: value.personnel,
       })
       .then(function (response) {
         console.log(response);
@@ -58,9 +84,7 @@ function CommunityCreate() {
       .catch(function (error) {
         console.log(error);
       });
-    const createAt = moment().format("YYYY.MM.DD  HH:mm:ss");
-    console.log("Success", { ...e, createAt });
-    return navigate(-1);
+    return navigate(ROUTES.COMMUNITY.ROOT);
   };
 
   async function fetchData() {
@@ -76,9 +100,9 @@ function CommunityCreate() {
     <>
       <CenterRow justify="center">
         <CommunityNavCol>
-          <Form onFinish={onFinish}>
+          <Form form={form} onFinish={onFinish}>
             <FirstRow>
-              <h1>글 작성</h1>
+              <H1>글 작성</H1>
               <RegisterBtnStyled>
                 <Button
                   type="primary"
@@ -91,30 +115,25 @@ function CommunityCreate() {
                 </Button>
               </RegisterBtnStyled>
             </FirstRow>
-            <Form.Item
+            <FormItem
               name="title"
               rules={[{ required: true, message: "제목을 입력하세요" }]}
-              onChange={(e) => setTitle(e.target.value)}
             >
-              <CommunityInput
-                placeholder="제목을 입력하세요"
-                className="title"
-              />
-            </Form.Item>
-            <SecondRow>
+              <CommunityInput placeholder="제목을 입력하세요" />
+            </FormItem>
+            <SecondRow gutter={0}>
               <Col span={6}>
-                <Form.Item
+                <FormItem
                   name="visitDate"
                   rules={[{ required: true, message: "날짜를 입력하세요" }]}
-                  onChange={(e) => setVisitDate(e.target.value)}
                 >
                   <CommunityDatePicker />
-                </Form.Item>
+                </FormItem>
               </Col>
               <Col span={6}>
-                <Form.Item
+                <FormItem
                   name="location"
-                  rules={[{ required: true, message: "제목을 입력하세요" }]}
+                  rules={[{ required: true, message: "산을 선택해주세요" }]}
                 >
                   <Select>
                     <Select.Option value="가야산">가야산</Select.Option>
@@ -130,22 +149,21 @@ function CommunityCreate() {
                     <Select.Option value="월악산">월악산</Select.Option>
                     <Select.Option value="월출산">월출산</Select.Option>
                   </Select>
-                </Form.Item>
+                </FormItem>
               </Col>
               <Col span={6}>
-                <Form.Item
+                <FormItem
                   name="state"
                   rules={[{ required: true, message: "제목을 입력하세요" }]}
                 >
-                  <Select onChange={(e) => setState(e)}>
+                  <Select>
                     <Option value="클린후기">클린후기</Option>
                     <Option value="모집중">모집중</Option>
-                    {/* <Option value="모집완료">모집완료</Option> */}
                   </Select>
-                </Form.Item>
+                </FormItem>
               </Col>
               <Col span={6}>
-                <Form.Item
+                <FormItem
                   name="personnel"
                   rules={[{ required: true, message: "제목을 입력하세요" }]}
                 >
@@ -160,11 +178,11 @@ function CommunityCreate() {
                     <Select.Option value="9">9명</Select.Option>
                     <Select.Option value="10">10명</Select.Option>
                   </Select>
-                </Form.Item>
+                </FormItem>
               </Col>
             </SecondRow>
 
-            <Form.Item
+            <FormItem
               name="description"
               rules={[{ required: true, message: "내용을 입력하세요" }]}
             >
@@ -173,9 +191,8 @@ function CommunityCreate() {
                 showCount
                 maxLength={1000}
                 size="large"
-                onChange={(e) => setDescription(e.target.value)}
               />
-            </Form.Item>
+            </FormItem>
           </Form>
         </CommunityNavCol>
       </CenterRow>
