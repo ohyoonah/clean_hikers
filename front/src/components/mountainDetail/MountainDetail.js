@@ -8,6 +8,8 @@ import { Button, Row } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { NonIconGreenBtn } from "../common/button/NonIconBtn";
 import { Level } from "../common/level/Level";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../enum/routes";
 
 const Modal = styled.div`
   /* Positioning */
@@ -109,10 +111,14 @@ function MountainDetailPage({ setIsModal, detail }) {
           style={{ width: "100%", height: "250px", margin: "0px auto" }}
           level={8}
         >
-          <MapMarker position={{ lat: detail.latitude, lng: detail.longitude }} />
+          <MapMarker
+            position={{ lat: detail.latitude, lng: detail.longitude }}
+          />
         </Map>
         <Row justify="center" style={{ paddingTop: "30px" }}>
-          <NonIconGreenBtn text={"함께하기"} />
+          <Link to={ROUTES.COMMUNITY.COMMUNITY_CREATE}>
+            <NonIconGreenBtn text={"함께하기"} />
+          </Link>
         </Row>
       </Modal>
     </ModalBackground>
