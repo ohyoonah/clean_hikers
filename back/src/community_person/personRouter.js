@@ -44,7 +44,7 @@ personRouter.get("/posts/:postId/:email", async function (req, res, next) {
         const post_id = req.params.postId;
         const email = req.params.email;
         const being = await personService.beingPerson({ post_id, email });
-        console.log(being);
+        // console.log(being);
         ErrorMessage(being);
         res.status(200).send(being);
     } catch (error) {
