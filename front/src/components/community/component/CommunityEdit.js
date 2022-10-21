@@ -62,7 +62,7 @@ function CommunityEdit() {
       .put(`community/posts/${datas.post_id}`, {
         user_id: datas.user_id,
         title: value.title,
-        location: value.location,
+        location: value.location.name,
         description: value.description,
         date: value.visitDate,
         nickname: datas.nickname,
@@ -109,6 +109,7 @@ function CommunityEdit() {
             <SecondRow>
               <Col span={6}>
                 <FormItem
+                  disabled={true}
                   name="visitDate"
                   rules={[{ required: true, message: "날짜를 입력하세요" }]}
                 >
