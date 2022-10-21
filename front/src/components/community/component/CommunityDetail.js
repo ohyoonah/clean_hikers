@@ -1,5 +1,5 @@
 import "moment/locale/ko";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ButtonRow,
@@ -7,6 +7,7 @@ import {
   CreateRow,
   DetailCol,
 } from "../styledComponents/CommunityDetailStyled";
+import { UserStateContext, DispatchContext } from "../../../App";
 
 import { EnvironmentOutlined } from "@ant-design/icons";
 import { UserOutlined } from "@ant-design/icons";
@@ -26,6 +27,10 @@ function CommunityDetail({}) {
   const [location, setLocation] = useState({});
   const [currentUserData, setCurrentUserData] = useState("");
   const [textState, setTextState] = useState("참여신청");
+
+  const userState = useContext(UserStateContext);
+  const dispatch = useContext(DispatchContext);
+  const isLogin = !!userState.user;
 
   const { no } = useParams();
 
@@ -133,10 +138,7 @@ function CommunityDetail({}) {
         await api
           .get(`community/posts/${no}/people`)
           .then(
-            (res) => (
-              setPersonnel(res.data.length),
-              console.log("확인", res.data.length)
-            )
+            (res) => (setPersonnel(res.data.length), console.log("확인", res.data.length))
           );
       } catch (e) {
         console.error("error", e);
@@ -176,9 +178,7 @@ function CommunityDetail({}) {
                 <p>
                   {<EnvironmentOutlined />} {location.name} | {location.address}
                 </p>
-                <p className="community-detail-discription">
-                  {datas.description}
-                </p>
+                <p className="community-detail-discription">{datas.description}</p>
               </div>
             </Col>
             <Col span={14} push={2}>
@@ -232,6 +232,7 @@ function CommunityDetail({}) {
                     <NonIconBlueBtn
                       onClick={() => (handleApply(), setTextState("참여취소"))}
                       text={textState}
+                      disabled={!isLogin}
                     ></NonIconBlueBtn>
                   ) : personnel == datas.personnel ? (
                     <Button disabled>모집 완료</Button>
