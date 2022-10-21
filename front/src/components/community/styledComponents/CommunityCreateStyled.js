@@ -1,6 +1,15 @@
-import { Button, DatePicker, Input, Row } from "antd";
+import { Form, DatePicker, Input, Row } from "antd";
 import styled from "styled-components";
 import { theme } from "../../common/styles/palette";
+
+const H1 = styled.h1`
+  font-weight: 600;
+`;
+
+const FormItem = styled(Form.Item)`
+  margin: 5px 0;
+  border-radius: 5px;
+`;
 
 const AllContentAlign = styled.div`
   width: 80%;
@@ -31,6 +40,7 @@ const CommunityInput = styled(Input)`
 const FirstRow = styled(Row)`
   margin-top: 2%;
   display: flex;
+  align-items: end;
   justify-content: space-between;
 `;
 const AlignBtn = styled.div`
@@ -53,4 +63,6 @@ export {
   AlignBtn,
   CommunityDatePicker,
   RegisterBtnStyled,
+  H1,
+  FormItem,
 };
