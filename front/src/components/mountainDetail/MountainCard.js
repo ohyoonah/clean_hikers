@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as api from "../../api/api";
-import { theme } from "../common/styles/palette";
 
 const Main = styled.div`
   /* Display & Box Model */

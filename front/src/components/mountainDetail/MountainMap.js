@@ -43,15 +43,17 @@ function MountainMap({ setIsModal, setDetail }) {
       <div>
         <MapMarker
           position={{ lat: value.latitude, lng: value.longitude }}
-          onClick={(marker) => (
-            map.panTo(marker.getPosition()), setIsModal(true), setDetail(value)
-          )}
+          onClick={(marker) => {
+            map.panTo(marker.getPosition());
+            setIsModal(true);
+            setDetail(value);
+          }}
           onMouseOver={() => setIsMouseOver(index)}
           onMouseOut={() => {
-            if (isMouseOver == index) setIsMouseOver(null);
+            if (isMouseOver === index) setIsMouseOver(null);
           }}
         />
-        {isMouseOver == index && (
+        {isMouseOver === index && (
           <CustomOverlayMap
             position={{
               lat: value.latitude,

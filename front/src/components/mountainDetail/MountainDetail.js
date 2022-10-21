@@ -1,7 +1,6 @@
 // 모달창으로 띄워진 산 상세페이지
-// /* global kakao */
 import styled from "styled-components";
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { Button, Row } from "antd";
@@ -10,6 +9,7 @@ import { NonIconGreenBtn } from "../common/button/NonIconBtn";
 import { Level } from "../common/level/Level";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../enum/routes";
+import { UserStateContext, DispatchContext } from "../../App";
 
 const Modal = styled.div`
   /* Positioning */
@@ -40,7 +40,6 @@ const ModalBackground = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
   width: 100%;
   height: 100%;
-  /* backdrop-filter: blur(1px); */
 `;
 
 const Detail = styled.div`
@@ -67,12 +66,17 @@ const ClosedBtn = styled(Button)`
 const H1 = styled.h1`
   /* Display & Box Model */
   margin-bottom: 10px;
+
   /* Text */
   font-weight: 700;
   text-align: center;
 `;
 
-function MountainDetailPage({ setIsModal, detail }) {
+function MountainDetail({ setIsModal, detail }) {
+  const userState = useContext(UserStateContext);
+  const dispatch = useContext(DispatchContext);
+  const isLogin = !!userState.user;
+
   useEffect(() => {
     document.body.style.cssText = `
       position: fixed;
@@ -111,17 +115,20 @@ function MountainDetailPage({ setIsModal, detail }) {
           style={{ width: "100%", height: "250px", margin: "0px auto" }}
           level={8}
         >
-          <MapMarker
-            position={{ lat: detail.latitude, lng: detail.longitude }}
-          />
+          <MapMarker position={{ lat: detail.latitude, lng: detail.longitude }} />
         </Map>
         <Row justify="center" style={{ paddingTop: "30px" }}>
           <Link to={ROUTES.COMMUNITY.COMMUNITY_CREATE}>
-            <NonIconGreenBtn text={"함께하기"} />
+            <NonIconGreenBtn text={"함께하기"} disabled={!isLogin} />
           </Link>
         </Row>
+        {!isLogin ? (
+          <div style={{ textAlign: "center" }}>로그인이 필요합니다</div>
+        ) : (
+          <></>
+        )}
       </Modal>
     </ModalBackground>
   );
 }
-export default MountainDetailPage;
+export default MountainDetail;
