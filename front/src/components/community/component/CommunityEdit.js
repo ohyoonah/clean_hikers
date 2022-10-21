@@ -109,11 +109,10 @@ function CommunityEdit() {
             <SecondRow>
               <Col span={6}>
                 <FormItem
-                  disabled={true}
                   name="visitDate"
                   rules={[{ required: true, message: "날짜를 입력하세요" }]}
                 >
-                  <CommunityDatePicker />
+                  <CommunityDatePicker disabled={true} />
                 </FormItem>
               </Col>
               <Col span={6}>

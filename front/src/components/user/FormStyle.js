@@ -5,7 +5,7 @@ import { Form } from "antd";
 export const PageBlock = styled.div`
   position: relative;
   width: 100%;
-  height: 92vh;
+  height: 97vh;
   background: url("/backgroundImage.png") no-repeat center;
   background-size: cover;
 `;
@@ -62,6 +62,7 @@ export const TitleBlock = styled.div`
   flex-direction: column;
   width: 60%;
   margin: 2rem auto;
+  margin-bottom: 1rem;
 
   h2 {
     font-size: 2rem;
