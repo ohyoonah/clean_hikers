@@ -16,37 +16,18 @@ function Users() {
   const userState = useContext(UserStateContext);
 
   const [user, setUser] = useState([]);
+  const [activeTabKey, setActiveTabKey] = useState("1");
   const [isEdit, setIsEdit] = useState(false);
 
   const isLogin = !!userState.user;
 
   useEffect(() => {
-    if (isLogin) {
-      return;
-    } else {
+    if (!isLogin) {
       navigate(ROUTES.USER.LOGIN);
+    } else {
+      return;
     }
   }, [isLogin, navigate]);
-
-  useEffect(() => {
-    async function getUserData() {
-      try {
-        const { data: currentUser, status } = await api.get("user/user-page");
-        if (status === HttpStatusCode.Created) {
-          const { id, nickname, defaultImage } = currentUser;
-          setUser({
-            id,
-            nickname,
-            password: "",
-            image: defaultImage,
-          });
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    getUserData();
-  }, []);
 
   const items = [
     { label: "프로필", key: "1", children: ChangeProfile() },
@@ -54,10 +35,39 @@ function Users() {
       label: "작성글",
       key: "2",
       children: (
-        <UserPostList user={user} setUser={setUser} setIsEdit={setIsEdit} />
+        <UserPostList
+          activeTabKey={activeTabKey}
+          user={user}
+          setUser={setUser}
+          setIsEdit={setIsEdit}
+        />
       ),
     },
   ];
+
+  useEffect(() => {
+    if (activeTabKey === "1") {
+      async function getUserData() {
+        try {
+          const { data: currentUser, status } = await api.get("user/user-page");
+          if (status === HttpStatusCode.Created) {
+            const { id, nickname, defaultImage } = currentUser;
+            setUser({
+              id,
+              nickname,
+              password: "",
+              image: defaultImage,
+            });
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      getUserData();
+    } else {
+      return;
+    }
+  }, [isEdit, activeTabKey]);
 
   function ChangeProfile() {
     return isEdit ? (
@@ -67,7 +77,13 @@ function Users() {
     );
   }
 
-  return <TabBlock items={items} />;
+  return (
+    <TabBlock
+      items={items}
+      activeKey={activeTabKey}
+      onChange={(activeKey) => setActiveTabKey(activeKey)}
+    />
+  );
 }
 
 export default Users;

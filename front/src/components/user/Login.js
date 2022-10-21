@@ -25,13 +25,6 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const JWT_EXPIRY_TIME = 30 * 60 * 1000;
 
-  useEffect(() => {
-    setIsLoading(true);
-    setTimeout(function () {
-      setIsLoading(false);
-    }, 500);
-  }, []);
-
   function onChange(e) {
     const { name, value } = e.currentTarget;
     setFormValue((prev) => ({
@@ -47,6 +40,7 @@ function Login() {
       });
       const jwtToken = data.jwt;
       sessionStorage.setItem("userToken", jwtToken);
+      setIsLoading(true);
 
       const userInfo = await api.get("user/user-page");
 
@@ -56,6 +50,7 @@ function Login() {
       });
 
       navigate(ROUTES.HOME);
+      setIsLoading(false);
 
       setTimeout(function () {
         notificationMessage("top");
