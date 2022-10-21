@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { DispatchContext } from "../../App";
 import { ROUTES } from "../../enum/routes";
@@ -32,6 +32,13 @@ function Login() {
       [name]: value,
     }));
   }
+
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(function () {
+      setIsLoading(false);
+    }, 500);
+  }, []);
 
   async function onFinish() {
     try {
