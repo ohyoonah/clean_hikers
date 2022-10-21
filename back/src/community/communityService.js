@@ -93,7 +93,7 @@ class postService {
                     perPage * page
                 );
 
-                return allPostsList;
+                return { allPostsList, totalPage };
             } else {
                 const location = send.location;
 
@@ -120,7 +120,7 @@ class postService {
                     perPage * page
                 );
 
-                return allPostsList;
+                return { allPostsList, totalPage };
             }
         } else {
             if (send.location == undefined) {
@@ -143,7 +143,7 @@ class postService {
                     perPage * page
                 );
 
-                return allPostsList;
+                return { allPostsList, totalPage };
             } else {
                 const location = send.location;
 
@@ -175,7 +175,7 @@ class postService {
                     perPage * page
                 );
 
-                return allPostsList;
+                return { allPostsList, totalPage };
             }
         }
     }
