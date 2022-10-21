@@ -12,7 +12,7 @@ locationRouter.get("/location", async function (req, res, next) {
         const name = data.map((object) => {
             return object.name;
         });
-        console.log(name);
+
         ErrorMessage(name);
         res.status(200).send(name);
     } catch (error) {
