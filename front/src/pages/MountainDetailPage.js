@@ -1,68 +1,62 @@
 import React from "react";
 import { useState } from "react";
-import MountainSearch from "../components/mountainDetail/MountainSearch.js";
 import MountainList from "../components/mountainDetail/MountainList.js";
 import MountainCard from "../components/mountainDetail/MountainCard.js";
+import MountainMap from "../components/mountainDetail/MountainMap.js";
+import MountainDetail from "../components/mountainDetail/MountainDetail.js";
+import styled from "styled-components";
+
+const Box = styled.div`
+  margin-bottom: 80px;
+  height: 100%;
+`;
+
+const H1 = styled.h1`
+  /* Text */
+  font-weight: 700;
+  text-align: center;
+`;
+
+const Bottom = styled.div`
+  /* Display */
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-column-gap: 30px;
+  width: 1130px;
+  max-width: 80%;
+  margin: 0 auto;
+  margin-top: 30px;
+`;
 
 function MountainDetailPage() {
   const [isModal, setIsModal] = useState(false);
-  const [value, setValue] = useState({});
-  const MOUNTAIN = [
-    {
-      value: "0",
-      name: "지리산",
-      location: "경상남도 하동군",
-      level: "하",
-      lat: 35.336944,
-      lng: 127.7305555,
-      img: "https://upload.wikimedia.org/wikipedia/commons/b/be/%EA%B3%A0%EA%B0%9C%EA%B3%A0%EA%B0%9C%EB%84%88%EB%A8%B8%EB%84%88%EB%A8%B8.jpg",
-    },
-    {
-      value: "1",
-      name: "태백산",
-      location: "강원도 영월군",
-      level: "상",
-      lat: 37.0992392,
-      lng: 128.9160404,
-      img: "https://upload.wikimedia.org/wikipedia/commons/c/c7/Taebaeksan_2016_12_30_winter.jpg",
-    },
-    {
-      value: "2",
-      name: "오대산",
-      location: "강원도 강릉시",
-      level: "상",
-      lat: 37.7941467,
-      lng: 128.5426327,
-      img: "https://www.knps.or.kr/upload/contest/19/20201005070532865.jpg",
-    },
-    {
-      value: "3",
-      name: "한라산",
-      location: "제주도",
-      level: "중",
-      lat: 33.3616666,
-      lng: 126.5291666,
-      img: "https://api.cdn.visitjeju.net/photomng/imgpath/201911/29/48bdb99e-20ba-4fb6-82f2-6ea79ceefb0d.jpg",
-    },
-  ];
+  const [detail, setDetail] = useState({});
+  const [location, setLocation] = useState("");
+  const [difficulty, setDifficulty] = useState("");
+  const [search, setSearch] = useState("");
+  const [pageNum, setPageNum] = useState(1);
+
   return (
-    <div>
-      <MountainCard
-        MOUNTAIN={MOUNTAIN}
-        isModal={isModal}
-        setIsModal={setIsModal}
-        setValue={setValue}
-        value={value}
-      />
-      <MountainSearch />
-      <MountainList
-        MOUNTAIN={MOUNTAIN}
-        isModal={isModal}
-        setIsModal={setIsModal}
-        setValue={setValue}
-        value={value}
-      />
-    </div>
+    <Box>
+      <MountainCard setIsModal={setIsModal} setDetail={setDetail} />
+      <H1>궁금한 산을 검색해보세요</H1>
+      <Bottom>
+        <MountainList
+          setIsModal={setIsModal}
+          setDetail={setDetail}
+          pageNum={pageNum}
+          setPageNum={setPageNum}
+          location={location}
+          setLocation={setLocation}
+          difficulty={difficulty}
+          setDifficulty={setDifficulty}
+          search={search}
+          setSearch={setSearch}
+        />
+        <MountainMap setIsModal={setIsModal} setDetail={setDetail} />
+      </Bottom>
+      {isModal ? <MountainDetail setIsModal={setIsModal} detail={detail} /> : <></>}
+    </Box>
   );
 }
 

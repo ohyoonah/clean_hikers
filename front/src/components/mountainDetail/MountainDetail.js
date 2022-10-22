@@ -1,13 +1,15 @@
 // 모달창으로 띄워진 산 상세페이지
-// /* global kakao */
 import styled from "styled-components";
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import { Button, Row, Tabs } from "antd";
+import { Button, Row } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { NonIconGreenBtn } from "../common/button/NonIconBtn";
-import { LowLevel, MiddelLevel, HighLevel } from "../common/level/Level";
+import { Level } from "../common/level/Level";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../enum/routes";
+import { UserStateContext, DispatchContext } from "../../App";
 
 const Modal = styled.div`
   /* Positioning */
@@ -16,6 +18,7 @@ const Modal = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 50%;
+  z-index: 100;
 
   /* Display & Box Model */
   box-shadow: 2px 3px 8px 0px rgb(150, 150, 150);
@@ -31,15 +34,18 @@ const Modal = styled.div`
 `;
 
 const ModalBackground = styled.div`
-  position: absolute;
-  inset: 0;
+  position: fixed;
+  top: 0%;
+  left: 0%;
   background-color: rgba(0, 0, 0, 0.2);
-  /* backdrop-filter: blur(1px); */
+  width: 100%;
+  height: 100%;
 `;
 
 const Detail = styled.div`
   /* Text */
   text-align: left;
+  margin-bottom: 30px;
 `;
 
 const ClosedBtn = styled(Button)`
@@ -60,12 +66,17 @@ const ClosedBtn = styled(Button)`
 const H1 = styled.h1`
   /* Display & Box Model */
   margin-bottom: 10px;
+
   /* Text */
   font-weight: 700;
   text-align: center;
 `;
 
-function MountainDetailPage({ mountainName, setIsModal, value }) {
+function MountainDetail({ setIsModal, detail }) {
+  const userState = useContext(UserStateContext);
+  const dispatch = useContext(DispatchContext);
+  const isLogin = !!userState.user;
+
   useEffect(() => {
     document.body.style.cssText = `
       position: fixed;
@@ -79,20 +90,8 @@ function MountainDetailPage({ mountainName, setIsModal, value }) {
     };
   }, []);
 
-  function PrintLevel() {
-    let result;
-    if (value.level === "하") {
-      result = <LowLevel />;
-    } else if (value.level === "중") {
-      result = <MiddelLevel />;
-    } else if (value.level === "상") {
-      result = <HighLevel />;
-    }
-    return result;
-  }
-
   return (
-    <ModalBackground>
+    <ModalBackground onClick={() => setIsModal(false)}>
       <Modal onClick={(e) => e.stopPropagation()}>
         <Detail>
           <Row justify="end">
@@ -104,39 +103,32 @@ function MountainDetailPage({ mountainName, setIsModal, value }) {
               <CloseOutlined />
             </ClosedBtn>
           </Row>
-          <H1>{value.name}</H1>
-          <b>위치</b> {value.location}
+          <H1>{detail.name}</H1>
+          <b>위치</b> {detail.address}
           <br />
-          <b>난이도 </b>
-          <PrintLevel />
+          <b>등산 난이도 </b> <Level difficulty={detail.difficulty} />
+          <br />
+          <b>연간 쓰레기 처리량 </b> {Number(detail.trash).toFixed(1)}톤
         </Detail>
-
-        <Tabs defaultActiveKey="1" centered>
-          <Tabs.TabPane tab="위치" key="1">
-            <Map
-              center={{ lat: value.lat, lng: value.lng }}
-              style={{ width: "100%", height: "250px", margin: "0px auto" }}
-              level={8}
-            >
-              <MapMarker position={{ lat: value.lat, lng: value.lng }} />
-            </Map>
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="등산로" key="2">
-            <Map
-              center={{ lat: value.lat, lng: value.lng }}
-              style={{ width: "100%", height: "250px", margin: "0px auto" }}
-              level={7}
-            >
-              <MapMarker position={{ lat: value.lat, lng: value.lng }} />
-            </Map>
-          </Tabs.TabPane>
-        </Tabs>
-
+        <Map
+          center={{ lat: detail.latitude, lng: detail.longitude }}
+          style={{ width: "100%", height: "250px", margin: "0px auto" }}
+          level={8}
+        >
+          <MapMarker position={{ lat: detail.latitude, lng: detail.longitude }} />
+        </Map>
         <Row justify="center" style={{ paddingTop: "30px" }}>
-          <NonIconGreenBtn text={"함께하기"} />
+          <Link to={ROUTES.COMMUNITY.COMMUNITY_CREATE}>
+            <NonIconGreenBtn text={"함께하기"} disabled={!isLogin} />
+          </Link>
         </Row>
+        {!isLogin ? (
+          <div style={{ textAlign: "center" }}>로그인이 필요합니다</div>
+        ) : (
+          <></>
+        )}
       </Modal>
     </ModalBackground>
   );
 }
-export default MountainDetailPage;
+export default MountainDetail;

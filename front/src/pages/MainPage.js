@@ -1,18 +1,35 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
 import MainBanner from "../components/main/MainBanner";
+import DataBanner from "../components/main/DataBanner";
+import PromoBanner from "../components/main/PromoBanner";
+import Loading from "../components/common/loading/Loading";
+
+import * as api from "../api/api";
 
 function MainPage() {
-  const Insight = styled.div`
-    height: 800px;
-    background-color: #f8f8f8;
-  `;
+  const [data, setData] = useState([]);
 
-  return (
-    <>
-      <MainBanner />
-      <Insight className="data-visualization" />
-    </>
+  const [isLoading, setIsLoading] = useState(true);
+
+  async function fetchData() {
+    const res = await api.get("main/data");
+    console.log(res.data);
+    setData(res.data);
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return isLoading ? (
+    <Loading />
+  ) : (
+    <div>
+      <MainBanner mountains={data} />
+      <DataBanner data={data} />
+      <PromoBanner />
+    </div>
   );
 }
 

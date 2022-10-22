@@ -1,28 +1,51 @@
 /* 국립공원 리스트 */
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-import MountainDetail from "./MountainDetail.js";
-import { LowLevel, MiddelLevel, HighLevel } from "../common/level/Level";
+import { Level } from "../common/level/Level";
 import { Pagination } from "antd";
-const PaginationWrapper = styled(Pagination)`
-  /* Display & Box Model */
-  display: block;
-  text-align: center;
+import { theme } from "../common/styles/palette";
+import MountainSearch from "./MountainSearch.js";
+import * as api from "../../api/api";
+
+const Lists = styled.div`
+  height: 460px;
+  /* width: 1130px;
+  max-width: 80%; */
+  border-radius: 10px;
+  margin: 0 auto;
+  margin-top: 20px;
 `;
+
+const Desc = styled.div`
+  /* Display & Box Model */
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
+  height: 40px;
+  margin: 0 auto;
+  border-radius: 10px 10px 0px 0px;
+
+  /* Color */
+  background-color: ${theme.naturalGreen};
+  color: white;
+
+  /* Text */
+  line-height: 40px;
+  text-align: center;
+  font-size: 18px;
+`;
+
 const List = styled.div`
   /* Display & Box Model */
   display: grid;
-  grid-template-columns: 40% 40% 20%;
-  width: 80%;
-  height: 50px;
-  padding: 0px 30px;
-  border: 1px solid rgb(220, 220, 220);
-  border-radius: 10px;
+  grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
+  height: 85px;
+  border-bottom: 1px solid ${theme.naturalGreen};
   margin: 0 auto;
-  margin-bottom: 15px;
+  background-color: white;
 
   /* Text */
-  line-height: 50px;
-  text-align: start;
+  line-height: 80px;
+  text-align: center;
 
   /* Other */
   cursor: pointer;
@@ -30,61 +53,107 @@ const List = styled.div`
   transition: 0.3s; // 호버 시 테두리색 변경을 위한 코드
 
   :hover {
-    transition-property: border; // 호버 시 테두리색 변경을 위한 코드
+    transition-property: background-color; // 호버 시 테두리색 변경을 위한 코드
     transition: 0.3s; // 호버 시 테두리색 변경을 위한 코드
-    border: 1px solid rgb(0, 130, 30);
-    box-shadow: 1px 1px 2px 0px rgba(150, 150, 150, 0.8);
+    background-color: rgba(137, 165, 80, 0.4);
+    /* box-shadow: 1px 1px 2px 0px rgba(150, 150, 150, 0.8); */
   }
 `;
 
-function MountainList({ MOUNTAIN, isModal, setIsModal, value, setValue }) {
-  function PrintLevel({ v }) {
-    if (v.level === "하") {
-      return <LowLevel />;
-    } else if (v.level === "중") {
-      return <MiddelLevel />;
-    } else if (v.level === "상") {
-      return <HighLevel />;
-    }
+const PaginationWrapper = styled(Pagination)`
+  /* Display & Box Model */
+  display: block;
+  height: 65px;
+  text-align: center;
+  line-height: 95px;
+
+  .ant-pagination-item-active a {
+    color: #89a550;
+    border: none;
   }
+  .ant-pagination-item-active {
+    border: none;
+    text-decoration: underline 2px;
+  }
+`;
+
+function MountainList({
+  setIsModal,
+  setDetail,
+  pageNum,
+  setPageNum,
+  location,
+  setLocation,
+  difficulty,
+  setDifficulty,
+  search,
+  setSearch,
+}) {
+  const [mountainList, setMountainList] = useState([]);
+  const [maxPage, setMaxPage] = useState(0);
+
+  useEffect(() => {
+    async function getMountainData() {
+      try {
+        await api
+          .get(
+            `mountain/detail`,
+            `?location=${location}&level=${difficulty}&currentPage=${pageNum}&mountain=${search}`
+          )
+          .then((res) =>
+            res.data.maxPage === 0
+              ? setMountainList([])
+              : (setMountainList(res.data.mountain), setMaxPage(res.data.maxPage))
+          );
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    getMountainData();
+  }, [pageNum, location, difficulty, search]);
+
   return (
     <div>
-      {MOUNTAIN.map((v, index) => {
-        return (
-          <div key={index}>
-            <List
-              onClick={() => {
-                setIsModal(true);
-                setValue(v);
-              }}
-            >
-              <div>
-                <b>{v.name}</b>
-              </div>
-              <div style={{ textAlign: "start" }}>{v.location}</div>
-              <div style={{ textAlign: "end" }}>
-                <b>난이도 </b>
-                <PrintLevel v={v} />
-              </div>
-            </List>
-          </div>
-        );
-      })}
+      <MountainSearch
+        setLocation={setLocation}
+        setDifficulty={setDifficulty}
+        search={search}
+        setSearch={setSearch}
+      />
+      <Lists>
+        <Desc>
+          <b>산이름</b>
+          <b>위치</b>
+          <b>연간 쓰레기 처리량(톤)</b>
+          <b>등산 난이도</b>
+        </Desc>
+        {mountainList.map((detail, idx) => {
+          return (
+            <div key={idx}>
+              <List
+                onClick={() => {
+                  setIsModal(true);
+                  setDetail(detail);
+                }}
+              >
+                <b>{detail.name}</b>
+                <div>{detail.address}</div>
+                <div>{Number(detail.trash).toFixed(1)}</div>
+                <div>
+                  <Level difficulty={detail.difficulty} />
+                </div>
+              </List>
+            </div>
+          );
+        })}
+      </Lists>
       <PaginationWrapper
         defaultCurrent={1}
-        total={36}
+        total={maxPage * 5}
         defaultPageSize={5}
-        showSizeChanger={false}
+        size="small"
+        onChange={(e) => setPageNum(e)}
       />
-      {isModal ? (
-        <MountainDetail
-          isModal={isModal}
-          setIsModal={setIsModal}
-          value={value}
-        />
-      ) : (
-        <></>
-      )}
     </div>
   );
 }

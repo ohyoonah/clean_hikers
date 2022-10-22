@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { Button } from "antd";
 import { theme } from "../styles/palette";
@@ -11,26 +10,28 @@ const NonIconBlueBtnStyled = styled(Button)`
 
   /* Color */
   background-color: ${theme.mainBlue};
+  color: #fff;
+
   :hover {
     background-color: ${theme.mainBlue};
-    color: white;
   }
 
-  color: white;
+  :focus {
+    background-color: ${theme.mainBlue};
+  }
 `;
 
 const NonIconGreenBtnStyled = styled(Button)`
   /* Display & Box Model */
-
   padding: 0px 20px;
   border: ${theme.primary} solid;
   border-radius: 8px;
 
   /* Color */
-  background-color: ${theme.primary};
+  background-color: ${theme.naturalGreen};
+
   :hover {
-    background-color: ${theme.primary};
-    border: ${theme.primary} solid;
+    background-color: ${theme.naturalGreen};
   }
 `;
 
