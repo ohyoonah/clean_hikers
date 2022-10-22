@@ -1,6 +1,5 @@
-import { Post, Comment, User } from "../mongoDB/index.js";
+import { Post, Comment, User, Mountain } from "../mongoDB/index.js";
 import { v4 } from "uuid";
-// import { ObjectID } from "bson";
 
 class postService {
     static async addPost({
@@ -17,6 +16,7 @@ class postService {
         location,
     }) {
         const post_id = v4();
+        const [locationDetail] = await Mountain.findData(location, null, null);
 
         const newPost = {
             post_id,
@@ -30,7 +30,7 @@ class postService {
             station,
             comment,
             count,
-            location,
+            location: locationDetail,
         };
 
         const createdNewPost = await Post.create({ newPost });
@@ -45,15 +45,139 @@ class postService {
         return posts;
     }
 
+    static async getUserPosts({ user_id, pagination }) {
+        const posts = await Post.findByUserId({ user_id });
+        const page = Number(pagination.page || 1);
+        const perPage = Number(pagination.perPage || 5);
+
+        const total = posts.length;
+
+        const postsList = posts.sort((a, b) => {
+            if (a.createdAt > b.createdAt) {
+                return -1;
+            }
+        });
+        // console.log(postsList);
+        const totalPage = Math.ceil(total / perPage);
+        const allPostsList = postsList.slice(
+            perPage * (page - 1),
+            perPage * page
+        );
+
+        return { allPostsList, totalPage };
+    }
+
     static async getAPosts({ post_id }) {
-        const posts = await Post.findOne({ post_id });
+        const posts = await Post.findByPostId({ post_id });
 
         return posts;
     }
 
-    static async getAllPosts() {
-        const posts = await Post.findAll();
-        return posts;
+    static async getAllPosts(send) {
+        if (send.station == undefined) {
+            if (send.location == undefined) {
+                const posts = await Post.findAll();
+                const page = Number(send.page || 1);
+                const perPage = Number(send.perPage || 5);
+
+                const total = posts.length;
+                // console.log("posts ===", posts);
+                const postsList = posts.sort((a, b) => {
+                    if (a.createdAt > b.createdAt) {
+                        return -1;
+                    }
+                });
+                const totalPage = Math.ceil(total / perPage);
+                const allPostsList = postsList.slice(
+                    perPage * (page - 1),
+                    perPage * page
+                );
+
+                return allPostsList;
+            } else {
+                const location = send.location;
+
+                const [locationDetail] = await Mountain.findData(
+                    location,
+                    null,
+                    null
+                );
+
+                const posts = await Post.findByLocation({ locationDetail });
+                const page = Number(send.page || 1);
+                const perPage = Number(send.perPage || 5);
+
+                const total = posts.length;
+
+                const postsList = posts.sort((a, b) => {
+                    if (a.createdAt > b.createdAt) {
+                        return -1;
+                    }
+                });
+                const totalPage = Math.ceil(total / perPage);
+                const allPostsList = postsList.slice(
+                    perPage * (page - 1),
+                    perPage * page
+                );
+
+                return allPostsList;
+            }
+        } else {
+            if (send.location == undefined) {
+                const station = send.station;
+                const posts = await Post.findByStation({ station });
+
+                const page = Number(send.page || 1);
+                const perPage = Number(send.perPage || 5);
+
+                const total = posts.length;
+
+                const postsList = posts.sort((a, b) => {
+                    if (a.createdAt > b.createdAt) {
+                        return -1;
+                    }
+                });
+                const totalPage = Math.ceil(total / perPage);
+                const allPostsList = postsList.slice(
+                    perPage * (page - 1),
+                    perPage * page
+                );
+
+                return allPostsList;
+            } else {
+                const location = send.location;
+
+                const [locationDetail] = await Mountain.findData(
+                    location,
+                    null,
+                    null
+                );
+
+                const station = send.station;
+
+                const posts = await Post.findByLocation({ locationDetail });
+                const stationPosts = posts.filter(
+                    (posts) => posts.station == station
+                );
+                const page = Number(send.page || 1);
+                const perPage = Number(send.perPage || 5);
+
+                const total = stationPosts.length;
+
+                const postsList = stationPosts.sort((a, b) => {
+                    if (a.createdAt > b.createdAt) {
+                        return -1;
+                    }
+                });
+                const totalPage = Math.ceil(total / perPage);
+                const allPostsList = postsList.slice(
+                    perPage * (page - 1),
+                    perPage * page
+                );
+
+                return allPostsList;
+            }
+        }
     }
 
     static async setPost({ post_id, toUpdate }) {
@@ -65,66 +189,105 @@ class postService {
         }
 
         if (toUpdate.title) {
-            const fieldToUpdate = "title";
-            const newValue = toUpdate.title;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "title",
+                newValue: toUpdate.title,
+            });
         }
 
         if (toUpdate.description) {
-            const fieldToUpdate = "description";
-            const newValue = toUpdate.description;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "description",
+                newValue: toUpdate.description,
+            });
         }
 
         if (toUpdate.nickname) {
-            const fieldToUpdate = "nickname";
-            const newValue = toUpdate.nickname;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "nickname",
+                newValue: toUpdate.nickname,
+            });
         }
 
         if (toUpdate.date) {
-            const fieldToUpdate = "date";
-            const newValue = toUpdate.date;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "date",
+                newValue: toUpdate.date,
+            });
         }
 
         if (toUpdate.person) {
-            const fieldToUpdate = "person";
-            const newValue = toUpdate.person;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "person",
+                newValue: toUpdate.person,
+            });
         }
 
         if (toUpdate.personnel) {
-            const fieldToUpdate = "personnel";
-            const newValue = toUpdate.personnel;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "personnel",
+                newValue: toUpdate.personnel,
+            });
         }
 
         if (toUpdate.station) {
-            const fieldToUpdate = "station";
-            const newValue = toUpdate.station;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "station",
+                newValue: toUpdate.station,
+            });
         }
 
         if (toUpdate.comment) {
-            const fieldToUpdate = "comment";
-            const newValue = toUpdate.comment;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "comment",
+                newValue: toUpdate.comment,
+            });
         }
 
-        if (toUpdate.header) {
-            const fieldToUpdate = "header";
-            const newValue = toUpdate.header;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+        if (toUpdate.count) {
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "count",
+                newValue: toUpdate.count,
+            });
+        }
+
+        if (toUpdate.count == 0) {
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "count",
+                newValue: toUpdate.count,
+            });
         }
 
         if (toUpdate.location) {
-            const fieldToUpdate = "location";
-            const newValue = toUpdate.location;
-            post = await Post.update({ post_id, fieldToUpdate, newValue });
+            post = await Post.update({
+                post_id,
+                fieldToUpdate: "location",
+                newValue: toUpdate.location,
+            });
         }
 
         return post;
+    }
+
+    static async changeNicknamePost({ posts, toUpdate }) {
+        const newPosts = posts;
+        const newToUpdate = toUpdate;
+
+        newPosts.forEach((item) => {
+            const post_id = item.post_id;
+            const updatedPost = postService.setPost({ post_id, toUpdate });
+        });
+        return newPosts;
     }
 
     static async deletePost({ post_id }) {
@@ -163,7 +326,6 @@ class commentService {
         const createdNewComment = await Comment.create({ newComment });
 
         const toUpdate = await postService.getAPosts({ post_id });
-
         toUpdate.comment.push(newComment);
 
         const createPostComment = await postService.setPost({
@@ -181,6 +343,12 @@ class commentService {
         return comments;
     }
 
+    static async pushComments({ toUpdate, newComment }) {
+        toUpdate.comment.push(newComment);
+
+        return toUpdate;
+    }
+
     static async setComment({ comment_id, toUpdate }) {
         let comment = await Comment.findByCommentId({ comment_id });
 
@@ -190,32 +358,26 @@ class commentService {
         }
 
         if (toUpdate.nickname) {
-            const fieldToUpdate = "nickname";
-            const newValue = toUpdate.nickname;
             comment = await Comment.update({
                 comment_id,
-                fieldToUpdate,
-                newValue,
+                fieldToUpdate: "nickname",
+                newValue: toUpdate.nickname,
             });
         }
 
         if (toUpdate.title) {
-            const fieldToUpdate = "title";
-            const newValue = toUpdate.title;
             comment = await Comment.update({
                 comment_id,
-                fieldToUpdate,
-                newValue,
+                fieldToUpdate: "title",
+                newValue: toUpdate.title,
             });
         }
 
         if (toUpdate.description) {
-            const fieldToUpdate = "description";
-            const newValue = toUpdate.description;
             comment = await Comment.update({
                 comment_id,
-                fieldToUpdate,
-                newValue,
+                fieldToUpdate: "description",
+                newValue: toUpdate.description,
             });
         }
 
@@ -225,137 +387,171 @@ class commentService {
 
         const newComment = twoUpdate.comment;
 
-        let beingcomment = newComment.find((item) => {
-            return item.comment_id == comment_id;
-        });
+        let beingcomment = newComment.find(
+            (item) => item.comment_id == comment_id
+        );
 
         const idx = newComment.indexOf(beingcomment);
 
         newComment.splice(idx, 1, comment);
 
         twoUpdate.comment = newComment;
+
+        const createPostComment = await postService.setPost({
+            post_id,
+            toUpdate: twoUpdate,
+        });
+
+        return newComment;
     }
 
     static async deleteComment({ comment_id }) {
         let comments = await Comment.findByCommentId({ comment_id });
-        console.log("삭제할 댓글", comments);
-        const post_id = comments.post_id;
 
         if (!comments) {
             const errorMessage = "내역이 없습니다. 다시 한 번 확인해 주세요.";
             return { errorMessage };
         }
+
+        const post_id = comments.post_id;
+
         comments = await Comment.deleteByCommentId({ comment_id });
-        // console.log("삭제된 댓글", comment_id);
+
         const newComments = await Comment.findByPostId({ post_id });
-        // console.log("댓글 리스트", newComments);
+
         const twoUpdate = await postService.getAPosts({ post_id });
 
         twoUpdate.comment = newComments;
-        // console.log("새로 출력되야 할", twoUpdate);
+
         const createPostComment = await postService.setPost({
             post_id,
             toUpdate: twoUpdate,
         });
-        // console.log("출력된", createPostComment);
+
         return newComments;
     }
 }
 
 class personService {
     static async addPerson({ post_id, email }) {
-        const post = await postService.getAPosts({ post_id });
+        const posts = await postService.getAPosts({ post_id });
 
-        const people = post.person;
+        const toUpdate = posts;
 
-        let beingPerson = people.find((item) => {
-            return item.email == email;
-        });
+        const people = toUpdate.person;
+
+        let beingPerson = people.find((item) => item.email == email);
 
         if (beingPerson !== undefined) {
             const idx = people.indexOf(beingPerson);
-
             people.splice(idx, 1);
 
-            post.person = people;
+            toUpdate.person = people;
 
-            const toUpdate = post;
+            toUpdate.count = people.length;
 
-            const deletedBeingPerson = await postService.setPost({
-                post_id,
-                toUpdate,
-            });
+            if (toUpdate.station == "모집완료") {
+                toUpdate.station = "모집중";
+                const deletedBeingPerson = await postService.setPost({
+                    post_id,
+                    toUpdate,
+                });
 
-            return deletedBeingPerson;
+                return deletedBeingPerson;
+            } else {
+                const deletedBeingPerson = await postService.setPost({
+                    post_id,
+                    toUpdate,
+                });
+
+                return deletedBeingPerson;
+            }
         } else {
             const newPerson = await User.findByEmail({ email });
 
             const toUpdate = await postService.getAPosts({ post_id });
 
-            if (newPerson !== null) {
+            if (parseInt(toUpdate.count) === toUpdate.personnel) {
+                const errorMessage = "모집 인원이 마감되었습니다.";
+                return { errorMessage };
+            } else {
                 toUpdate.person.push(newPerson);
+
+                toUpdate.count = toUpdate.person.length;
 
                 const createPostPerson = await postService.setPost({
                     post_id,
                     toUpdate,
                 });
 
-                createPostPerson.errorMessage = null;
+                if (parseInt(toUpdate.count) == toUpdate.personnel) {
+                    console.log("모집 인원이 마감되었습니다.");
 
-                return createPostPerson;
+                    toUpdate.station = "모집완료";
+
+                    const createPostPerson = await postService.setPost({
+                        post_id,
+                        toUpdate,
+                    });
+
+                    createPostPerson.errorMessage = null;
+
+                    return createPostPerson;
+                } else {
+                    createPostPerson.errorMessage = null;
+
+                    return createPostPerson;
+                }
             }
         }
     }
 
     static async getPersons({ post_id }) {
         const post = await postService.getAPosts({ post_id });
-
-        console.log(post);
-
         const people = post.person;
-
         return people;
     }
 
-    static async deletePerson({ email, post_id }) {
-        let person = await User.findByEmail({ email });
-
-        if (!person) {
-            const errorMessage =
-                "참가 이력이 없습니다. 다시 한 번 확인해 주세요.";
-            return { errorMessage };
-        }
-
+    static async beingPerson({ post_id, email }) {
         const post = await postService.getAPosts({ post_id });
 
-        const newPostPeople = post.person;
+        const person = post.person;
 
-        // console.log(newPostPeople);
-        console.log(email);
-        let toDeletePerson = newPostPeople.find((item) => {
-            return item == person;
-        });
-        // console.log(newPostPeople);
+        const being = person.filter((item) => item.email == email);
 
-        const idx = newPostPeople.indexOf(toDeletePerson);
-
-        console.log(idx);
-
-        newPostPeople.splice(idx, 1);
-
-        if (person !== null) {
-            post.person.push(newPostPeople);
-
-            const deletedPostPerson = await postService.setPost({
-                post_id,
-                toUpdate: post,
-            });
+        if (being.length) {
+            return "1";
+        } else {
+            return "0";
         }
+    }
 
-        person.errorMessage = null;
+    // static async beingPerson({ post_id, email, user_id }) {
+    //     const post = await postService.getAPosts({ post_id });
 
-        return person;
+    //     if (post.user_id == user_id) {
+    //         const errorMessage = "참여하실 수 없습니다.";
+    //         return { errorMessage };
+    //     } else {
+    //         const person = post.person;
+    //         const being = person.map((item) => (item.email = email));
+    //         if (being.length) {
+    //             return "1";
+    //         } else {
+    //             return "0";
+    //         }
+    //     }
+    // }
+}
+
+class locationService {
+    static async getData() {
+        return await Mountain.findData();
+    }
+
+    static async detailLocation() {
+        const data = await Mountain.findData();
     }
 }
 
-export { postService, commentService, personService };
+export { postService, commentService, personService, locationService };

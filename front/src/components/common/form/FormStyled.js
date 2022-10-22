@@ -22,7 +22,15 @@ export const ButtonBlock = styled(Button)`
   border-radius: 15px;
   background: transparent;
   margin: 1rem auto;
+  margin-top: 1.5rem;
   color: ${theme.primary};
+  &:hover {
+    background: ${theme.primary};
+    color: white;
+    box-shadow: 0px 0px 6px ${theme.primary};
+    border: none;
+    transform: translateY(-3px);
+  }
   &.smallButton {
     width: 300px;
   }

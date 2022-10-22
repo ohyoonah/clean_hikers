@@ -1,10 +1,9 @@
 import { PostModel } from "./postSchema.js";
-import { CommentModel } from "./commentSchema.js";
-// import { UserModel } from "../user/userModel.js";
+import { CommentModel } from "../community_comment/commentSchema.js";
 
 class Post {
     static async create({ newPost }) {
-        const createdNewPost = await await PostModel.create(newPost);
+        const createdNewPost = await PostModel.create(newPost);
         return createdNewPost;
     }
 
@@ -18,13 +17,24 @@ class Post {
         return posts;
     }
 
+    static async findByStation({ station }) {
+        const posts = await PostModel.find({ station: station });
+        return posts;
+    }
+
+    static async findByLocation({ locationDetail }) {
+        const posts = await PostModel.find({ location: locationDetail });
+        return posts;
+    }
+
     static async findOne({ post_id }) {
         const post = await PostModel.findOne({ post_id: post_id });
         return post;
     }
 
     static async findByPostId({ post_id }) {
-        const post = await PostModel.find({ post_id });
+        const [post] = await PostModel.find({ post_id });
+
         return post;
     }
 
@@ -46,23 +56,6 @@ class Post {
         return post;
     }
 }
-
-// class Person {
-//     static async create({ newPerson }) {
-//         const createdNewPerson = await UserModel.create(newPerson);
-//         return createdNewPerson;
-//     }
-
-//     static async findByUserId({ user_id }) {
-//         const user = await UserModel.find({ user_id: user_id });
-//         return user;
-//     }
-
-//     static async deleteByEmail({ email }) {
-//         const person = await UserModel.deleteOne({ user_id: user_id });
-//         return person;
-//     }
-// }
 
 class Comment {
     static async create({ newComment }) {

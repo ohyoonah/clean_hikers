@@ -1,40 +1,46 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
 const MountainSchema = new Schema(
-  {
-    id: {
-      type: String,
-      required: true,
+    {
+        id: {
+            type: String,
+            required: true,
+        },
+        name: {
+            type: String,
+            required: true,
+        },
+        trash: {
+            type: String,
+            required: true,
+        },
+
+        latitude: {
+            type: String,
+            required: true,
+        },
+        longitude: {
+            type: String,
+            required: true,
+        },
+        address: {
+            type: String,
+            required: true,
+        },
+        difficulty: {
+            type: String,
+            required: true,
+        },
+        image: {
+            type: String,
+            default: null,
+        },
     },
-    name: {
-      type: String,
-      required: true,
-    },
-    latitude: {
-      type: String,
-      required: true,
-    },
-    longitude: {
-      type: String,
-      required: true,
-    },
-    location: {
-      type: String,
-      required: true,
-    },
-    level : {
-      type : String,
-      required : true,
-    },
-    image:{
-      type : String,
+    {
+        timestamps: true,
     }
-  },
-  {
-    timestamps: true,
-  }
 );
 
-const MountainModel = model("User", MountainSchema);
+const MountainModel = model("Mountain", MountainSchema);
 
-export  {MountainModel}
+export { MountainModel };

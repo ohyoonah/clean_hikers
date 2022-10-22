@@ -1,22 +1,19 @@
 /*검색창*/
-import { useState } from "react";
 import styled from "styled-components";
-import { Select, Input } from "antd";
-import { NonIconBlueBtn } from "../common/button/NonIconBtn";
+import { Select, Input, Form } from "antd";
 
 const { Option } = Select;
 
-const Main = styled.form`
+const Main = styled(Form)`
   /* Display & Box Model */
   display: grid;
   justify-content: center;
-  grid-template-columns: 1fr 1fr 3fr 1fr;
+  grid-template-columns: 1fr 1fr 3fr;
   grid-column-gap: 15px;
-  width: 80%;
-  padding: 15px;
-  border-radius: 20px;
+
+  padding: 10px;
+  border-radius: 15px;
   margin: 0 auto;
-  margin-bottom: 30px;
 
   /* Color */
   background-color: rgb(230, 230, 230);
@@ -28,7 +25,7 @@ const Main = styled.form`
 const InputWrapper = styled(Input)`
   /* Display & Box Model */
   height: 40px;
-  padding: 0px 20px;
+  padding: 0px 15px;
   border: 0px;
   border-radius: 10px;
 
@@ -52,66 +49,70 @@ const SelectWrapper = styled(Select)`
   background-color: white;
 `;
 
-function MountainSearch() {
-  const [location, setLocation] = useState("");
-  const [level, setLevel] = useState("");
-  const [search, setSearch] = useState("");
+const locations = [
+  { value: "", location: "전체" },
+  { value: "서울특별시", location: "서울" },
+  { value: "강원도", location: "강원" },
+  { value: "광주광역시", location: "광주" },
+  { value: "충청북도", location: "충북" },
+  { value: "충청남도", location: "충남" },
+  { value: "경상북도", location: "경북" },
+  { value: "경상남도", location: "경남" },
+  { value: "전라북도", location: "전북" },
+  { value: "전라남도", location: "전남" },
+  { value: "제주시", location: "제주" },
+];
 
-  const onSubmit = (e) => {
-    e.preventDefault(); // 엔터 press 시 자동 submit 막는 기능
-    setLocation(""); // submit 시 위치 드롭다운 초기화
-    setLevel(""); // submit 시 난이도 드롭다운 초기화
-    setSearch(""); // submit 시 검색 창 글자 초기화
-    console.log(location, level);
-    // 추후 백엔드로 post하는 코드 삽입구역
-  };
+const levels = [
+  { value: "", level: "전체" },
+  { value: "상", level: "상" },
+  { value: "중", level: "중" },
+  { value: "하", level: "하" },
+];
 
+function MountainSearch({ setLocation, setDifficulty, search, setSearch }) {
   const onChange = (e) => {
     // 검색 창에 입력된 글자를 받아오는 함수
     setSearch(e.target.value);
   };
 
   return (
-    <Main onSubmit={onSubmit}>
+    <Main>
       {/* 위치선택 셀렉트 */}
       <SelectWrapper
+        className="locationSelect"
         bordered={false}
-        defaultValue="지역"
+        placeholder="지역"
         onChange={(e) => setLocation(e)}
       >
-        <Option value="0"> 서울</Option>
-        <Option value="1"> 경기</Option>
-        <Option value="2"> 인천</Option>
-        <Option value="3"> 강원</Option>
-        <Option value="4"> 충북</Option>
-        <Option value="5"> 충남</Option>
-        <Option value="6"> 경북</Option>
-        <Option value="7"> 경남</Option>
-        <Option value="8"> 전북</Option>
-        <Option value="9"> 전남</Option>
-        <Option value="10"> 부산</Option>
-        <Option value="11"> 제주</Option>
+        {locations.map((value, idx) => (
+          <Option value={value.value} key={idx}>
+            {value.location}
+          </Option>
+        ))}
       </SelectWrapper>
 
       {/* 난이도선택 셀렉트 */}
       <SelectWrapper
+        className="difficultySelect"
         bordered={false}
-        defaultValue="난이도"
-        onChange={(e) => setLevel(e)}
+        placeholder="난이도"
+        onChange={(e) => setDifficulty(e)}
       >
-        <Option value="high">상</Option>
-        <Option value="middle">중</Option>
-        <Option value="low">하</Option>
+        {levels.map((value, idx) => (
+          <Option value={value.value} key={idx}>
+            {value.level}
+          </Option>
+        ))}
       </SelectWrapper>
 
+      {/* 검색창 */}
       <InputWrapper
         type="text"
         onChange={onChange}
         placeholder="산 이름을 입력해주세요..."
         value={search}
-        autoFocus={true}
       />
-      <NonIconBlueBtn text={"검색"} />
     </Main>
   );
 }

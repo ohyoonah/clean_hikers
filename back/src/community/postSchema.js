@@ -30,7 +30,7 @@ const PostSchema = new Schema(
             default: Date.now,
         },
         location: {
-            type: String,
+            type: Object,
             required: false,
         },
         person: [
@@ -39,15 +39,16 @@ const PostSchema = new Schema(
                 // ref: "Person",
             },
         ],
-        count: [],
+        count: {
+            type: Number,
+            required: false,
+            default: 0,
+        },
         personnel: {
             type: Number,
-            required: true,
         },
         station: {
             type: String,
-            emum: ["모집중", "모집완료"],
-            default: "모집중",
         },
         comment: [
             {

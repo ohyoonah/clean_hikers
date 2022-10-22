@@ -1,23 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import CommunityDetail from "../components/community/component/CommunityDetail";
-import initialState from "../components/community/component/data";
+import * as api from "../api/api";
+import { useParams } from "react-router-dom";
 
 function CommunityDetailPage() {
-  const [posts, setPosts] = useState([]);
-  useEffect(() => {
-    setPosts(initialState.users);
-  }, []);
-
-  const handleRemove = async function () {};
-
   return (
-    <div>
-      <CommunityDetail
-        handleRemove={handleRemove}
-        setPosts={setPosts}
-        posts={posts}
-      />
-    </div>
+    <>
+      <CommunityDetail />
+    </>
   );
 }
 
