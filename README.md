@@ -2,9 +2,10 @@
 
 **쓰레기를 주우며 등산하는 활동에 참여할 수 있도록 독려하는 서비스**
 
-최종 배포 사이트 이미지 or gif
 
-🔗[SITE](http://kdt-ai5-team10.elicecoding.com/)
+🔗[BLOG](https://ohyoonah.github.io/project/2022-10-18-clean_hikers/)
+
+🔗[YOUTUBE](https://youtu.be/R8w_yycKMvE)
 
 🔗[GITLAB](https://kdt-gitlab.elice.io/ai_track/class05/data_project/team10)
 
