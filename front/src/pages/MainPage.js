@@ -13,7 +13,6 @@ function MainPage() {
 
   async function fetchData() {
     const res = await api.get("main/data");
-    console.log(res.data);
     setData(res.data);
     setIsLoading(false);
   }

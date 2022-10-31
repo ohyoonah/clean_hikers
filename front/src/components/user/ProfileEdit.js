@@ -83,7 +83,7 @@ function ProfileEdit({ setIsEdit, user, setUser }) {
   }
 
   async function changeNickname() {
-    if (user.nickname.length < 2 || user.nickname.length >= 10) {
+    if (user.nickname.length < 2 || user.nickname.length > 10) {
       errorMessage("닉네임은 두 자 이상 열 자 이하로 입력해 주세요");
     } else if (/\s/.test(user.nickname)) {
       errorMessage("닉네임은 공백을 포함 할 수 없습니다");
